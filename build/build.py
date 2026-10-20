@@ -80,6 +80,67 @@ _comvn["pages"][-1:-1] = hang.trang_comvn()
 _gan_luoi(_vn, _LUOI)
 _gan_luoi(_comvn, _LUOI)
 
+# Banner chốt kiểu A (luồng Banner Phố Xe Điện, 20/10): tệp ở build/banner/<domain>/, alt theo HUONG-DAN-GAN.md
+BANNER = {
+    "phoxedien.vn": {
+        "hero": "Bảng giá xe máy điện tháng 10/2026, giá tham khảo từ 10,99 triệu, xe 50cc từ 14,79 triệu",
+        "dai": "Hỏi giá hôm nay: gọi hoặc Zalo 0889.277.112",
+        "loai": {"/xe-may-dien/": ("banner-xe-may-dien.webp", "Bảng giá xe máy điện: 121 mẫu, giá tham khảo từ 10.990.000đ"),
+                 "/bang-gia-xe-dien/": ("banner-xe-may-dien.webp", "Bảng giá xe máy điện: 121 mẫu, giá tham khảo từ 10.990.000đ"),
+                 "/xe-ga-50cc/": ("banner-xe-ga-50cc.webp", "Bảng giá xe ga 50cc: 16 mẫu, giá tham khảo từ 14.990.000đ"),
+                 "/xe-so-50cc/": ("banner-xe-so-50cc.webp", "Bảng giá xe số 50cc: 10 mẫu, giá tham khảo từ 14.790.000đ"),
+                 "/bang-gia-xe-50cc/": ("banner-xe-cub-50cc.webp", "Bảng giá xe cub 50cc: 5 mẫu, giá tham khảo từ 16.990.000đ")}},
+    "phoxedien.com.vn": {
+        "hero": "Con vào lớp 10 nên đi xe gì? Cẩm nang chọn xe 50cc và xe điện cho phụ huynh",
+        "dai": "Chưa chắc chọn xe nào? Gọi hoặc Zalo 0833.666.916",
+        "loai": {"/xe-ga-50cc-cho-hoc-sinh/": ("banner-xe-ga-50cc.webp", "Xe ga 50cc cho học sinh, giá tham khảo từ 14.990.000đ"),
+                 "/xe-so-50cc-cho-hoc-sinh/": ("banner-xe-so-50cc.webp", "Xe số 50cc cho học sinh, giá tham khảo từ 14.790.000đ"),
+                 "/xe-may-dien-cho-hoc-sinh/": ("banner-xe-may-dien.webp", "Xe máy điện cho học sinh, giá tham khảo từ 10.990.000đ")}},
+}
+_MOC_KEU = '<section class="hd-in"><div class="keu">'
+
+
+def _so(site):
+    return site["hot"].replace(".", "")
+
+
+def _dai(site):
+    return ('<a class="banner-dai" href="tel:%s"><img src="/banner/banner-dai-goi.webp" width="1080" height="360" alt="%s" loading="lazy"></a>'
+            % (_so(site), html.escape(BANNER[site["domain"]]["dai"])))
+
+
+def _gan_banner(site):
+    bn = BANNER.get(site["domain"])
+    if not bn or not os.path.isdir(os.path.join(HERE, "banner", site["domain"])):
+        return
+    for p in site["pages"]:
+        f = p.get("body")
+        if not callable(f):
+            continue
+        if p["url"] == "/":
+            dau = ('<a class="banner-dau" href="tel:%s"><picture><source media="(max-width:767px)" srcset="/banner/banner-hero-dien-thoai.webp" width="1080" height="1200">'
+                   '<img src="/banner/banner-hero-may-tinh.webp" width="1920" height="720" alt="%s" fetchpriority="high"></picture></a>' % (_so(site), html.escape(bn["hero"])))
+
+            def g(s, f=f, dau=dau):
+                b = f(s)
+                b = b.replace(_MOC_KEU, _dai(site) + _MOC_KEU, 1) if _MOC_KEU in b else b + _dai(site)
+                return dau + b
+            p["body"] = g
+        elif p["url"] in bn["loai"]:
+            tep, alt = bn["loai"][p["url"]]
+            anh = '<img class="banner-loai" src="/banner/%s" width="1080" height="540" alt="%s" loading="lazy">' % (tep, html.escape(alt))
+
+            def g(s, f=f, anh=anh):
+                b = f(s)
+                moc = '<div class="dau-trang">'
+                b = b.replace(moc, anh + moc, 1) if moc in b else anh + b
+                return b.replace(_MOC_KEU, _dai(site) + _MOC_KEU, 1) if _MOC_KEU in b else b
+            p["body"] = g
+
+
+_gan_banner(_vn)
+_gan_banner(_comvn)
+
 FONT = ('<link rel="preconnect" href="https://fonts.googleapis.com">'
         '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
         '<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Be+Vietnam+Pro:wght@400;600;700&display=swap" rel="stylesheet">')
@@ -223,7 +284,7 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
 {og_img_html(site, og_img)}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 {FONT}
-<link rel="stylesheet" href="/site.css?v=3">
+<link rel="stylesheet" href="/site.css?v=4">
 {skin_head}
 <style>:root{{{css_vars}}}</style>
 {sch}
@@ -325,6 +386,8 @@ def build(site):
     shutil.copy(os.path.join(HERE, "site.js"), base)
     if site.get("skin"):
         shutil.copy(os.path.join(HERE, "skin-%s.css" % site["skin"]), base)
+    if os.path.isdir(os.path.join(HERE, "banner", d)):
+        shutil.copytree(os.path.join(HERE, "banner", d), os.path.join(base, "banner"))
     os.makedirs(os.path.join(base, "api"))
     shutil.copy(os.path.join(HERE, "lien-he.php"), os.path.join(base, "api"))
     open(os.path.join(base, ".htaccess"), "w").write(HTACCESS)

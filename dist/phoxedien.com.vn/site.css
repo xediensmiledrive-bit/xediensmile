@@ -257,3 +257,10 @@ footer .cua-hang{margin-top:14px}footer .cua-hang ul{list-style:none;margin-top:
 .o-xe .hoi-gia{margin-top:auto;min-height:38px;border:0;border-radius:12px;background:var(--c2);color:#fff;font:inherit;font-weight:700;font-size:13.5px;cursor:pointer}
 .chu-anh{font-size:12px;color:var(--phu);margin:6px 0 0}
 @media(min-width:700px){.luoi-xe{grid-template-columns:repeat(4,minmax(0,1fr))}}
+/* Banner chốt */
+.banner-dau{display:block;max-width:1200px;margin:14px auto 0;padding:0 16px}
+.banner-dau img{display:block;width:100%;height:auto;border-radius:20px}
+.banner-loai{display:block;width:100%;height:auto;border-radius:18px;margin:12px 0 4px}
+.banner-dai{display:block;margin:18px 0}
+.banner-dai img{display:block;width:100%;height:auto;border-radius:18px}
+.banner-dau+.hero .hinh-hero{display:none}
