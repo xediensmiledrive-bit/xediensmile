@@ -53,6 +53,7 @@ def _khung(ten):
 
 
 _CO_KHUNG = {}
+_V = {}
 SP = {}  # domain -> tên mẫu (chữ thường) có trang riêng /xe/<slug>/ trên web đó (sanpham.py điền)
 
 
@@ -65,8 +66,13 @@ def co_khung():
 
 
 def anh(ten):
-    if _khung(ten):
-        return "/anh-xe/khung/%s.webp" % _slug(ten)
+    k = _khung(ten)
+    if k:
+        # số phiên bản theo nội dung: luồng ảnh dựng lại cùng tên thì khách vẫn thấy bản mới
+        if k not in _V:
+            import hashlib
+            _V[k] = hashlib.md5(open(k, "rb").read()).hexdigest()[:8]
+        return "/anh-xe/khung/%s.webp?v=%s" % (_slug(ten), _V[k])
     if co_khung():
         return None
     ds = ANH.get((ten or "").strip().lower())
