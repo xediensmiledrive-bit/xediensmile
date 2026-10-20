@@ -11,6 +11,9 @@ from noidung import (NHOM, THANG, NGAY_VN, VN, COMVN, vnd, models_of, bang, faq_
                      keu, xe_svg, dap_svg)
 
 TOI_THIEU = 2
+# Thứ tự ưu tiên từ khoá chung (anh chốt 20/10): xediensmile/smilemotor > dvmotor.vn/dvmotors > 2 web phoxedien.
+# Hãng do web DV Motor giữ từ khoá: trang hãng vẫn có cho khách xem nhưng ẩn khỏi Google để không giành hạng.
+NHUONG_HANG = {"dv-motor", "dvmotor", "takashi"}
 LUAT = "Luật Trật tự, an toàn giao thông đường bộ 2024 (hiệu lực 01/01/2025)"
 
 # Loại xe trên phoxedien.vn: khoá -> (đường dẫn, tên)
@@ -198,7 +201,8 @@ def trang_hang(k, b, ms):
     return {"url": url, "title": "%s %s: giá tham khảo tháng %s (%d mẫu)" % (ten_loai, b, THANG, len(ms)),
             "desc": "Bảng giá %s %s tháng %s: %d mẫu, %s. Có cách chọn và hỏi đáp." % (ten_loai.lower(), b, THANG, len(ms), kg),
             "body": body, "schemas": [faq_ld_local(faqs), itemlist_ld("phoxedien.vn", url, ms)],
-            "crumbs": [("Trang chủ", "/"), (ten_loai, goc), (b, url)]}
+            "crumbs": [("Trang chủ", "/"), (ten_loai, goc), (b, url)],
+            **({"robots": "noindex,follow"} if slug(b) in NHUONG_HANG else {})}
 
 
 def trang_vn():
