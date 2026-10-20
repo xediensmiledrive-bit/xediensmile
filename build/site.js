@@ -228,3 +228,23 @@
   });},{threshold:[0,.6,1]});
   ds.forEach(function(a){io.observe(a);});
 })();
+/* Bảng, danh sách dài: chỉ hiện phần đầu, nút "Xem thêm" mở tiếp (anh góp ý 21/10 0:08). Nội dung vẫn nằm sẵn trong trang cho Google đọc. */
+(function(){
+  var NHOM=[['.the.bang','.dong:not(.dau)',10,'mẫu'],['.luoi-xe:not(.ban-xe)','.o-xe',8,'mẫu'],['.luoi-tin','.tin-the',6,'bài'],['section','.bai-nho',6,'bài',true]];
+  var ds=[];
+  NHOM.forEach(function(n){document.querySelectorAll(n[0]).forEach(function(c){
+    var con=n[4]?Array.prototype.filter.call(c.children,function(x){return x.matches(n[1])}):c.querySelectorAll(n[1]);
+    if(con.length>n[2]+2)ds.push({c:c,sel:n[1],n:n[2],dv:n[3],truc:n[4]});
+  });});
+  function lam(o){
+    var con=o.truc?Array.prototype.filter.call(o.c.children,function(x){return x.matches(o.sel)}):Array.prototype.slice.call(o.c.querySelectorAll(o.sel));
+    var hien=0,an=0;
+    con.forEach(function(x){x.classList.remove('gon');if(x.classList.contains('an'))return;hien++;if(!o.mo&&hien>o.n){x.classList.add('gon');an++;}});
+    if(!o.nut){o.nut=document.createElement('button');o.nut.type='button';o.nut.className='btn xem-them xem-gon';
+      o.nut.onclick=function(){o.mo=1;lam(o);};o.c.parentNode.insertBefore(o.nut,o.c.nextSibling);}
+    o.nut.textContent='Xem thêm '+an+' '+o.dv;o.nut.hidden=!an;
+  }
+  ds.forEach(lam);
+  document.addEventListener('click',function(e){if(e.target.closest('.chip,.hx'))setTimeout(function(){ds.forEach(function(o){o.mo=0;lam(o);});},30);});
+})();
+document.addEventListener('click',function(e){var b=e.target.closest('.doc-tiep');if(b)b.closest('.chot').classList.add('mo');});

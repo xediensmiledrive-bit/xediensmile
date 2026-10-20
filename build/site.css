@@ -704,3 +704,24 @@ body .lx:nth-child(3n),body .o-xe:nth-child(3n){animation-delay:-2.6s}
 /* 21/10 0:02: khung clip viền xanh lá theo màu chủ đạo, không lạc giữa giao diện */
 .tt-o{border:3px solid transparent;background:linear-gradient(#111,#111) padding-box,conic-gradient(from var(--goc),#3aa52a,#6fd92e,#2b8f1e,#a6f07a,#3aa52a) border-box;animation:vien-chay 4s linear infinite;box-shadow:0 0 0 1px rgba(58,165,42,.25),0 12px 26px -16px rgba(43,143,30,.7)}
 @media(prefers-reduced-motion:reduce){.tt-o{animation:none}}
+.gon{display:none!important}
+.xem-gon{display:block;margin:12px auto 4px}
+.xem-gon[hidden]{display:none}
+/* 21/10 0:07: khối chốt đơn trên trang banner dẫn tới */
+.chot{margin:18px 0;padding:18px 18px 16px;border-radius:20px;background:linear-gradient(160deg,var(--nen),#fff 70%);border:1.5px solid var(--c1)}
+.chot h2{font-family:"Baloo 2",sans-serif;font-size:22px;line-height:1.25;color:var(--c1);margin:0 0 10px}
+.chot p{font-size:15.5px;line-height:1.7;margin:0 0 10px}
+.chot-tin{list-style:none;padding:0;margin:12px 0;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.chot-tin li{position:relative;padding:10px 10px 10px 34px;border-radius:14px;background:#fff;border:1px solid var(--vien);font-size:13.5px;line-height:1.4}
+.chot-tin li:before{content:"";position:absolute;left:11px;top:13px;width:14px;height:14px;border-radius:50%;background:var(--c1) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%23fff' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/10px no-repeat}
+.chot-nut{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 4px}
+.chot-nut .btn{flex:1 1 auto;justify-content:center}
+.chot-dai{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.chot.mo .chot-dai{max-height:4000px;margin-top:10px}
+.chot-dai h3{font-size:17px;margin:14px 0 6px;color:var(--chu)}
+.doc-tiep{display:block;margin:10px auto 0;padding:9px 20px;border-radius:999px;border:1.5px solid var(--c1);background:#fff;color:var(--c1);font:inherit;font-weight:700;cursor:pointer}
+.chot.mo .doc-tiep{display:none}
+.o-chu-to{display:grid;place-items:center;height:100%;min-height:150px;font-family:"Baloo 2",sans-serif;font-size:24px;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--c1),var(--c2d))}
+.skin-sup .chot{background:#fff;border-color:#6fd92e}.skin-sup .chot h2{color:#0f1112}
+@media(max-width:420px){.chot-tin li{font-size:12.5px;padding:9px 8px 9px 30px}.chot-tin li:before{left:9px}}
+@media(min-width:900px){.chot{padding:24px 28px}.chot-tin{grid-template-columns:repeat(4,1fr)}.chot-nut .btn{flex:0 0 auto}}

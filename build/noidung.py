@@ -9,6 +9,7 @@ NGAY_VN = "20/10/2026"
 THANG = "10/2026"
 
 import anhxe  # noqa: E402  ảnh xe thật (PXD_ANH)
+import chot  # noqa: E402  nội dung chốt đơn trang banner dẫn tới
 
 # ---------- Giá ----------
 GIA_FILE = os.path.join(HERE, "gia-smile.json")
@@ -186,7 +187,7 @@ def list_bai(arts, big_first=True, ico=None):
     out = []
     for i, a in enumerate(arts):
         if i == 0 and big_first:
-            out.append(f'<a class="the bai-to hd-in" href="{a["url"]}" style="display:block;margin-bottom:6px"><div class="anh">{ico or ""}</div><div class="nd"><div class="muc">{a["cat_name"]}</div><h3>{a["h1"]}</h3><div class="meta">{a["read"]} phút đọc · cập nhật {NGAY_VN}</div></div></a>')
+            out.append(f'<a class="the bai-to hd-in" href="{a["url"]}" style="display:block;margin-bottom:6px"><div class="anh">{('<img src="/anh/%s.webp" alt="" width="800" height="450" loading="lazy">' % a["slug"]) if a.get("anh") else ('<span class="o-chu-to">%s</span>' % html.escape(a.get("cat_name") or ""))}</div><div class="nd"><div class="muc">{a["cat_name"]}</div><h3>{a["h1"]}</h3><div class="meta">{a["read"]} phút đọc · cập nhật {NGAY_VN}</div></div></a>')
         else:
             out.append(f'<a class="bai-nho hd-in" href="{a["url"]}">{o_bai(a)}<div><div class="muc">{a["cat_name"]}</div><h3>{a["h1"]}</h3><div class="meta">{a["read"]} phút đọc</div></div></a>')
     return "".join(out)
@@ -335,6 +336,7 @@ def vn_cat(slug, h1, desc_p, keys, svg, faqs, extra=""):
         return f'''<div class="wrap"><div class="duong"><a href="/">Trang chủ</a> › <b>{h1.split(":")[0]}</b></div>
 <div class="dau-trang"><h1>{h1}</h1><div class="tac"><span class="av">M</span><span><a href="/tac-gia/minh-trang/">Minh Trang</a> · cập nhật {NGAY_VN}</span></div></div>
 {_anh_loai_cat(keys)}
+{chot.loai(keys[0])}
 <div class="noi-dung">{desc_p}</div>
 <section>{bang(keys, "bg-" + slug)}</section>
 {CHIP_HANG.get(slug, "")}
@@ -378,7 +380,8 @@ def vn_so_sanh(s):
     return f'''<div class="wrap"><div class="duong"><a href="/">Trang chủ</a> › <b>So sánh và đánh giá</b></div>
 <div class="dau-trang"><h1>So sánh và đánh giá xe điện, xe 50cc</h1></div>
 <div class="noi-dung"><p>Đặt các mẫu, các loại xe cạnh nhau theo thông số, chi phí và điểm yếu để bạn biết tiền chênh nằm ở đâu.</p></div>
-<section>{list_bai(BAI_VN, ico=xe_svg())}</section>{keu(VN["cta_title"], VN["cta_text"])}</div>'''
+{chot.SO_SANH}
+<section>{list_bai(BAI_VN)}</section>{keu(VN["cta_title"], VN["cta_text"])}</div>'''
 
 
 def gioi_thieu(site, extra):

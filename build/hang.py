@@ -9,6 +9,7 @@ import unicodedata
 
 import anhxe
 import bannerhang
+import chot
 
 from noidung import (o_gia, THI_TRUONG, NGUNG_BAN, NHOM, THANG, NGAY_VN, VN, COMVN, vnd, models_of, bang, faq_html_local, faq_ld_local,
                      keu, xe_svg, dap_svg)
@@ -152,6 +153,7 @@ def _trang_loai(site, k, url, ten, gioi, faqs, tac, av, khung_tim):
 <div class="nhanh hd-in"><b>Tóm tắt nhanh</b><ul><li>{len(ms or tt) or "Các"} mẫu {NHOM[k][0].lower()} có giá tham khảo, {khoang(ms or tt)}.</li><li>{dong_gia}</li></ul></div>
 
 {"".join(bannerhang.html(site["domain"], b, an=True) for b in hang_cua(k)) if site is not VN else ""}
+{chot.loai(k) if site is VN else ""}
 <div class="noi-dung">{gioi}</div>
 <section>{bang([k], "bg-" + slug(ten))}</section>
 {khung_tim}
@@ -198,6 +200,7 @@ def trang_hang(k, b, ms):
         return f'''<div class="wrap"><div class="duong"><a href="/">Trang chủ</a> › <a href="{goc}">{ten_loai}</a> › <b>{b}</b></div>
 <div class="dau-trang"><h1>{h1}</h1><div class="tac"><span class="av">K</span><span><a href="/tac-gia/kha-uyen/">Khả Uyên</a> · cập nhật {NGAY_VN}</span></div></div>
 {bannerhang.html("phoxedien.vn", b)}
+{chot.hang(b, ten_loai, slug(b))}
 <div class="nhanh hd-in"><b>Tóm tắt nhanh</b><ul>{"".join("<li>%s</li>" % t for t in tom)}</ul></div>
 <section style="margin-top:20px"><div class="the bang hd-in"><div class="dong dau"><span>Mẫu {ten_loai.lower()} {b}</span><span>Giá tham khảo</span></div>{"".join(dong(m, k) for m in ms)}
 <div class="chu-thich">Giá tham khảo cập nhật {NGAY_VN}, giá bán tại Smile Motor, chưa gồm lệ phí trước bạ, biển số và bảo hiểm.</div></div></section>

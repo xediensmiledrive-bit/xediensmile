@@ -7,6 +7,7 @@ import html
 
 import anhxe
 import trangchu
+import chot
 import noidung
 from noidung import NHOM, THANG, NGAY_VN, vnd, models_of, keu, faq_html_local, faq_ld_local
 
@@ -122,6 +123,7 @@ def trang(site, k, m):
 <div class="sp-gia{"" if co_gia else " lh"}">{gia}</div><p class="sp-chu">{chu_gia}</p>
 <div class="sp-nut">{nut}<a class="btn btn-phu" href="tel:{so}">Gọi {site["hot"]}</a><a class="btn btn-phu" href="https://zalo.me/{so}" target="_blank" rel="noopener nofollow">Zalo</a></div>
 {('<table class="sp-ts">%s</table>' % bang_ts) if bang_ts else ""}</div></div>
+{chot.xe(ten) if vn else ""}
 {trangchu.diem_manh()}
 {noi_dung}
 {anhxe.luoi(lq, "Mẫu cùng tầm giá", 4, vnd)}
