@@ -201,6 +201,29 @@ def stores_html(site):
     return '<div class="cua-hang"><b>Cửa hàng Smile Motor · mở cửa 8h–21h</b><ul>%s</ul></div>' % li
 
 
+LOGO_OG = "/logo-1200.png"
+
+
+def co_logo(site):
+    """Logo chốt 20/10 (A10 cho .vn, B7 cho .com.vn), tệp ở build/logo/<domain>/."""
+    return os.path.isfile(os.path.join(HERE, "logo", site["domain"], "logo.svg"))
+
+
+def icon_head(site):
+    if not co_logo(site):
+        return '<link rel="icon" href="/favicon.svg" type="image/svg+xml">'
+    return ('<link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" href="/favicon.svg" type="image/svg+xml">'
+            '<link rel="icon" href="/icon-32.png" sizes="32x32" type="image/png"><link rel="icon" href="/icon-16.png" sizes="16x16" type="image/png">'
+            '<link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="manifest" href="/manifest.webmanifest">')
+
+
+def logo_html(site, ten, dau):
+    if not co_logo(site):
+        return ('<a class="logo" href="/" aria-label="%s - trang chủ">%s<span><b>%s</b><small>%s</small></span></a>' % (site["sitename"], site["icon"], ten, site["tagline"])
+                if dau else '<a class="logo" href="/">%s<span><b>%s</b><small>%s</small></span></a>' % (site["icon"], ten, site["tagline"]))
+    return '<a class="logo logo-anh%s" href="/"><img src="/logo.svg" alt="%s" height="40"></a>' % ("" if dau else " chan", html.escape(site["sitename"]))
+
+
 def og_img_html(site, src):
     if not src:
         return ""
@@ -281,17 +304,17 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
 <meta property="og:description" content="{html.escape(desc)}">
 <meta property="og:url" content="https://{d}{path}">
 <meta property="og:locale" content="vi_VN">
-{og_img_html(site, og_img)}
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+{og_img_html(site, og_img or (LOGO_OG if co_logo(site) else None))}
+{icon_head(site)}
 {FONT}
-<link rel="stylesheet" href="/site.css?v=4">
+<link rel="stylesheet" href="/site.css?v=5">
 {skin_head}
 <style>:root{{{css_vars}}}</style>
 {sch}
 </head>
 <body{' class="skin-%s"' % skin if skin else ""}>
 <header class="top"><div class="wrap wide">
-<a class="logo" href="/" aria-label="{site['sitename']} - trang chủ">{site['icon']}<span><b>{ten}</b><small>{site['tagline']}</small></span></a>
+{logo_html(site, ten, True)}
 <span class="dau-phai">{goi_dau}<button class="nut-menu" aria-label="Mở menu" aria-expanded="false"><span></span></button></span>
 </div></header>
 <nav class="ngan-menu" aria-label="Menu">{menu}<div class="nho">Gọi tư vấn: <a href="tel:{TEL}" style="display:inline;padding:0;border:0;color:inherit">{HOTLINE}</a></div></nav>
@@ -299,7 +322,7 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
 {body}
 </main>
 <footer><div class="wrap wide">
-<a class="logo" href="/">{site['icon']}<span><b>{ten}</b><small>{site['tagline']}</small></span></a>
+{logo_html(site, ten, False)}
 <p>{site['footer']}</p>
 <p>Trang cẩm nang do Smile Motor biên soạn. Giá trên trang là giá tham khảo, có ghi ngày cập nhật. Khi mua xe, người bán là Smile Motor. Hotline {HOTLINE}.</p>
 {stores_html(site)}
@@ -393,6 +416,13 @@ def build(site):
     open(os.path.join(base, ".htaccess"), "w").write(HTACCESS)
     for fn, svg in (("logo.svg", site["logo_svg"]), ("favicon.svg", site["favicon"])):
         open(os.path.join(base, fn), "w").write(svg)
+    if co_logo(site):
+        for fn in os.listdir(os.path.join(HERE, "logo", d)):
+            shutil.copy(os.path.join(HERE, "logo", d, fn), base)
+        open(os.path.join(base, "manifest.webmanifest"), "w", encoding="utf-8").write(json.dumps({
+            "name": site["sitename"], "short_name": "Phố Xe Điện", "start_url": "/", "display": "browser", "theme_color": site["theme"],
+            "background_color": "#ffffff", "icons": [{"src": "/icon-192.png", "sizes": "192x192", "type": "image/png"},
+                                                    {"src": "/icon-512.png", "sizes": "512x512", "type": "image/png"}]}, ensure_ascii=False))
     anhxe.chep(base)
     urls, lastmod = [], {}
     bai_muse = muse.doc_bai(site)
