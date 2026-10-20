@@ -12,6 +12,20 @@ TEL = "0888266233"
 
 sys.path.insert(0, HERE)
 from noidung import SITES, keu  # noqa: E402
+import noidung  # noqa: E402
+import hang  # noqa: E402
+
+# phoxedien.vn: trang theo hãng + schema cho trang loại (tối ưu SEO 20/10)
+_vn = noidung.VN
+for _k in hang.LOAI:
+    noidung.CHIP_HANG[_k] = hang.chip_hang(_k)
+for _p in _vn["pages"]:
+    _f = _p.get("body")
+    if getattr(_f, "faqs", None):
+        _k = {"/xe-may-dien/": "may", "/xe-dap-dien/": "dap", "/xe-dien-3-banh/": "ba"}.get(_p["url"])
+        _p["schemas"] = [noidung.faq_ld_local(_f.faqs)] + (hang.schema_trang_loai(_k) if _k else [])
+        _p.setdefault("crumbs", [("Trang chủ", "/"), (_p["title"].split(":")[0], _p["url"])])
+_vn["pages"][-1:-1] = hang.them_trang_hang(_vn)
 
 FONT = ('<link rel="preconnect" href="https://fonts.googleapis.com">'
         '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'

@@ -258,12 +258,15 @@ def vn_cat(slug, h1, desc_p, keys, svg, faqs, extra=""):
 <div class="hinh-hero hd-in" style="background:var(--hero);height:170px;border-radius:20px;margin:16px 0">{svg}</div>
 <div class="noi-dung">{desc_p}</div>
 <section>{bang(keys, "bg-" + slug)}</section>
+{CHIP_HANG.get(slug, "")}
 {extra}
 <section class="hd-in"><div class="tieude"><h2>Hỏi đáp</h2></div>{faq_html_local(faqs)}</section>
 {keu(VN["cta_title"], VN["cta_text"])}</div>'''
+    f.faqs = faqs
     return f
 
 
+CHIP_HANG = {}  # khoá loại xe -> khối "Xem theo hãng", build.py điền sau khi dựng trang hãng
 VN_MAY = vn_cat("may", "Xe máy điện: giá tham khảo và cách chọn tháng " + THANG,
                 '''<p>Xe máy điện chia làm hai nhóm theo luật: <b>xe gắn máy điện</b> (công suất đến 4 kW, tốc độ thiết kế đến 50 km/h) cho người từ đủ 16 tuổi, không cần bằng lái; và <b>xe mô tô điện</b> mạnh hơn, cần bằng A1 và người lái từ đủ 18 tuổi. Trước khi so giá, hãy chắc mẫu bạn chọn thuộc nhóm nào.</p>
 <h2>Ba thứ quyết định giá</h2><ul><li><b>Pin:</b> lithium nhẹ, bền hơn nhưng đắt hơn ắc quy chì. Xem <a href="/so-sanh/pin-lithium-hay-ac-quy-chi/">so sánh hai loại pin</a>.</li>
@@ -282,7 +285,7 @@ VN_DAP = vn_cat("dap", "Xe đạp điện: giá tham khảo và cách chọn th�
                     ("Học sinh lớp mấy đi được xe đạp điện?", "Luật không đặt tuổi tối thiểu riêng cho xe đạp điện như xe gắn máy. Phụ huynh nên cho con đi khi con đã đi xe đạp vững và hiểu luật đường phố."),
                     ("Xe đạp điện hay xe máy điện cho con lớp 9?", "Con dưới 16 tuổi thì chọn xe đạp điện, vì xe máy điện loại xe gắn máy chỉ dành cho người từ đủ 16 tuổi."),
                 ])
-VN_BA = vn_cat("ba", "Xe điện 3 bánh: giá tham khảo cho người lớn tuổi",
+VN_BA = vn_cat("ba", "Xe điện 3 bánh: giá tham khảo tháng " + THANG + " cho người lớn tuổi",
                '''<p>Xe điện 3 bánh đứng vững khi dừng, không cần chống chân, nên hợp với ông bà, người đi chợ gần nhà hoặc người khó giữ thăng bằng. Có hai nhóm chính: xe ba bánh điện (ngồi như xe máy, có giỏ, có cốp) và xe lăn điện.</p>
 <h2>Khi chọn xe 3 bánh</h2><ul><li>Cua chậm: xe 3 bánh dễ lật hơn khi cua gấp ở tốc độ cao.</li><li>Có số lùi và phanh tay giữ xe thì dễ dắt, đỗ hơn.</li><li>Đo bề ngang xe so với cửa nhà, hẻm.</li></ul>''',
                ["ba"], xe_svg(), [
@@ -322,7 +325,7 @@ VN["pages"] = [
     {"url": "/bang-gia-xe-50cc/", "title": "Bảng giá xe 50cc tháng %s: xe ga, xe số, wave, cub" % THANG, "desc": "Giá tham khảo xe ga 50cc, xe số 50cc, wave và cub 50cc tháng %s, kèm tuổi được đi và giấy tờ cần có." % THANG, "body": vn_bang_gia_50, "crumbs": [("Trang chủ", "/"), ("Bảng giá xe 50cc", "/bang-gia-xe-50cc/")]},
     {"url": "/xe-may-dien/", "title": "Xe máy điện: giá tham khảo tháng %s và cách chọn" % THANG, "desc": "Giá xe máy điện các hãng tháng %s, cách phân biệt xe gắn máy điện và mô tô điện, chọn pin và quãng đường." % THANG, "body": VN_MAY, "crumbs": [("Trang chủ", "/"), ("Xe máy điện", "/xe-may-dien/")]},
     {"url": "/xe-dap-dien/", "title": "Xe đạp điện: giá tham khảo tháng %s và cách chọn cho học sinh" % THANG, "desc": "Giá xe đạp điện các hãng tháng %s, cách chọn xe cho học sinh dưới 16 tuổi." % THANG, "body": VN_DAP, "crumbs": [("Trang chủ", "/"), ("Xe đạp điện", "/xe-dap-dien/")]},
-    {"url": "/xe-dien-3-banh/", "title": "Xe điện 3 bánh cho người lớn tuổi: giá và cách chọn", "desc": "Giá tham khảo xe ba bánh điện, xe lăn điện và những điều cần xem khi mua cho ông bà.", "body": VN_BA, "crumbs": [("Trang chủ", "/"), ("Xe điện 3 bánh", "/xe-dien-3-banh/")]},
+    {"url": "/xe-dien-3-banh/", "title": "Xe điện 3 bánh cho người lớn tuổi: giá tháng %s và cách chọn" % THANG, "desc": "Giá tham khảo xe ba bánh điện, xe lăn điện và những điều cần xem khi mua cho ông bà.", "body": VN_BA, "crumbs": [("Trang chủ", "/"), ("Xe điện 3 bánh", "/xe-dien-3-banh/")]},
     {"url": "/so-sanh/", "title": "So sánh và đánh giá xe điện, xe 50cc | Phố Xe Điện", "desc": "So sánh pin, loại xe, chi phí và giá lăn bánh xe điện, xe 50cc.", "body": vn_so_sanh, "crumbs": [("Trang chủ", "/"), ("So sánh", "/so-sanh/")]},
     {"url": "/gioi-thieu/", "title": "Giới thiệu Phố Xe Điện (phoxedien.vn)", "desc": "Phố Xe Điện là trang bảng giá và so sánh xe điện, xe 50cc do Smile Motor biên soạn.", "body": None},
     {"url": "/404.html", "title": "Không tìm thấy trang | Phố Xe Điện", "desc": "Trang không tồn tại.", "body": notfound, "robots": "noindex,follow"},
