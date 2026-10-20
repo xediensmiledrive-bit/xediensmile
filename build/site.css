@@ -503,3 +503,16 @@ body:not(.skin-sup) .o-xe .hoi-gia{background:var(--c2)}
 .dg-khach::-webkit-scrollbar{display:none}
 .dg-khach img{flex:0 0 44%;max-width:220px;aspect-ratio:1/1;object-fit:cover;border-radius:16px;scroll-snap-align:start}
 @media(min-width:900px){.dg-khach{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));overflow:visible}.dg-khach img{width:100%;height:auto;max-width:none}}
+
+/* Banner chính hãng trên trang hãng: giữ tỉ lệ gốc, không cắt, lướt ngang */
+.banner-hang{position:relative;margin:14px 0 4px;border-radius:18px;overflow:hidden;background:var(--nen)}
+.banner-hang[hidden]{display:none}
+.bh-ray{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;align-items:center}
+.bh-ray::-webkit-scrollbar{display:none}
+.bh{flex:0 0 100%;scroll-snap-align:start;display:grid;place-items:center}
+.bh img{width:auto;max-width:100%;height:auto;max-height:min(72vh,620px)}
+.bh-mui{position:absolute;top:50%;transform:translateY(-50%);width:30px;height:30px;border:0;border-radius:50%;background:rgba(255,255,255,.82);box-shadow:0 2px 8px rgba(0,0,0,.18);display:grid;place-items:center;cursor:pointer;opacity:.85;transition:opacity .2s}
+.bh-mui svg{width:16px;height:16px;fill:none;stroke:#222;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.bh-lui{left:8px}.bh-toi{right:8px}
+.bh-so{position:absolute;left:10px;bottom:8px;font-size:12px;font-weight:700;color:#fff;background:rgba(0,0,0,.45);padding:2px 8px;border-radius:10px}
+@media(hover:hover){.bh-mui{opacity:0}.banner-hang:hover .bh-mui{opacity:.9}}

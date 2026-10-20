@@ -18,7 +18,8 @@ import muse  # noqa: E402
 import anhxe  # noqa: E402
 import sanpham  # noqa: E402
 import trangchu
-import danhgia  # noqa: E402
+import danhgia
+import bannerhang  # noqa: E402
 
 # Trang loại xe và trang hãng cho 2 web (tối ưu SEO 20/10: cả 2 web đánh xe xăng 50cc lẫn xe điện)
 _vn, _comvn = noidung.VN, noidung.COMVN
@@ -547,6 +548,7 @@ def build(site):
         if trangchu.anh_loai(k):
             shutil.copy(trangchu.anh_loai(k), os.path.join(base, "loai", k + ".webp"))
     danhgia.chep(site, base)
+    bannerhang.chep(d, base)
     if os.path.isdir(os.path.join(HERE, "banner", d)):
         shutil.copytree(os.path.join(HERE, "banner", d), os.path.join(base, "banner"))
     os.makedirs(os.path.join(base, "api"))

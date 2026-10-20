@@ -162,6 +162,19 @@
   var b=document.querySelector('.the.bang'),n=document.createElement('div');n.className='dang-loc';
   n.innerHTML='Đang xem xe <b></b> · <a href="'+location.pathname+'">Xem tất cả hãng</a>';n.querySelector('b').textContent=ten||h;
   if(b)b.parentNode.insertBefore(n,b);
+  var bh=document.querySelector('.banner-hang[data-hang="'+h+'"]');if(bh){bh.hidden=false;bh.querySelectorAll('img').forEach(function(i){i.loading='eager'})}
+})();
+(function(){
+  /* Banner hãng: mũi tên, số trang, tự chuyển 5 giây, dừng khi rê chuột */
+  document.querySelectorAll('.banner-hang').forEach(function(w){
+    var r=w.querySelector('.bh-ray'),n=r.children.length,so=w.querySelector('.bh-so');if(n<2)return;
+    function i(){return Math.round(r.scrollLeft/r.clientWidth)}
+    function toi(k){r.scrollTo({left:((k+n)%n)*r.clientWidth,behavior:'smooth'})}
+    w.querySelector('.bh-lui').onclick=function(){toi(i()-1)};w.querySelector('.bh-toi').onclick=function(){toi(i()+1)};
+    r.addEventListener('scroll',function(){if(so)so.textContent=(i()+1)+'/'+n},{passive:true});
+    var dung=false;w.onmouseenter=function(){dung=true};w.onmouseleave=function(){dung=false};
+    setInterval(function(){if(!dung&&!w.hidden&&!document.hidden)toi(i()+1)},5000);
+  });
 })();
 (function(){
   /* Video: bấm vào ảnh mới tải YouTube (nhẹ trang) */
