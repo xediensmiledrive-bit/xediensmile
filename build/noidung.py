@@ -54,6 +54,16 @@ def models_of(k):
 
 
 NGUNG_BAN = {"dap", "ba"}
+# Smile không bán xe đạp điện, 3 bánh; anh cho dùng giá tham khảo thị trường để kéo traffic (20/10). Không ghi là giá Smile.
+THI_TRUONG = {}
+_ftt = os.path.join(HERE, "gia-thi-truong.csv")
+if os.path.exists(_ftt):
+    import csv
+    for _r in csv.DictReader(open(_ftt, encoding="utf-8-sig")):
+        _k = {"xe-dap-dien": "dap", "xe-ba-banh": "ba"}.get(_r.get("loai"))
+        if _k and (_r.get("gia_tham_khao_vnd") or "").strip().isdigit():
+            THI_TRUONG.setdefault(_k, []).append({"name": _r["mau"], "brand": _r["hang"], "price": int(_r["gia_tham_khao_vnd"]), "thi_truong": True})
+CHU_TT = "Giá tham khảo thị trường cập nhật %s, tổng hợp từ giá hãng công bố và giá đại lý, có thể khác theo nơi bán. Đây không phải giá bán của Smile Motor." % THANG
 
 
 def rows(k, limit=None):
@@ -66,7 +76,10 @@ def rows(k, limit=None):
             g = '<span class="gia">%s</span>' % vnd(m["price"]) if m.get("price") else '<span class="gia lh">Liên hệ</span>'
             out.append('<div class="dong" data-n="%s">%s<div class="ten">%s<small>%s</small></div>%s</div>' % (k, anhxe.tn(m), m["name"], spec or NHOM[k][0], g))
     elif k in NGUNG_BAN:
-        return ""  # Smile ngừng bán từ 25/9/2026: không liệt kê hàng chờ giá
+        # Smile ngừng bán từ 25/9/2026: chỉ hiện giá thị trường (nếu có), không liệt kê hàng chờ giá
+        for m in sorted(THI_TRUONG.get(k, []), key=lambda m: m["price"])[:limit]:
+            out.append('<div class="dong" data-n="%s">%s<div class="ten">%s<small>%s · giá thị trường</small></div><span class="gia">%s</span></div>' % (
+                k, anhxe.tn(m), m["name"], m["brand"], vnd(m["price"])))
     else:
         for b in CHO[k][:limit]:
             ten = b if k in ("ba", "so", "wave") else "%s %s" % (NHOM[k][0], b)
@@ -88,7 +101,11 @@ def bang(keys, bid, limit=None, loc=True):
         chips = '<div class="chips" style="padding:0 0 12px" data-loc="%s"><span class="chip on" data-k="all">Tất cả</span>%s</div>' % (
             bid, "".join('<span class="chip" data-k="%s">%s</span>' % (k, NHOM[k][0]) for k in keys))
     body = "".join('<div class="dong dau" data-n="%s"><span>%s</span><span>Giá tham khảo</span></div>%s' % (k, NHOM[k][0], rows(k, limit)) for k in keys)
-    return chips + '<div class="the bang hd-in" id="%s">%s<div class="chu-thich">Giá tham khảo cập nhật %s, giá bán tại Smile Motor, chưa gồm lệ phí trước bạ, biển số và bảo hiểm. Bấm Chat hoặc Gọi để có giá chính xác hôm nay.</div></div>' % (bid, body, NGAY_VN)
+    tt = any(k in NGUNG_BAN and not models_of(k) and THI_TRUONG.get(k) for k in keys)
+    them = (' <b>Xe đạp điện, xe 3 bánh:</b> ' + CHU_TT) if tt else ""
+    if tt and all(k in NGUNG_BAN and not models_of(k) for k in keys):
+        return chips + '<div class="the bang hd-in" id="%s">%s<div class="chu-thich">%s</div></div>' % (bid, body, CHU_TT)
+    return chips + '<div class="the bang hd-in" id="%s">%s<div class="chu-thich">Giá tham khảo cập nhật %s, giá bán tại Smile Motor, chưa gồm lệ phí trước bạ, biển số và bảo hiểm. Bấm Chat hoặc Gọi để có giá chính xác hôm nay.%s</div></div>' % (bid, body, NGAY_VN, them)
 
 
 def tom_gia(keys):

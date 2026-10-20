@@ -36,7 +36,7 @@ for _p in _vn["pages"]:
         _p["schemas"] = [noidung.faq_ld_local(_f.faqs)] + (hang.schema_trang_loai(_k) if _k else [])
 for _p in _vn["pages"]:
     _k = {"/xe-may-dien/": "may", "/xe-dap-dien/": "dap", "/xe-dien-3-banh/": "ba"}.get(_p["url"])
-    if _k and not noidung.models_of(_k):
+    if _k and not noidung.models_of(_k) and not noidung.THI_TRUONG.get(_k):
         _p["robots"] = "noindex,follow"  # chưa có mẫu trong bảng giá
 # Ảnh xe thật (PXD_ANH): lưới thẻ xe trên trang chủ, bảng giá, trang loại xe
 _LUOI = {"/": (["may", "ga", "so"], "Xe đang bán, ảnh thật"), "/bang-gia-xe-dien/": (["may", "dap", "ba"], "Ảnh xe điện thật"),

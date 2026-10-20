@@ -9,7 +9,7 @@ import unicodedata
 
 import anhxe
 
-from noidung import (NHOM, THANG, NGAY_VN, VN, COMVN, vnd, models_of, bang, faq_html_local, faq_ld_local,
+from noidung import (THI_TRUONG, NGUNG_BAN, NHOM, THANG, NGAY_VN, VN, COMVN, vnd, models_of, bang, faq_html_local, faq_ld_local,
                      keu, xe_svg, dap_svg)
 
 TOI_THIEU = 2
@@ -139,13 +139,16 @@ FAQ_COMVN = {
 
 def _trang_loai(site, k, url, ten, gioi, faqs, tac, av, khung_tim):
     ms = sap(models_of(k))
+    tt = sap(THI_TRUONG.get(k, [])) if (k in NGUNG_BAN and not ms) else []
+    dong_gia = ("Giá tham khảo thị trường (hãng công bố, đại lý), không phải giá bán của Smile Motor." if tt
+                else "Giá tại Smile Motor, chưa gồm lệ phí trước bạ, biển số và bảo hiểm.")
     svg = dap_svg() if k == "dap" else xe_svg()
     h1 = "%s: bảng giá tháng %s và cách chọn" % (ten, THANG) if site is VN else "%s: chọn sao cho đúng, giá tháng %s" % (ten, THANG)
 
     def body(s):
         return f'''<div class="wrap"><div class="duong"><a href="/">Trang chủ</a> › <b>{ten}</b></div>
 <div class="dau-trang"><h1>{h1}</h1><div class="tac"><span class="av">{av}</span><span><a href="/tac-gia/{tac[0]}/">{tac[1]}</a> · cập nhật {NGAY_VN}</span></div></div>
-<div class="nhanh hd-in"><b>Tóm tắt nhanh</b><ul><li>{len(ms) or "Các"} mẫu {NHOM[k][0].lower()} có giá tham khảo, {khoang(ms)}.</li><li>Giá tại Smile Motor, chưa gồm lệ phí trước bạ, biển số và bảo hiểm.</li></ul></div>
+<div class="nhanh hd-in"><b>Tóm tắt nhanh</b><ul><li>{len(ms or tt) or "Các"} mẫu {NHOM[k][0].lower()} có giá tham khảo, {khoang(ms or tt)}.</li><li>{dong_gia}</li></ul></div>
 <div class="hinh-hero hd-in" style="background:var(--hero);height:170px;border-radius:20px;margin:16px 0">{svg}</div>
 <div class="noi-dung">{gioi}</div>
 <section>{bang([k], "bg-" + slug(ten))}</section>
@@ -156,9 +159,9 @@ def _trang_loai(site, k, url, ten, gioi, faqs, tac, av, khung_tim):
 
     sch = [faq_ld_local(faqs)] + ([itemlist_ld(site["domain"], url, ms[:50])] if ms else [])
     title = ("%s: giá tham khảo tháng %s, so sánh các hãng" if site is VN else "%s: chọn xe và giá tháng %s") % (ten, THANG)
-    desc = "%s tháng %s: %s. Cách chọn, hỏi đáp về tuổi, bằng lái, biển số." % (ten, THANG, khoang(ms))
+    desc = "%s tháng %s: %s. Cách chọn, hỏi đáp về tuổi, bằng lái, biển số." % (ten, THANG, khoang(ms or tt))
     p = {"url": url, "title": title, "desc": desc, "body": body, "schemas": sch, "crumbs": [("Trang chủ", "/"), (ten, url)]}
-    if not ms:
+    if not ms and not tt:
         p["robots"] = "noindex,follow"  # chưa có mẫu nào trong bảng giá: ẩn khỏi Google tới khi có giá
     return p
 
