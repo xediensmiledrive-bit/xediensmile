@@ -6,6 +6,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 NGAY_VN = "20/10/2026"
 THANG = "10/2026"
 
+import anhxe  # noqa: E402  ảnh xe thật (PXD_ANH)
+
 # ---------- Giá ----------
 GIA_FILE = os.path.join(HERE, "gia-smile.json")
 MODELS, STORES = [], []
@@ -51,7 +53,7 @@ def rows(k, limit=None):
         for m in ms[:limit]:
             spec = " · ".join(x for x in [m.get("brand"), m.get("range"), m.get("speed")] if x)
             g = '<span class="gia">%s</span>' % vnd(m["price"]) if m.get("price") else '<span class="gia lh">Liên hệ</span>'
-            out.append('<div class="dong" data-n="%s"><div class="ten">%s<small>%s</small></div>%s</div>' % (k, m["name"], spec or NHOM[k][0], g))
+            out.append('<div class="dong" data-n="%s">%s<div class="ten">%s<small>%s</small></div>%s</div>' % (k, anhxe.tn(m), m["name"], spec or NHOM[k][0], g))
     else:
         for b in CHO[k][:limit]:
             ten = b if k in ("ba", "so", "wave") else "%s %s" % (NHOM[k][0], b)

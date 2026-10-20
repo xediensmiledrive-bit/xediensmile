@@ -97,3 +97,6 @@
 .skin-sup .bai-muse .khoi-chot a{background:var(--lime);color:var(--limeTx)}
 .skin-sup .bai-muse .khoi-chot a.nut-zalo{background:#0068ff;color:#fff}
 .skin-sup .bai-muse .hoi-dap details{border-radius:20px}
+.skin-sup .o-xe{border-radius:20px}
+.skin-sup .o-xe .gia{color:var(--pinkTx)}
+.skin-sup .o-xe .hoi-gia{background:var(--lime);color:var(--limeTx);border-radius:14px}

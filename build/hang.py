@@ -7,6 +7,8 @@ Chỉ dựng trang hãng khi hãng có từ 2 mẫu trong gia-smile.json; mọi 
 import re
 import unicodedata
 
+import anhxe
+
 from noidung import (NHOM, THANG, NGAY_VN, VN, COMVN, vnd, models_of, bang, faq_html_local, faq_ld_local,
                      keu, xe_svg, dap_svg)
 
@@ -57,13 +59,15 @@ def khoang(ms):
 def dong(m, k):
     spec = " · ".join(x for x in [m.get("brand"), m.get("range"), m.get("speed")] if x)
     g = '<span class="gia">%s</span>' % vnd(m["price"]) if m.get("price") else '<span class="gia lh">Liên hệ</span>'
-    return '<div class="dong" data-n="%s"><div class="ten">%s<small>%s</small></div>%s</div>' % (k, m["name"], spec or NHOM[k][0], g)
+    return '<div class="dong" data-n="%s">%s<div class="ten">%s<small>%s</small></div>%s</div>' % (k, anhxe.tn(m), m["name"], spec or NHOM[k][0], g)
 
 
 def itemlist_ld(domain, url, ms):
     items = []
     for i, m in enumerate(ms):
         p = {"@type": "Product", "name": m["name"]}
+        if anhxe.anh(m["name"]):
+            p["image"] = "https://%s%s" % (domain, anhxe.anh(m["name"]))
         if m.get("brand"):
             p["brand"] = {"@type": "Brand", "name": m["brand"]}
         if m.get("price"):
@@ -191,6 +195,7 @@ def trang_hang(k, b, ms):
 <div class="nhanh hd-in"><b>Tóm tắt nhanh</b><ul>{"".join("<li>%s</li>" % t for t in tom)}</ul></div>
 <section style="margin-top:20px"><div class="the bang hd-in"><div class="dong dau"><span>Mẫu {ten_loai.lower()} {b}</span><span>Giá tham khảo</span></div>{"".join(dong(m, k) for m in ms)}
 <div class="chu-thich">Giá tham khảo cập nhật {NGAY_VN}, giá bán tại Smile Motor, chưa gồm lệ phí trước bạ, biển số và bảo hiểm.</div></div></section>
+{anhxe.luoi(ms, "Ảnh %s %s" % (ten_loai.lower(), b), 12, vnd)}
 <section class="noi-dung hd-in"><h2>Chọn {ten_loai.lower()} {b} sao cho đúng</h2>
 <p>Các mẫu {b} trong bảng xếp từ giá thấp đến cao. {so_sanh}</p>
 <p>Muốn biết tổng tiền phải trả, cộng thêm lệ phí trước bạ, biển số và bảo hiểm theo bài <a href="/bang-gia/gia-lan-banh-xe-may-dien-xe-50cc/">cách tính giá lăn bánh</a>. Xem tất cả hãng ở trang <a href="{goc}">{ten_loai.lower()}</a> hoặc <a href="{bg}">bảng giá tháng {THANG}</a>.</p></section>

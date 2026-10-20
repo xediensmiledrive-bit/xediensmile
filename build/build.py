@@ -15,6 +15,7 @@ from noidung import SITES, keu  # noqa: E402
 import noidung  # noqa: E402
 import hang  # noqa: E402
 import muse  # noqa: E402
+import anhxe  # noqa: E402
 
 # Trang loại xe và trang hãng cho 2 web (tối ưu SEO 20/10: cả 2 web đánh xe xăng 50cc lẫn xe điện)
 _vn, _comvn = noidung.VN, noidung.COMVN
@@ -29,8 +30,47 @@ for _p in _vn["pages"]:
     _k = {"/xe-may-dien/": "may", "/xe-dap-dien/": "dap", "/xe-dien-3-banh/": "ba"}.get(_p["url"])
     if _k and not noidung.models_of(_k):
         _p["robots"] = "noindex,follow"  # chưa có mẫu trong bảng giá
+# Ảnh xe thật (PXD_ANH): lưới thẻ xe trên trang chủ, bảng giá, trang loại xe
+_LUOI = {"/": (["may", "ga", "so"], "Xe đang bán, ảnh thật"), "/bang-gia-xe-dien/": (["may", "dap", "ba"], "Ảnh xe điện thật"),
+         "/bang-gia-xe-50cc/": (["ga", "so"], "Ảnh xe 50cc thật"), "/gia-xe-50cc/": (["ga", "so"], "Ảnh xe 50cc thật"),
+         "/xe-may-dien/": (["may"], "Ảnh xe máy điện thật"), "/xe-ga-50cc/": (["ga"], "Ảnh xe ga 50cc thật"), "/xe-so-50cc/": (["so"], "Ảnh xe số 50cc thật"),
+         "/xe-ga-50cc-cho-hoc-sinh/": (["ga"], "Mẫu xe ga 50cc, ảnh thật"), "/xe-so-50cc-cho-hoc-sinh/": (["so"], "Mẫu xe số 50cc, ảnh thật"),
+         "/xe-may-dien-cho-hoc-sinh/": (["may"], "Mẫu xe máy điện, ảnh thật")}
+
+
+def _co_luoi(f, keys, tde):
+    def g(s):
+        b = f(s)
+        ms = []
+        for k in keys:
+            ms += [m for m in noidung.models_of(k) if m not in ms and anhxe.anh(m.get("name"))]
+        # xen kẽ hãng để lưới không chỉ toàn một hãng
+        theo = {}
+        for m in ms:
+            theo.setdefault(m.get("brand") or "", []).append(m)
+        xen = []
+        while any(theo.values()):
+            for v in list(theo.values()):
+                if v:
+                    xen.append(v.pop(0))
+        l = anhxe.luoi(xen, tde, 8, noidung.vnd)
+        if not l:
+            return b
+        moc = '<section class="hd-in"><div class="keu">'
+        return b.replace(moc, l + moc, 1) if moc in b else b + l
+    return g
+
+
+def _gan_luoi(site, ds):
+    for p in site["pages"]:
+        if p["url"] in ds and callable(p.get("body")):
+            p["body"] = _co_luoi(p["body"], *ds[p["url"]])
+
+
 _vn["pages"][-1:-1] = hang.trang_vn()
 _comvn["pages"][-1:-1] = hang.trang_comvn()
+_gan_luoi(_vn, _LUOI)
+_gan_luoi(_comvn, _LUOI)
 
 FONT = ('<link rel="preconnect" href="https://fonts.googleapis.com">'
         '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
@@ -122,6 +162,7 @@ def muse_page(site, a, src):
     body = f'''<div class="wrap">
 <div class="duong"><a href="/">Trang chủ</a> › <a href="{a['cat_url']}">{a['cat_name']}</a> › <b>{html.escape(a['crumb'])}</b></div>
 {bai}
+{anhxe.luoi(anhxe.lien_quan(a['html'], noidung.MODELS), "Mẫu xe nhắc trong bài", 4, noidung.vnd)}
 {'<section class="hd-in"><div class="tieude"><h2>Bài liên quan</h2></div>%s</section>' % rel if rel else ''}
 </div>'''
     return page(site, a["url"], a["title"], a["desc"], body, sch, crumbs, og_img=src)
@@ -141,7 +182,7 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
                              "url": "https://%s/" % d, "inLanguage": "vi"})
     skin = site.get("skin")
     skin_head = ('<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">'
-                 '<link rel="stylesheet" href="/skin-%s.css?v=2">' % skin) if skin else ""
+                 '<link rel="stylesheet" href="/skin-%s.css?v=3">' % skin) if skin else ""
     ten = site.get("logo_ten", "PHỐ <i>XE ĐIỆN</i>")
     goi_dau = ('<a class="nut-goi" href="tel:%s" aria-label="Gọi %s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></a>' % (TEL, HOTLINE)) if skin else ""
     if skin:
@@ -174,7 +215,7 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
 {og_img_html(site, og_img)}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 {FONT}
-<link rel="stylesheet" href="/site.css?v=2">
+<link rel="stylesheet" href="/site.css?v=3">
 {skin_head}
 <style>:root{{{css_vars}}}</style>
 {sch}
@@ -244,6 +285,7 @@ def article_page(site, a):
 <section id="hoi-dap" class="hd-in"><div class="tieude"><h2>Hỏi đáp nhanh</h2></div>{faq_html(a['faq'])}</section>
 <p class="ky">Bài viết được viết bởi <a href="/tac-gia/{a['author']}/">{au['name']}</a>, Phố Xe Điện.</p>
 </article>
+{anhxe.luoi(anhxe.lien_quan(a['body'] + a['h1'], noidung.MODELS), "Mẫu xe nhắc trong bài", 4, noidung.vnd)}
 {keu(site['cta_title'], site['cta_text'])}
 <section class="hd-in"><div class="tieude"><h2>Bài liên quan</h2></div>{rel}</section>
 </div>'''
@@ -280,6 +322,7 @@ def build(site):
     open(os.path.join(base, ".htaccess"), "w").write(HTACCESS)
     for fn, svg in (("logo.svg", site["logo_svg"]), ("favicon.svg", site["favicon"])):
         open(os.path.join(base, fn), "w").write(svg)
+    anhxe.chep(base)
     urls, lastmod = [], {}
     bai_muse = muse.doc_bai(site)
     site["articles"][:0] = bai_muse  # sửa tại chỗ để trang chủ, chuyên mục (đọc BAI_VN/BAI_COMVN) thấy bài mới
