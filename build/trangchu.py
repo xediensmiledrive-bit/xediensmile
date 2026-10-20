@@ -6,6 +6,7 @@ import os
 
 import anhxe
 import danhgia
+import tiktok
 import noidung
 HERE = os.path.dirname(os.path.abspath(__file__))
 from noidung import NHOM, THANG, vnd, models_of, tom_gia, keu, faq_html_local, xe_svg, dap_svg
@@ -139,12 +140,13 @@ def trang_chu(site, h1, mo_ta, bang_gia, tom, chips, faqs):
                '<button type="button" class="btn xem-them">Xem thêm xe</button>'
                '<p class="chu-anh">Giá tham khảo cập nhật %s. Màu xe thực tế có thể khác ảnh.</p></section>'
                % (bang_gia, _hang(xe), tab, HIEN, the, noidung.NGAY_VN))
+    # 20/10 23:59: ngay dưới banner là bằng chứng khách hàng thay cho hàng ô loại xe (loại xe đã có trên menu)
     return f'''<div class="wrap rong">
+{danhgia.html_muc(site) or _loai_xe(site)}
 {diem_manh()}
 <div class="mo-dau"><h1>{h1}</h1><p>{mo_ta}</p></div>
-{_loai_xe(site)}
 {ban}
-{danhgia.html_muc(site)}
+{tiktok.html_muc(site)}
 <section><div class="tieude"><h2>Giá tham khảo tháng {THANG}</h2><a href="{bang_gia}">Xem đủ ›</a></div>
 <div class="the bang hd-in"><div class="dong dau"><span>Nhóm xe</span><span>Giá tham khảo</span></div>{tom_gia(tom)}</div></section>
 {_tin(site, site["articles"], chips)}

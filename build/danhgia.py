@@ -7,14 +7,15 @@ PXD_KHO/review-smile.json {"cap_nhat", "chi_nhanh": [{ten, dia_chi, map, sao_tb,
 PXD_KHO/anh-khach/<domain>/*.webp. Luật cứng: không dùng ảnh chưa có khung, nên chỉ đọc đúng thư mục đó.
 Thiếu tệp thì mục không hiện."""
 import html
+import re
 import json
 import os
 import shutil
 
 GOC = os.environ.get("PXD_KHO", "").strip()
-WEB = ["phoxedien.vn"]
-HIEN = 8
-ANH_TOI_DA = 8
+WEB = ["phoxedien.vn", "phoxedien.com.vn"]
+HIEN = 12
+ANH_TOI_DA = 16
 
 
 def _doc():
@@ -58,11 +59,37 @@ G = ('<svg class="dg-g" viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285
      '<path fill="#EA4335" d="M24 10.8c3.2 0 6.1 1.1 8.4 3.3l6.3-6.3C34.9 4.2 29.9 2 24 2 15.5 2 8.1 6.9 4.5 14.1l7.3 5.7c1.7-5.2 6.5-9 12.2-9z"/></svg>')
 
 
+def _tieu_de(r):
+    """Chủ đề ngắn của đánh giá: máy nhà ghi sẵn "tieu_de" thì dùng, không thì lấy câu đầu của chính khách (không tự viết lời khách)."""
+    t = (r.get("tieu_de") or "").strip()
+    if t:
+        return t
+    c = re.split(r"(?<=[.!?…])\s", r["noi_dung"].strip())[0].strip(" .")
+    if len(c) > 60:
+        c = c[:58].rsplit(" ", 1)[0] + "…"
+    return c
+
+
+def _the(r):
+    ten = (r.get("ten") or "Khách hàng").strip()
+    lk = _link(r.get("link_map"))
+    noi = '<a class="dg-nguon" href="%s" target="_blank" rel="noopener nofollow" aria-label="Xem đánh giá trên Google Maps">%s</a>' % (html.escape(lk, quote=True), G) if lk else '<span class="dg-nguon">%s</span>' % G
+    anh = ('<img class="dg-anh" src="/anh-khach/%s" alt="%s nhận xe tại Xe Điện Smile" width="400" height="400" loading="lazy">' % (html.escape(r["anh"], quote=True), html.escape(ten, quote=True))
+           if r.get("anh") else "")
+    return ('<figure class="dg-the">%s<figcaption class="dg-dau"><span class="dg-av">%s</span><span><b>%s</b><small>%s</small></span>%s</figcaption>%s'
+            '<b class="dg-chu-de">“%s”</b><blockquote>%s</blockquote>%s</figure>'
+            % (anh, html.escape(ten[:1].upper()), html.escape(ten), html.escape(str(r.get("ngay") or "").strip()), noi, _sao(r.get("sao")),
+               html.escape(_tieu_de(r)), html.escape(r["noi_dung"].strip()),
+               '<p class="dg-ch">%s</p>' % html.escape(r["chi_nhanh"].strip()) if (r.get("chi_nhanh") or "").strip() else ""))
+
+
 def html_muc(site):
+    """Bằng chứng khách hàng ngay dưới banner trang chủ (anh chốt 20/10 23:59): ảnh khách thật chạy vòng, review Google thật chạy ngược chiều."""
     if site["domain"] not in WEB:
         return ""
-    d = _doc()
-    if not d:
+    d = _doc() or {"tong": {}, "ds": []}
+    anh = _anh_khach(site["domain"])
+    if not d["ds"] and not anh:
         return ""
     t = d["tong"]
     tong = ""
@@ -72,24 +99,23 @@ def html_muc(site):
                 % (G, ("%.1f" % t["diem"]).replace(".", ","), _sao(t["diem"]), "{:,}".format(t["so"]).replace(",", "."),
                    " · %d chi nhánh" % t["cn"] if t["cn"] > 1 else "",
                    '<a href="%s" target="_blank" rel="noopener nofollow">Xem trên Google Maps ›</a>' % html.escape(lk, quote=True) if lk else ""))
-    anh = _anh_khach(site["domain"])
-    kh = ('<div class="dg-khach">%s</div>' % "".join('<img src="/anh-khach/%s" alt="Khách nhận xe tại Xe Điện Smile" width="400" height="400" loading="lazy">' % f for f in anh)) if anh else ""
-    o = []
-    for r in d["ds"]:
-        ten = (r.get("ten") or "Khách hàng").strip()
-        lk = _link(r.get("link_map"))
-        noi = '<a class="dg-nguon" href="%s" target="_blank" rel="noopener nofollow" aria-label="Xem đánh giá trên Google Maps">%s</a>' % (html.escape(lk, quote=True), G) if lk else '<span class="dg-nguon">%s</span>' % G
-        o.append('<figure class="dg-the"><figcaption class="dg-dau"><span class="dg-av">%s</span><span><b>%s</b><small>%s</small></span>%s</figcaption>%s<blockquote>%s</blockquote>%s</figure>'
-                 % (html.escape(ten[:1].upper()), html.escape(ten), html.escape(str(r.get("ngay") or "").strip()), noi, _sao(r.get("sao")),
-                    html.escape(r["noi_dung"].strip()),
-                    '<p class="dg-ch">%s</p>' % html.escape(r["chi_nhanh"].strip()) if (r.get("chi_nhanh") or "").strip() else ""))
-    return ('<section class="danh-gia hd-in"><div class="tieude"><h2>Khách hàng nói gì</h2></div>%s%s<div class="dg-ray">%s</div></section>'
-            % (tong, kh, "".join(o)))
+    # dải chạy vòng: nhân đôi nội dung để chạy liền không giật; bản thứ hai ẩn với trình đọc màn hình
+    def dai(lop, o):
+        if not o:
+            return ""
+        return '<div class="dg-dai %s"><div class="dg-chay">%s<div class="dg-lap" aria-hidden="true">%s</div></div></div>' % (lop, "".join(o), "".join(o))
+    kh = dai("dg-khach", ['<img src="/anh-khach/%s" alt="Khách nhận xe tại Xe Điện Smile" width="400" height="400" loading="lazy">' % f for f in anh])
+    rv = dai("dg-ray", [_the(r) for r in d["ds"]])
+    return ('<section class="danh-gia bang-chung"><div class="tieude"><h2>Khách hàng nói gì về Smile</h2></div>'
+            '<p class="dg-mo">Ảnh thật khách nhận xe tại cửa hàng và đánh giá thật trên Google Maps.</p>%s%s%s</section>'
+            % (tong, kh, rv))
 
 
 def chep(site, base):
     """Chép ảnh khách đã có khung của web này sang bản dựng."""
-    anh = _anh_khach(site["domain"]) if site["domain"] in WEB and _doc() else []
+    anh = _anh_khach(site["domain"]) if site["domain"] in WEB else []
+    anh += [r["anh"] for r in ((_doc() or {}).get("ds") or []) if r.get("anh") and r["anh"] not in anh
+            and os.path.isfile(os.path.join(GOC, "anh-khach", site["domain"], r["anh"]))]
     if anh:
         os.makedirs(os.path.join(base, "anh-khach"), exist_ok=True)
         for f in anh:

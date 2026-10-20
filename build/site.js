@@ -211,3 +211,20 @@
   document.querySelectorAll('.ch-o').forEach(function(b){b.onclick=function(){
     document.querySelectorAll('.ch-o.on').forEach(function(x){x.classList.remove('on')});b.classList.add('on');m.src=b.getAttribute('data-map')}});
 })();
+/* Clip TikTok: clip nào nằm trọn trong màn hình thì gắn trình phát tự chạy không tiếng, ra khỏi màn hình thì gỡ cho nhẹ máy */
+(function(){
+  var ds=document.querySelectorAll('.tt-o[data-tt]');
+  if(!ds.length||!('IntersectionObserver' in window))return;
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){
+    var a=e.target,f=a.querySelector('iframe');
+    if(e.isIntersecting&&e.intersectionRatio>.6){
+      if(!f&&document.querySelectorAll('.tt-o iframe').length<4){
+        f=document.createElement('iframe');
+        f.src='https://www.tiktok.com/player/v1/'+a.getAttribute('data-tt')+'?autoplay=1&muted=1&loop=1&controls=0&progress_bar=0&play_button=0&volume_control=0&fullscreen_button=0&timestamp=0&music_info=0&description=0&rel=0&native_context_menu=0&closed_caption=0';
+        f.allow='autoplay; encrypted-media; fullscreen';f.loading='lazy';f.title='Clip TikTok Smile Motor';
+        a.appendChild(f);
+      }
+    }else if(f){f.remove();}
+  });},{threshold:[0,.6,1]});
+  ds.forEach(function(a){io.observe(a);});
+})();

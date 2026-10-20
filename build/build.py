@@ -19,6 +19,7 @@ import anhxe  # noqa: E402
 import sanpham  # noqa: E402
 import trangchu
 import danhgia
+import tiktok
 import chinhsach
 import trangphu
 import bannerhang  # noqa: E402
@@ -126,17 +127,13 @@ _MOC_KEU = '<section class="hd-in"><div class="keu">'
 # link về trang hãng (.vn) hoặc trang loại lọc ?hang= (.com.vn). "mua": (từ MM-DD, đến MM-DD), ngoài khoảng site.js gỡ slide.
 HERO = {
     "phoxedien.vn": [
-        {"ten": "hang-1", "hang": ("DK Bike", "Detech")},
-        {"mt": "banner-hero-may-tinh-4.webp", "dt": "banner-hero-dien-thoai-4.webp", "mua": ("10-13", "10-21"),
-         "link": "/xe-cho-nu/chon-xe-dien-cho-nu/", "alt": "Mừng ngày Phụ nữ Việt Nam 20/10: xe đẹp cho nàng, 50VS Diamond Plus giá tham khảo 22.190.000đ",
-         "xe": ["50VS Diamond Plus"]},
-        {"ten": "halloween", "mua": ("10-13", "10-31"), "link": "/bang-gia-xe-dien/",
-         "alt": "Halloween 31/10: xe máy điện từ 10,99 triệu, xe 50cc từ 14,79 triệu"},
-        {"ten": "hang-2", "hang": ("Yaka", "Detech")},
-        {"ten": "11-11", "mua": ("10-13", "11-11"), "link": "/xe-may-dien/",
-         "alt": "11/11: 51 mẫu xe máy điện dưới 15 triệu, như Espero Weezee 12.990.000đ", "xe": ["Espero Weezee"]},
-        {"ten": "20-11", "mua": ("10-13", "11-20"), "link": "/xe-may-dien/",
-         "alt": "Ngày Nhà giáo 20/11: Espero Type 3 Pro giá tham khảo 16.590.000đ", "xe": ["Espero Type 3 Pro"]},
+        # luồng banner 20/10 23:56: mỗi slide một mẫu xe, bấm vào là trang xe đó, chưa có trang xe thì về trang hãng
+        {"ten": "hang-1", "xe_chinh": ("Velia E", "Detech"), "alt": "Espero: Velia E giá tham khảo 23.500.000đ"},
+        {"ten": "20-10", "mua": ("10-13", "10-21"), "xe_chinh": ("Takashi Vibera", "DV Motor"), "alt": "Ngày Phụ nữ Việt Nam 20/10: DVMotor Takashi Vibera"},
+        {"ten": "halloween", "mua": ("10-13", "10-31"), "xe_chinh": ("Takashi Pro", "DV Motor"), "alt": "Halloween: DVMotor Takashi Pro"},
+        {"ten": "hang-2", "xe_chinh": ("Type 3", "Detech"), "alt": "Espero: Type 3"},
+        {"ten": "11-11", "mua": ("10-13", "11-11"), "xe_chinh": ("Billy", "Detech"), "alt": "11/11: Detech Billy giá tham khảo 19.000.000đ"},
+        {"ten": "20-11", "mua": ("10-13", "11-20"), "xe_chinh": ("Type 3 Pro", "Detech"), "alt": "Ngày Nhà giáo 20/11: Espero Type 3 Pro giá tham khảo 16.590.000đ"},
     ],
     "phoxedien.com.vn": [
         {"ten": "hang-1", "hang": ("DK Bike", "Detech")},
@@ -157,9 +154,9 @@ def _xe_slide(site, sl):
     if site["domain"] == "phoxedien.com.vn":
         ms = [m for m in ms if "dv motor" not in (m.get("brand") or "").lower()]
     ra = []
-    for t in sl.get("xe", []):
+    for t in sl.get("xe", []) + ([sl["xe_chinh"][0]] if sl.get("xe_chinh") else []):
         t = t.lower()
-        hop = [m for m in ms if t in m["name"].lower() and anhxe.anh(m["name"])]
+        hop = [m for m in ms if all(w in m["name"].lower().split() for w in t.split()) and anhxe.anh(m["name"])]
         if hop:
             ra.append(min(hop, key=lambda m: len(m["name"])))
     if sl.get("hang"):
@@ -181,8 +178,18 @@ def _the_slide(site, sl, ds):
                  '<div class="tp-nut">%s<button type="button" class="hoi-gia dat-xe" data-chat="Mình muốn %s xe %s">%s</button></div></div></div>'
                  % (anhxe.anh(m["name"]), t, html.escape(m["name"]), g, ('<a href="%s">Xem xe</a>' % u) if u else "",
                     "đặt" if m.get("price") else "hỏi giá", t, "Đặt xe" if m.get("price") else "Hỏi giá"))
-    tieu = "Xe %s" % " và ".join(dict.fromkeys(sl["hang"])) if sl.get("hang") else "Xe trong banner"
+    tieu = "Xe %s" % " và ".join(dict.fromkeys(sl["hang"])) if sl.get("hang") else ("Xe trong banner")
     return '<template class="tr-tpl"><b class="tp-tieu">%s</b>%s</template>' % (html.escape(tieu), "".join(o))
+
+
+def _link_xe(site, ten):
+    """Trang /xe/<slug>/ của mẫu có tên chứa đủ các chữ trong ten; nhiều mẫu khớp thì lấy tên ngắn nhất (Type 3 chứ không phải Type 3 Pro)."""
+    tu = ten.lower().split()
+    hop = [n for n in anhxe.SP.get(site["domain"], ()) if all(t in n.split() for t in tu)]
+    # "Type 3" không nhảy sang bản Pro/Plus/Max khi còn bản thường
+    phu = {"pro", "plus", "max", "s"} - set(tu)
+    hop.sort(key=lambda n: (bool(phu & set(n.split())), len(n)))
+    return "/xe/%s/" % anhxe._slug(hop[0]) if hop else None
 
 
 def _link_hang(site, ten):
@@ -227,7 +234,11 @@ def _truot(site, bn):
         if not os.path.isfile(os.path.join(tm, dt)):
             dt = mt
         u, u_dt = sl.get("link"), None
-        if sl.get("hang"):
+        if sl.get("xe_chinh"):
+            ten_xe, ten_hang = sl["xe_chinh"]
+            u = _link_xe(site, ten_xe) or _link_hang(site, ten_hang)
+            alt = sl["alt"]
+        elif sl.get("hang"):
             h1, h2 = sl["hang"]
             u, u_dt = _link_hang(site, h1), _link_hang(site, h2)
             u = u or u_dt
@@ -508,6 +519,15 @@ def _nav(site, path):
     return '<nav class="nav-dau" aria-label="Danh mục chính">%s</nav>' % "".join(o)
 
 
+def _nav_nho(site, path):
+    """Điện thoại: menu chính hiện thẳng thành dải lướt ngang dưới đầu trang, không giấu trong nút ba gạch (anh góp ý 20/10 23:57)."""
+    o = []
+    for n, u in site.get("nav", []):
+        on = ' aria-current="page"' if (path == u or (u != "/" and path.startswith(u))) else ""
+        o.append('<a href="%s"%s>%s</a>' % (u, on, n))
+    return '<nav class="nav-nho" aria-label="Danh mục">%s</nav>' % "".join(o)
+
+
 def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,follow", og_img=None):
     d = site["domain"]
     css_vars = ";".join("--%s:%s" % kv for kv in site["vars"].items())
@@ -566,6 +586,7 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
 {_nav(site, path)}
 <span class="dau-phai"><a class="goi-dai" href="tel:{site['hot'].replace('.', '')}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg><span><small>Hotline</small>{site['hot']}</span></a>{goi_dau}<button class="nut-menu" aria-label="Mở menu" aria-expanded="false"><span></span></button></span>
 </div></header>
+{_nav_nho(site, path)}
 <nav class="ngan-menu" aria-label="Menu">{menu}<div class="nho">Gọi tư vấn: <a href="tel:{TEL}" style="display:inline;padding:0;border:0;color:inherit">{HOTLINE}</a></div></nav>
 <main>
 {body}
@@ -667,6 +688,7 @@ def build(site):
         if trangchu.anh_loai(k):
             shutil.copy(trangchu.anh_loai(k), os.path.join(base, "loai", k + ".webp"))
     danhgia.chep(site, base)
+    tiktok.chep(site, base)
     bannerhang.chep(d, base)
     if os.path.isdir(os.path.join(HERE, "banner", d)):
         shutil.copytree(os.path.join(HERE, "banner", d), os.path.join(base, "banner"))
