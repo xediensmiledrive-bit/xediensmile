@@ -277,3 +277,19 @@ body:not(.skin-sup) .chon .lua button.on{border-color:var(--c2);color:var(--c2d)
 body:not(.skin-sup) .bai-muse .khoi-chot a{background:#fff;color:var(--c2d)}
 body:not(.skin-sup) .o-xe .hoi-gia{background:var(--c2)}
 .gia.tt{text-align:right}.gia.tt small{display:block;font-size:11px;font-weight:500;color:var(--phu)}
+/* Hero 5 banner chạy cuộn: vuốt được trên điện thoại, tự chuyển 5 giây */
+.truot{position:relative}
+.tr-ray{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;border-radius:20px;-webkit-overflow-scrolling:touch}
+.tr-ray::-webkit-scrollbar{display:none}
+.tr-o{flex:0 0 100%;scroll-snap-align:center;scroll-snap-stop:always}
+.tr-o img{display:block;width:100%;height:auto;border-radius:0}
+.tr-cham{display:flex;justify-content:center;gap:8px;margin-top:10px}
+.tr-cham button{width:9px;height:9px;padding:0;border:0;border-radius:99px;background:#c9cdd0;cursor:pointer;transition:width .25s,background .25s}
+.tr-cham button[aria-current]{width:24px;background:var(--c2)}
+@media (max-width:767px){.tr-ray{border-radius:16px}}
+/* Hiệu ứng rơi theo ngày lễ */
+.roi{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:55}
+.roi i{position:absolute;top:-8vh;font-style:normal;line-height:1;will-change:transform;animation:roi linear infinite}
+@keyframes roi{0%{transform:translate3d(0,0,0) rotate(0)}100%{transform:translate3d(var(--x,30px),110vh,0) rotate(var(--r,360deg))}}
+.tat-roi{position:fixed;right:10px;top:68px;z-index:56;border:0;border-radius:99px;padding:5px 9px;font:600 11px/1 inherit;background:rgba(15,17,18,.55);color:#fff;cursor:pointer}
+@media (prefers-reduced-motion:reduce){.roi,.tat-roi{display:none}}

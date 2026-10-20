@@ -83,3 +83,51 @@
     var p=phone(v);if(p){if(p.ok){gotPhone=true;guiSo(p.n)}else say(['Số này chưa đúng 10 số di động, bạn gõ lại giúp em nha.']);return}
     run(classify(v))});
 })();
+(function(){
+  /* Hero chạy cuộn: vuốt tay, chấm chọn, tự chuyển 5 giây; dừng khi chạm, rê chuột, tab ẩn hoặc bật giảm chuyển động */
+  var t=document.querySelector('.truot');if(!t)return;
+  var ray=t.querySelector('.tr-ray'),o=ray.children,ch=t.querySelectorAll('.tr-cham button'),n=o.length,i=0,hen=null,
+      im=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  function toi(k){i=(k+n)%n;ray.scrollTo({left:o[i].offsetLeft-ray.offsetLeft,behavior:im?'auto':'smooth'})}
+  function danh(){ch.forEach(function(c,k){if(k===i)c.setAttribute('aria-current','true');else c.removeAttribute('aria-current')})}
+  function chay(){dung();if(!im&&!document.hidden)hen=setInterval(function(){toi(i+1)},5000)}
+  function dung(){clearInterval(hen);hen=null}
+  ch.forEach(function(c,k){c.addEventListener('click',function(){toi(k);chay()})});
+  var cho;ray.addEventListener('scroll',function(){clearTimeout(cho);cho=setTimeout(function(){i=Math.round(ray.scrollLeft/ray.clientWidth);danh()},60)},{passive:true});
+  ray.addEventListener('touchstart',dung,{passive:true});ray.addEventListener('touchend',chay,{passive:true});
+  t.addEventListener('mouseenter',dung);t.addEventListener('mouseleave',chay);
+  document.addEventListener('visibilitychange',chay);
+  chay();
+})();
+(function(){
+  /* Hiệu ứng rơi theo ngày trong năm (kiểu các site Smile). Mỗi dòng: từ ngày, đến ngày (MM-DD hoặc YYYY-MM-DD), hình rơi.
+     Tết và Trung thu theo âm lịch nên ghi rõ năm. Thử ngày khác: thêm ?roi=MM-DD vào địa chỉ. */
+  var L=[
+    ['12-30','01-02',['🎉','✨','🎊']],
+    ['2027-01-30','2027-02-14',['🌸','🌼','🧧']],
+    ['02-13','02-14',['❤️','💕','🌹']],
+    ['03-06','03-08',['🌷','🌸','💐']],
+    ['04-29','05-01',['⭐','🎉']],
+    ['05-31','06-01',['🎈','⭐','🍭']],
+    ['09-01','09-02',['⭐','🎉']],
+    ['2027-09-13','2027-09-15',['🏮','🌕','⭐']],
+    ['10-18','10-20',['🌸','🌷','💐','💖']],
+    ['11-18','11-20',['🌷','💐','📚']],
+    ['12-22','12-25',['❄️','⛄','🎄']]
+  ];
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  try{if(localStorage.getItem('tatRoi')===new Date().toDateString())return}catch(e){}
+  var q=(location.search.match(/[?&]roi=([\d-]+)/)||[])[1],d=new Date(),
+      p=function(x){return x<10?'0'+x:''+x},md=q||p(d.getMonth()+1)+'-'+p(d.getDate()),ymd=d.getFullYear()+'-'+md;
+  function trong(a,b){var x=a.length>5?ymd:md;return a<=b?(x>=a&&x<=b):(x>=a||x<=b)}
+  var h=null;L.forEach(function(r){if(!h&&trong(r[0],r[1]))h=r[2]});if(!h)return;
+  var k=document.createElement('div');k.className='roi';k.setAttribute('aria-hidden','true');
+  var so=innerWidth<768?14:24;
+  for(var j=0;j<so;j++){var e=document.createElement('i'),z=14+Math.random()*16;
+    e.textContent=h[j%h.length];
+    e.style.cssText='left:'+(Math.random()*100)+'%;font-size:'+z+'px;opacity:'+(.55+Math.random()*.4)+';animation-duration:'+(7+Math.random()*7)+'s;animation-delay:-'+(Math.random()*12)+'s;--x:'+(Math.random()*120-60)+'px;--r:'+(Math.random()*540-270)+'deg';
+    k.appendChild(e)}
+  var b=document.createElement('button');b.type='button';b.className='tat-roi';b.textContent='Tắt hiệu ứng';
+  b.onclick=function(){k.remove();b.remove();try{localStorage.setItem('tatRoi',new Date().toDateString())}catch(e){}};
+  document.body.appendChild(k);document.body.appendChild(b);
+})();

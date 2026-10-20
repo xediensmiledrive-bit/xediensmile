@@ -135,3 +135,4 @@
 .skin-sup .o-xe img:not([src*="/khung/"]){background:#e9eced;mix-blend-mode:multiply}
 .skin-sup .o-xe .hoi-gia{background:#6fd92e;color:#0f1112}
 .skin-sup .logo-anh.toi img{height:40px}
+.tr-cham button[aria-current]{background:#6fd92e}

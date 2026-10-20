@@ -112,6 +112,32 @@ def _dai(site, bo2=False):
             % (_so(site), "-2" if bo2 else "", html.escape(BANNER[site["domain"]]["dai"])))
 
 
+def _truot(site, bn):
+    """Hero trang chủ: tối đa 5 banner chạy cuộn (anh chốt 20/10 11:52). Tự nhận tệp banner-hero-may-tinh[-N].webp
+    và banner-hero-dien-thoai[-N].webp có trong build/banner/<domain>/ (N = 2..5); alt slide 3 trở đi lấy từ hero-alt.json."""
+    tm = os.path.join(HERE, "banner", site["domain"])
+    them = {}
+    if os.path.isfile(os.path.join(tm, "hero-alt.json")):
+        them = json.load(open(os.path.join(tm, "hero-alt.json"), encoding="utf-8"))
+    o = []
+    for i, hau in enumerate(["", "-2", "-3", "-4", "-5"]):
+        if not os.path.isfile(os.path.join(tm, "banner-hero-may-tinh%s.webp" % hau)):
+            continue
+        dt = "banner-hero-dien-thoai%s.webp" % hau
+        if not os.path.isfile(os.path.join(tm, dt)):
+            dt = "banner-hero-may-tinh%s.webp" % hau
+        alt = them.get(str(i + 1)) or (bn["hero"] if i == 0 else bn["hero2"] if i == 1 else bn["hero"])
+        dau = not o
+        o.append('<a class="tr-o" href="tel:%s"><picture><source media="(max-width:767px)" srcset="/banner/%s" width="1080" height="1200">'
+                 '<img src="/banner/banner-hero-may-tinh%s.webp" width="1920" height="720" alt="%s"%s></picture></a>'
+                 % (_so(site), dt, hau, html.escape(alt), ' fetchpriority="high"' if dau else ' loading="lazy"'))
+    if len(o) < 2:
+        return '<div class="banner-dau">%s</div>' % "".join(o)
+    cham = "".join('<button type="button" aria-label="Banner %d"%s></button>' % (i + 1, ' aria-current="true"' if not i else "") for i in range(len(o)))
+    return ('<div class="banner-dau truot" aria-roledescription="carousel" aria-label="Banner"><div class="tr-ray">%s</div>'
+            '<div class="tr-cham">%s</div></div>' % ("".join(o), cham))
+
+
 def _gan_banner(site):
     bn = BANNER.get(site["domain"])
     if not bn or not os.path.isdir(os.path.join(HERE, "banner", site["domain"])):
@@ -121,11 +147,7 @@ def _gan_banner(site):
         if not callable(f):
             continue
         if p["url"] == "/":
-            dau = ('<a class="banner-dau" href="tel:%s"><picture><source media="(max-width:767px)" srcset="/banner/banner-hero-dien-thoai.webp" width="1080" height="1200">'
-                   '<img src="/banner/banner-hero-may-tinh.webp" width="1920" height="720" alt="%s" fetchpriority="high"></picture></a>' % (_so(site), html.escape(bn["hero"]))
-                   # Ngày lẻ đổi sang bộ 2 ngay khi trình duyệt đọc tới (trước lần vẽ đầu); HTML gốc giữ bộ 1 cho Google
-                   + '<script>(function(){if(new Date().getDate()%%2){var a=document.currentScript.previousElementSibling,s=a.querySelector("source"),i=a.querySelector("img");'
-                     's.srcset="/banner/banner-hero-dien-thoai-2.webp";i.src="/banner/banner-hero-may-tinh-2.webp";i.alt=%s}})()</script>' % json.dumps(bn["hero2"], ensure_ascii=False))
+            dau = _truot(site, bn)
 
             def g(s, f=f, dau=dau):
                 b = f(s)
@@ -284,7 +306,7 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
                              "url": "https://%s/" % d, "inLanguage": "vi"})
     skin = site.get("skin")
     skin_head = ('<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">'
-                 '<link rel="stylesheet" href="/skin-%s.css?v=5">' % skin) if skin else ""
+                 '<link rel="stylesheet" href="/skin-%s.css?v=6">' % skin) if skin else ""
     ten = site.get("logo_ten", "PHỐ <i>XE ĐIỆN</i>")
     goi_dau = ('<a class="nut-goi" href="tel:%s" aria-label="Gọi %s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></a>' % (TEL, HOTLINE)) if skin else ""
     if skin:
@@ -317,7 +339,7 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
 {og_img_html(site, og_img or (LOGO_OG if co_logo(site) else None))}
 {icon_head(site)}
 {FONT}
-<link rel="stylesheet" href="/site.css?v=8">
+<link rel="stylesheet" href="/site.css?v=9">
 {skin_head}
 <style>:root{{{css_vars}}}</style>
 {sch}
@@ -346,7 +368,7 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
 <form class="chat-o"><input type="text" placeholder="Nhắn câu hỏi hoặc số điện thoại..." aria-label="Câu hỏi" maxlength="300"><button aria-label="Gửi">➤</button></form>
 </div>
 <script>window.PXD={{stores:{json.dumps([x.get('name','')+': '+x.get('address','') for x in site.get('stores') or []], ensure_ascii=False)},tel:"{TEL}",hot:"{HOTLINE}",web:"{site['chat']}",bot:"{site['bot']}"}}</script>
-<script src="/site.js?v=1" defer></script>
+<script src="/site.js?v=2" defer></script>
 </body>
 </html>
 '''
