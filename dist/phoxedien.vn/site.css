@@ -263,7 +263,7 @@ footer .cua-hang{margin-top:14px}footer .cua-hang ul{list-style:none;margin-top:
 .banner-loai{display:block;width:100%;height:auto;border-radius:18px;margin:12px 0 4px}
 .banner-dai{display:block;margin:18px 0}
 .banner-dai img{display:block;width:100%;height:auto;border-radius:18px}
-.banner-dau+.hero .hinh-hero{display:none}
+.banner-dau~.hero .hinh-hero{display:none}
 /* Logo chốt */
 .logo-anh img{display:block;height:44px;width:auto}
 .logo-anh.chan{display:inline-block;background:#fff;border-radius:14px;padding:8px 12px}

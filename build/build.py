@@ -85,6 +85,7 @@ BANNER = {
     "phoxedien.vn": {
         "hero": "Bảng giá xe máy điện tháng 10/2026, giá tham khảo từ 10,99 triệu, xe 50cc từ 14,79 triệu",
         "dai": "Hỏi giá hôm nay: gọi hoặc Zalo 0889.277.112",
+        "hero2": "Xe điện và xe 50cc đủ giá, đủ hãng: 121 mẫu xe máy điện, 31 mẫu xe 50cc, gọi hoặc Zalo 0889.277.112",
         "loai": {"/xe-may-dien/": ("banner-xe-may-dien.webp", "Bảng giá xe máy điện: 121 mẫu, giá tham khảo từ 10.990.000đ"),
                  "/bang-gia-xe-dien/": ("banner-xe-may-dien.webp", "Bảng giá xe máy điện: 121 mẫu, giá tham khảo từ 10.990.000đ"),
                  "/xe-ga-50cc/": ("banner-xe-ga-50cc.webp", "Bảng giá xe ga 50cc: 16 mẫu, giá tham khảo từ 14.990.000đ"),
@@ -93,6 +94,7 @@ BANNER = {
     "phoxedien.com.vn": {
         "hero": "Con vào lớp 10 nên đi xe gì? Cẩm nang chọn xe 50cc và xe điện cho phụ huynh",
         "dai": "Chưa chắc chọn xe nào? Gọi hoặc Zalo 0833.666.916",
+        "hero2": "Đủ 16 tuổi được đi xe 50cc: cần giấy tờ gì, xe nào hợp với con",
         "loai": {"/xe-ga-50cc-cho-hoc-sinh/": ("banner-xe-ga-50cc.webp", "Xe ga 50cc cho học sinh, giá tham khảo từ 14.990.000đ"),
                  "/xe-so-50cc-cho-hoc-sinh/": ("banner-xe-so-50cc.webp", "Xe số 50cc cho học sinh, giá tham khảo từ 14.790.000đ"),
                  "/xe-may-dien-cho-hoc-sinh/": ("banner-xe-may-dien.webp", "Xe máy điện cho học sinh, giá tham khảo từ 10.990.000đ")}},
@@ -104,9 +106,10 @@ def _so(site):
     return site["hot"].replace(".", "")
 
 
-def _dai(site):
-    return ('<a class="banner-dai" href="tel:%s"><img src="/banner/banner-dai-goi.webp" width="1080" height="360" alt="%s" loading="lazy"></a>'
-            % (_so(site), html.escape(BANNER[site["domain"]]["dai"])))
+def _dai(site, bo2=False):
+    # Bộ 2 chạy xen kẽ (anh chốt 10:59): trang chủ dùng bộ 1, cuối trang danh mục dùng bộ 2
+    return ('<a class="banner-dai" href="tel:%s"><img src="/banner/banner-dai-goi%s.webp" width="1080" height="360" alt="%s" loading="lazy"></a>'
+            % (_so(site), "-2" if bo2 else "", html.escape(BANNER[site["domain"]]["dai"])))
 
 
 def _gan_banner(site):
@@ -119,7 +122,10 @@ def _gan_banner(site):
             continue
         if p["url"] == "/":
             dau = ('<a class="banner-dau" href="tel:%s"><picture><source media="(max-width:767px)" srcset="/banner/banner-hero-dien-thoai.webp" width="1080" height="1200">'
-                   '<img src="/banner/banner-hero-may-tinh.webp" width="1920" height="720" alt="%s" fetchpriority="high"></picture></a>' % (_so(site), html.escape(bn["hero"])))
+                   '<img src="/banner/banner-hero-may-tinh.webp" width="1920" height="720" alt="%s" fetchpriority="high"></picture></a>' % (_so(site), html.escape(bn["hero"]))
+                   # Ngày lẻ đổi sang bộ 2 ngay khi trình duyệt đọc tới (trước lần vẽ đầu); HTML gốc giữ bộ 1 cho Google
+                   + '<script>(function(){if(new Date().getDate()%%2){var a=document.currentScript.previousElementSibling,s=a.querySelector("source"),i=a.querySelector("img");'
+                     's.srcset="/banner/banner-hero-dien-thoai-2.webp";i.src="/banner/banner-hero-may-tinh-2.webp";i.alt=%s}})()</script>' % json.dumps(bn["hero2"], ensure_ascii=False))
 
             def g(s, f=f, dau=dau):
                 b = f(s)
@@ -128,13 +134,15 @@ def _gan_banner(site):
             p["body"] = g
         elif p["url"] in bn["loai"]:
             tep, alt = bn["loai"][p["url"]]
+            if list(bn["loai"]).index(p["url"]) % 2:  # xen kẽ theo trang: trang thứ chẵn dùng bộ 2
+                tep = tep.replace(".webp", "-2.webp")
             anh = '<img class="banner-loai" src="/banner/%s" width="1080" height="540" alt="%s" loading="lazy">' % (tep, html.escape(alt))
 
             def g(s, f=f, anh=anh):
                 b = f(s)
                 moc = '<div class="dau-trang">'
                 b = b.replace(moc, anh + moc, 1) if moc in b else anh + b
-                return b.replace(_MOC_KEU, _dai(site) + _MOC_KEU, 1) if _MOC_KEU in b else b
+                return b.replace(_MOC_KEU, _dai(site, True) + _MOC_KEU, 1) if _MOC_KEU in b else b
             p["body"] = g
 
 
