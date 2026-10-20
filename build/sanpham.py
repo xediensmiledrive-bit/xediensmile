@@ -35,8 +35,8 @@ def _gia(m):
         return vnd(m["price"]), "Giá tham khảo tại Smile Motor, cập nhật %s, chưa gồm lệ phí trước bạ, biển số và bảo hiểm." % NGAY_VN, True
     tt = noidung.GIA_TT.get(m["name"].strip().lower())
     if tt:
-        return vnd(tt), "Giá thị trường tham khảo tháng %s, không phải giá bán của Smile Motor. Bấm Đặt xe để biết giá hôm nay." % THANG, True
-    return "Liên hệ", "Mẫu này đang cập nhật giá, bấm Hỏi giá để biết giá hôm nay.", False
+        return vnd(tt), "Giá thị trường tham khảo tháng %s, có thể khác tuỳ nơi bán." % THANG, True
+    return "Liên hệ", "Giá đang cập nhật. Gọi hoặc nhắn để có giá hôm nay.", False
 
 
 def _lien_quan(k, m, n=4):
@@ -65,12 +65,12 @@ def trang(site, k, m):
     bang_ts = "".join('<tr><th>%s</th><td>%s</td></tr>' % (n, html.escape(str(v))) for n, v in ts)
     dien = k == "may"
     if vn:
-        gioi = ['%s là mẫu %s của %s, đang có trong bảng giá tham khảo tháng %s của Phố Xe Điện Smile.' % (ten, loai.lower(), hang or "hãng", THANG)]
-        gioi.append('Giá trên trang là giá xe, chưa gồm lệ phí trước bạ, đăng ký biển số và bảo hiểm bắt buộc. Cách cộng ra giá lăn bánh xem ở bài <a href="/bang-gia/gia-lan-banh-xe-may-dien-xe-50cc/">giá lăn bánh</a>.')
+        gioi = ['%s là mẫu %s của %s.' % (ten, loai.lower(), hang or "hãng")]
+        gioi.append('Giá trên trang là giá xe, chưa gồm lệ phí trước bạ, đăng ký biển số và bảo hiểm bắt buộc. Cách tính giá lăn bánh xem ở bài <a href="/bang-gia/gia-lan-banh-xe-may-dien-xe-50cc/">giá lăn bánh</a>.')
         gioi.append(('Khi so với các mẫu cùng tầm giá, nhìn quãng đường mỗi lần sạc, tốc độ tối đa và loại pin: pin lithium nhẹ, bền hơn nhưng đắt hơn ắc quy chì (<a href="/so-sanh/pin-lithium-hay-ac-quy-chi/">so sánh hai loại pin</a>).')
                     if dien else ('Khi so với các mẫu cùng tầm giá, xem phanh trước (đĩa hay cơ), vành đúc hay nan và chiều cao yên so với người đi. Phân vân giữa xe ga và xe số thì đọc <a href="/so-sanh/xe-ga-50cc-hay-xe-so-50cc/">so sánh xe ga và xe số 50cc</a>.'))
     else:
-        gioi = ['%s là %s của %s. Trang này trả lời các câu phụ huynh hay hỏi trước khi mua xe này cho con.' % (ten, loai.lower(), hang or "hãng")]
+        gioi = ['%s là %s của %s. Dưới đây là những điều nên biết trước khi mua xe này cho con.' % (ten, loai.lower(), hang or "hãng")]
         gioi.append(LUAT + ' Khi chọn mẫu điện, xem thông số công suất và tốc độ để chắc xe thuộc nhóm xe gắn máy.' if dien else LUAT)
         gioi.append('Đi đường cần mang đăng ký xe, bảo hiểm bắt buộc và căn cước. Xem thêm <a href="/giay-to/16-tuoi-di-xe-50cc-can-giay-to-gi/">giấy tờ khi 16 tuổi đi xe 50cc</a>.')
         gioi.append('Trước khi mua, cho con ngồi thử xem chống chân chạm đất được không và tay với tới phanh thoải mái.')

@@ -27,8 +27,8 @@ for _k in ("may", "dap"):
 if not noidung.models_of("dap"):
     _tg = [m for m in hang.sap(noidung.models_of("may")) if m.get("price") and (m.get("brand") or "") in ("DV Motor", "Dibao", "Detech", "Yaka")][:6]
     if _tg:
-        noidung.CHIP_HANG["dap"] = ('<section><div class="tieude"><h2>Mẫu tương đương đang bán tại Smile</h2></div>'
-                                    '<p class="meta">Smile Motor hiện không bán xe đạp điện. Nếu con đã đủ 16 tuổi, đây là các mẫu xe máy điện giá thấp nhất đang có, không cần bằng lái:</p>'
+        noidung.CHIP_HANG["dap"] = ('<section><div class="tieude"><h2>Đủ 16 tuổi? Xem xe máy điện giá mềm</h2></div>'
+                                    '<p class="meta">Từ đủ 16 tuổi được đi xe máy điện loại xe gắn máy, không cần bằng lái. Các mẫu giá dễ chịu:</p>'
                                     '<div class="the bang hd-in">%s<div class="chu-thich">Giá tham khảo cập nhật %s.</div></div></section>'
                                     % ("".join(hang.dong(m, "may") for m in _tg), noidung.NGAY_VN)) + noidung.CHIP_HANG.get("dap", "")
 for _p in _vn["pages"]:
@@ -91,7 +91,8 @@ BANNER = {
         "dai": "Hỏi giá hôm nay: gọi hoặc Zalo 0889.277.112",
         "hero2": "Xe điện và xe 50cc đủ giá, đủ hãng: 121 mẫu xe máy điện, 31 mẫu xe 50cc, gọi hoặc Zalo 0889.277.112",
         # link từng banner trong slider (HUONG-DAN-GAN.md); trang chưa có thì banner gọi tel:
-        "link": ["/bang-gia-xe-dien/", "/bang-gia-xe-50cc/", "/so-sanh/", "/xe-cho-nu/", "/xe-may-dien/"],
+        "mac_dinh": "/so-sanh/",
+        "link": ["/bang-gia-xe-dien/", "/bang-gia-xe-50cc/", "/so-sanh/", "/xe-cho-nu/chon-xe-dien-cho-nu/", "/xe-may-dien/"],
         "loai": {"/xe-may-dien/": ("banner-xe-may-dien.webp", "Bảng giá xe máy điện: 121 mẫu, giá tham khảo từ 10.990.000đ"),
                  "/bang-gia-xe-dien/": ("banner-xe-may-dien.webp", "Bảng giá xe máy điện: 121 mẫu, giá tham khảo từ 10.990.000đ"),
                  "/xe-ga-50cc/": ("banner-xe-ga-50cc.webp", "Bảng giá xe ga 50cc: 16 mẫu, giá tham khảo từ 14.990.000đ"),
@@ -101,7 +102,8 @@ BANNER = {
         "hero": "Con vào lớp 10 nên đi xe gì? Cẩm nang chọn xe 50cc và xe điện cho phụ huynh",
         "dai": "Chưa chắc chọn xe nào? Gọi hoặc Zalo 0833.666.916",
         "hero2": "Đủ 16 tuổi được đi xe 50cc: cần giấy tờ gì, xe nào hợp với con",
-        "link": ["/hoc-sinh/chon-xe-cho-con-hoc-cap-3/", "/giay-to/16-tuoi-di-xe-50cc-can-giay-to-gi/", "/hoc-sinh/", None, "/sua-xe/xe-dien-khong-len-nguon/"],
+        "mac_dinh": "/cam-nang/",
+        "link": ["/hoc-sinh/chon-xe-cho-con-hoc-cap-3/", "/giay-to/16-tuoi-di-xe-50cc-can-giay-to-gi/", "/cam-nang/?muc=hoc-sinh", "/cam-nang/", "/sua-xe/xe-dien-khong-len-nguon/"],
         "loai": {"/xe-ga-50cc-cho-hoc-sinh/": ("banner-xe-ga-50cc.webp", "Xe ga 50cc cho học sinh, giá tham khảo từ 14.990.000đ"),
                  "/xe-so-50cc-cho-hoc-sinh/": ("banner-xe-so-50cc.webp", "Xe số 50cc cho học sinh, giá tham khảo từ 14.790.000đ"),
                  "/xe-may-dien-cho-hoc-sinh/": ("banner-xe-may-dien.webp", "Xe máy điện cho học sinh, giá tham khảo từ 10.990.000đ")}},
@@ -117,8 +119,9 @@ def _so(site):
 
 def _dai(site, bo2=False):
     # Bộ 2 chạy xen kẽ (anh chốt 10:59): trang chủ dùng bộ 1, cuối trang danh mục dùng bộ 2
-    return ('<a class="banner-dai" href="tel:%s"><img src="/banner/banner-dai-goi%s.webp" width="1080" height="360" alt="%s" loading="lazy"></a>'
-            % (_so(site), "-2" if bo2 else "", html.escape(BANNER[site["domain"]]["dai"])))
+    # dải gọi mở khung chat tư vấn ngay trên trang (anh không muốn bấm banner bị nhảy qua Zalo)
+    return ('<a class="banner-dai" href="#chat" data-chat><img src="/banner/banner-dai-goi%s.webp" width="1080" height="360" alt="%s" loading="lazy"></a>'
+            % ("-2" if bo2 else "", html.escape(BANNER[site["domain"]]["dai"])))
 
 
 def _co_url(site):
@@ -142,12 +145,13 @@ def _truot(site, bn):
         alt = them.get(str(i + 1)) or (bn["hero"] if i == 0 else bn["hero2"] if i == 1 else bn["hero"])
         dau = not o
         u = (bn.get("link") or [None] * 5)[i]
-        if u and u not in _co_url(site):
-            u = None
+        # anh chốt 20/10 19:10: bấm banner là vào bài viết, không gọi điện, không Zalo; trang chưa có thì về trang danh mục chính
+        if not u or u.split("?")[0] not in _co_url(site):
+            u = bn["mac_dinh"]
         mua = MUA_BANNER.get(i + 1)
         o.append('<a class="tr-o" href="%s"%s><picture><source media="(max-width:767px)" srcset="/banner/%s" width="1080" height="1200">'
                  '<img src="/banner/banner-hero-may-tinh%s.webp" width="1920" height="720" alt="%s"%s></picture></a>'
-                 % (u or "tel:" + _so(site), ' data-mua="%s,%s"' % mua if mua else "", dt, hau, html.escape(alt), ' fetchpriority="high"' if dau else ' loading="lazy"'))
+                 % (u, ' data-mua="%s,%s"' % mua if mua else "", dt, hau, html.escape(alt), ' fetchpriority="high"' if dau else ' loading="lazy"'))
     if len(o) < 2:
         return '<div class="banner-dau">%s</div>' % "".join(o)
     cham = "".join('<button type="button" aria-label="Banner %d"%s></button>' % (i + 1, ' aria-current="true"' if not i else "") for i in range(len(o)))
@@ -323,7 +327,7 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
                              "url": "https://%s/" % d, "inLanguage": "vi"})
     skin = site.get("skin")
     skin_head = ('<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">'
-                 '<link rel="stylesheet" href="/skin-%s.css?v=6">' % skin) if skin else ""
+                 '<link rel="stylesheet" href="/skin-%s.css?v=7">' % skin) if skin else ""
     ten = site.get("logo_ten", "PHỐ <i>XE ĐIỆN</i>")
     goi_dau = ('<a class="nut-goi" href="tel:%s" aria-label="Gọi %s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></a>' % (TEL, HOTLINE)) if skin else ""
     if skin:
@@ -356,7 +360,7 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
 {og_img_html(site, og_img or (LOGO_OG if co_logo(site) else None))}
 {icon_head(site)}
 {FONT}
-<link rel="stylesheet" href="/site.css?v=9">
+<link rel="stylesheet" href="/site.css?v=10">
 {skin_head}
 <style>:root{{{css_vars}}}</style>
 {sch}
@@ -373,7 +377,7 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
 <footer><div class="wrap wide">
 {logo_html(site, ten, False)}
 <p>{site['footer']}</p>
-<p>Trang cẩm nang do Smile Motor biên soạn. Giá trên trang là giá tham khảo, có ghi ngày cập nhật. Khi mua xe, người bán là Smile Motor. Hotline {HOTLINE}.</p>
+<p>Giá trên trang là giá tham khảo, cập nhật hằng tháng. Mua xe tại Smile Motor, gọi hoặc Zalo {HOTLINE}.</p>
 {stores_html(site)}
 <nav>{"".join('<a href="%s">%s</a>' % (u, n) for n, u in site['foot'])}</nav>
 </div></footer>
@@ -385,7 +389,7 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
 <form class="chat-o"><input type="text" placeholder="Nhắn câu hỏi hoặc số điện thoại..." aria-label="Câu hỏi" maxlength="300"><button aria-label="Gửi">➤</button></form>
 </div>
 <script>window.PXD={{stores:{json.dumps([x.get('name','')+': '+x.get('address','') for x in site.get('stores') or []], ensure_ascii=False)},tel:"{TEL}",hot:"{HOTLINE}",web:"{site['chat']}",bot:"{site['bot']}"}}</script>
-<script src="/site.js?v=2" defer></script>
+<script src="/site.js?v=3" defer></script>
 </body>
 </html>
 '''
@@ -436,15 +440,14 @@ def article_page(site, a):
 def author_page(site, slug):
     au = site["authors"][slug]
     lst = "".join(f'<a class="bai-nho" href="{r["url"]}"><div class="o">{r["emoji"]}</div><div><div class="muc">{r["cat_name"]}</div><h3>{r["h1"]}</h3><div class="meta">{r["read"]} phút đọc</div></div></a>'
-                  for r in site["articles"] if r["author"] == slug) or '<p class="meta">Bài đầu tiên của %s đang được biên soạn.</p>' % au["name"]
+                  for r in site["articles"] if r["author"] == slug) or '<p class="meta">Bài của %s sẽ sớm có ở đây.</p>' % au["name"]
     url = "/tac-gia/%s/" % slug
     body = f'''<div class="wrap"><div class="duong"><a href="/">Trang chủ</a> › <b>Tác giả</b></div>
 <div class="dau-trang"><h1>{au['name']}</h1></div>
-<div class="noi-dung"><p>{au['name']} là bút danh của ban biên tập Phố Xe Điện ({site['domain']}). {au['bio']}</p>
-<p class="luu-y">Phố Xe Điện là trang cẩm nang do Smile Motor biên soạn. Giá trong bài là giá tham khảo, có ghi ngày cập nhật.</p></div>
+<div class="noi-dung"><p>{au['bio']}</p></div>
 <section><div class="tieude"><h2>Bài của {au['name']}</h2></div>{lst}</section></div>'''
     sch = [{"@context": "https://schema.org", "@type": "ProfilePage", "mainEntity": {"@type": "Person", "name": au["name"], "description": au["bio"]}}]
-    return page(site, url, "%s, tác giả Phố Xe Điện" % au["name"], "%s: bút danh của ban biên tập Phố Xe Điện. %s" % (au["name"], au["bio"]), body, sch,
+    return page(site, url, "%s, tác giả Phố Xe Điện" % au["name"], "%s, Phố Xe Điện. %s" % (au["name"], au["bio"]), body, sch,
                 [("Trang chủ", "/"), (au["name"], url)])
 
 

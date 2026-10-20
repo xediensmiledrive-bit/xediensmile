@@ -84,7 +84,7 @@ def ngan_sach(k):
         return ""
     moc = [(0, 10e6, "Dưới 10 triệu"), (10e6, 15e6, "10–15 triệu"), (15e6, 20e6, "15–20 triệu"), (20e6, 30e6, "20–30 triệu"), (30e6, 1e12, "Trên 30 triệu")]
     hang = "".join('<tr><td>%s</td><td>%d mẫu</td></tr>' % (t, sum(1 for p in ps if a <= p < b)) for a, b, t in moc if any(a <= p < b for p in ps))
-    return '<h2>Có bao nhiêu mẫu ở mỗi tầm giá</h2><div class="cuon-bang"><table><tr><th>Tầm giá</th><th>Số mẫu</th></tr>%s</table></div><p>Đếm theo bảng giá tham khảo cập nhật %s.</p>' % (hang, NGAY_VN)
+    return '<h2>Có bao nhiêu mẫu ở mỗi tầm giá</h2><div class="cuon-bang"><table><tr><th>Tầm giá</th><th>Số mẫu</th></tr>%s</table></div><p>Theo bảng giá cập nhật %s.</p>' % (hang, NGAY_VN)
 
 
 def chip_hang(k, goc):
@@ -140,8 +140,8 @@ FAQ_COMVN = {
 def _trang_loai(site, k, url, ten, gioi, faqs, tac, av, khung_tim):
     ms = sap(models_of(k))
     tt = sap(THI_TRUONG.get(k, [])) if (k in NGUNG_BAN and not ms) else []
-    dong_gia = ("Giá tham khảo thị trường (hãng công bố, đại lý), không phải giá bán của Smile Motor." if tt
-                else "Giá tại Smile Motor, chưa gồm lệ phí trước bạ, biển số và bảo hiểm.")
+    dong_gia = ("Giá thị trường tham khảo (theo giá hãng và đại lý), có thể khác tuỳ nơi bán." if tt
+                else "Giá chưa gồm lệ phí trước bạ, biển số và bảo hiểm.")
     svg = dap_svg() if k == "dap" else xe_svg()
     h1 = "%s: bảng giá tháng %s và cách chọn" % (ten, THANG) if site is VN else "%s: chọn sao cho đúng, giá tháng %s" % (ten, THANG)
 

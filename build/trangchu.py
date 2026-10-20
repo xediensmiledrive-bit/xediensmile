@@ -100,7 +100,7 @@ def trang_chu(site, h1, mo_ta, bang_gia, tom, chips, faqs):
                '<nav class="chips tab-xe" style="padding:0 0 12px"><button type="button" class="chip on" data-tab="">Tất cả</button>%s</nav>'
                '<div class="luoi-xe ban-xe" data-hien="%d">%s</div>'
                '<button type="button" class="btn xem-them">Xem thêm xe</button>'
-               '<p class="chu-anh">Ảnh từ trang chính thức của hãng, màu thực tế có thể khác. Giá tham khảo cập nhật %s.</p></section>'
+               '<p class="chu-anh">Giá tham khảo cập nhật %s. Màu xe thực tế có thể khác ảnh.</p></section>'
                % (bang_gia, _hang(xe), tab, HIEN, the, noidung.NGAY_VN))
     return f'''<div class="wrap">
 <div class="mo-dau"><h1>{h1}</h1><p>{mo_ta}</p></div>
@@ -119,12 +119,12 @@ def gan(vn, comvn):
     from noidung import FAQ_VN_HOME, FAQ_COMVN
     cau_hinh = {
         "phoxedien.vn": dict(h1="Bảng giá xe điện, xe 50cc tháng " + THANG,
-                             mo_ta="Xem xe theo hãng, ảnh thật và giá tham khảo. Bấm vào xe để xem chi tiết, bấm Đặt xe để giữ giá hôm nay.",
+                             mo_ta="Đủ hãng, ảnh thật, giá tham khảo cập nhật hằng tháng. Đặt xe nhanh qua điện thoại hoặc Zalo.",
                              bang_gia="/bang-gia-xe-dien/", tom=["may", "ga", "so", "dap", "ba"],
                              chips=[("So sánh và đánh giá", "/so-sanh/"), ("Bảng giá xe điện", "/bang-gia-xe-dien/"), ("Bảng giá xe 50cc", "/bang-gia-xe-50cc/")],
                              faqs=FAQ_VN_HOME),
         "phoxedien.com.vn": dict(h1="Xe 50cc và xe điện cho học sinh",
-                                 mo_ta="Chọn xe theo hãng, xem ảnh thật và giá tham khảo. Cẩm nang tuổi, giấy tờ, pin sạc nằm ở mục Tin tức.",
+                                 mo_ta="Xe ga, xe số 50cc và xe máy điện hợp tuổi học sinh, có ảnh thật và giá tham khảo.",
                                  bang_gia="/gia-xe-50cc/", tom=["ga", "so", "may", "dap"],
                                  chips=[("Cẩm nang", "/cam-nang/"), ("Xe cho học sinh", "/cam-nang/?muc=hoc-sinh"), ("Tuổi và bằng lái", "/cam-nang/?muc=giay-to"),
                                         ("Pin, sạc, sửa xe", "/cam-nang/?muc=sua-xe"), ("Hỏi đáp", "/hoi-dap/")],

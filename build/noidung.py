@@ -66,10 +66,10 @@ if os.path.exists(_ftt):
     for _r in csv.DictReader(open(_ftt, encoding="utf-8-sig")):
         _k = {"xe-dap-dien": "dap", "xe-ba-banh": "ba"}.get(_r.get("loai"))
         if _k and (_r.get("gia_tham_khao_vnd") or "").strip().isdigit():
-            THI_TRUONG.setdefault(_k, []).append({"name": _r["mau"], "brand": _r["hang"], "price": int(_r["gia_tham_khao_vnd"]), "thi_truong": True})
+            THI_TRUONG.setdefault(_k, []).append({"name": _r["mau"], "brand": "" if _r["hang"].strip().lower() in ("không thương hiệu", "khong thuong hieu") else _r["hang"], "price": int(_r["gia_tham_khao_vnd"]), "thi_truong": True})
         elif _r.get("loai") == "khop" and (_r.get("gia_tham_khao_vnd") or "").strip().isdigit():
             GIA_TT[_r["mau"].strip().lower()] = int(_r["gia_tham_khao_vnd"])
-CHU_TT = "Giá tham khảo thị trường cập nhật %s, tổng hợp từ giá hãng công bố và giá đại lý, có thể khác theo nơi bán. Đây không phải giá bán của Smile Motor." % THANG
+CHU_TT = "Giá tham khảo thị trường cập nhật %s, tổng hợp từ giá hãng công bố và giá đại lý, có thể khác tuỳ nơi bán." % THANG
 
 
 def rows(k, limit=None):
@@ -121,7 +121,7 @@ def bang(keys, bid, limit=None, loc=True):
     them = (' <b>Xe đạp điện, xe 3 bánh:</b> ' + CHU_TT) if tt else ""
     if tt and all(k in NGUNG_BAN and not models_of(k) for k in keys):
         return chips + '<div class="the bang hd-in" id="%s">%s<div class="chu-thich">%s</div></div>' % (bid, body, CHU_TT)
-    return chips + '<div class="the bang hd-in" id="%s">%s<div class="chu-thich">Giá tham khảo cập nhật %s, giá bán tại Smile Motor, chưa gồm lệ phí trước bạ, biển số và bảo hiểm. Bấm Chat hoặc Gọi để có giá chính xác hôm nay.%s</div></div>' % (bid, body, NGAY_VN, them)
+    return chips + '<div class="the bang hd-in" id="%s">%s<div class="chu-thich">Giá tham khảo cập nhật %s, chưa gồm lệ phí trước bạ, biển số và bảo hiểm.%s</div></div>' % (bid, body, NGAY_VN, them)
 
 
 def tom_gia(keys):
@@ -221,7 +221,7 @@ VN = {
     "chat": "phoxedien.vn", "hot": "0889.277.112", "bot": "Hoàng Vy",
 }
 VN["cta_title"] = "Cần giá chính xác hôm nay?"
-VN["cta_text"] = "Chat hoặc gọi hotline Xe điện Smile 0888.266.233 để biết giá, quà tặng và mẫu còn hàng. Người bán là Smile Motor."
+VN["cta_text"] = "Gọi hoặc nhắn Zalo 0888.266.233, nhân viên Smile Motor báo giá hôm nay, quà tặng và màu còn hàng."
 ART_VN = {a["url"]: a for a in BAI_VN}
 
 
@@ -253,9 +253,9 @@ def vn_home(s):
 
 
 FAQ_VN_HOME = [
-    ("Giá trên Phố Xe Điện có phải giá bán thật không?", "Đây là giá tham khảo lấy từ bảng giá của Smile Motor, có ghi ngày cập nhật. Giá có thể đổi theo chương trình khuyến mãi, nên trước khi mua bạn bấm Chat hoặc gọi 0888.266.233 để biết giá hôm nay."),
+    ("Giá trên Phố Xe Điện có phải giá bán thật không?", "Đây là giá tham khảo theo bảng giá Smile Motor, cập nhật hằng tháng. Giá có thể đổi theo chương trình khuyến mãi, nên trước khi mua bạn bấm Chat hoặc gọi 0888.266.233 để biết giá hôm nay."),
     ("Giá lăn bánh khác giá niêm yết thế nào?", 'Giá lăn bánh là giá xe cộng lệ phí trước bạ, lệ phí đăng ký biển số và bảo hiểm trách nhiệm dân sự bắt buộc. Xem cách tính trong bài <a href="/bang-gia/gia-lan-banh-xe-may-dien-xe-50cc/">giá lăn bánh</a>.'),
-    ("Mua xe ở đâu sau khi xem giá?", "Phố Xe Điện là trang cẩm nang do Smile Motor biên soạn. Khi bạn muốn mua, Smile Motor là người bán: chat trên trang hoặc gọi, nhắn Zalo 0888.266.233."),
+    ("Mua xe ở đâu sau khi xem giá?", "Smile Motor có 6 cửa hàng ở TP.HCM, Đồng Tháp và Phan Thiết, mở cửa 8h–21h. Gọi hoặc nhắn Zalo 0888.266.233 để hỏi mẫu còn hàng và đặt xe."),
 ]
 faq_vn_home_html = ""
 
@@ -263,7 +263,7 @@ faq_vn_home_html = ""
 def vn_bang_gia_dien(s):
     return f'''<div class="wrap"><div class="duong"><a href="/">Trang chủ</a> › <b>Bảng giá xe điện</b></div>
 <div class="dau-trang"><h1>Bảng giá xe điện tháng {THANG}</h1><div class="tac"><span class="av">K</span><span><a href="/tac-gia/kha-uyen/">Khả Uyên</a> · cập nhật {NGAY_VN}</span></div></div>
-<div class="nhanh hd-in"><b>Tóm tắt nhanh</b><ul><li>Xe máy điện: {gia_tu("may")}</li><li>Xe đạp điện: {gia_tu("dap")}</li><li>Xe điện 3 bánh: {gia_tu("ba")}</li><li>Giá tham khảo tại Smile Motor, chưa gồm lệ phí. Hỏi giá hôm nay qua Chat hoặc 0888.266.233.</li></ul></div>
+<div class="nhanh hd-in"><b>Tóm tắt nhanh</b><ul><li>Xe máy điện: {gia_tu("may")}</li><li>Xe đạp điện: {gia_tu("dap")}</li><li>Xe điện 3 bánh: {gia_tu("ba")}</li><li>Giá chưa gồm lệ phí trước bạ, biển số và bảo hiểm.</li></ul></div>
 <section style="margin-top:20px">{bang(["may", "dap", "ba"], "bg-dien")}</section>
 <section class="noi-dung hd-in"><h2>Đọc bảng giá sao cho đúng</h2>
 <p>Giá trong bảng là giá xe, chưa gồm lệ phí trước bạ, lệ phí cấp biển số và bảo hiểm. Xe đạp điện không phải đăng ký biển số; xe máy điện thì phải. Vì vậy hai chiếc cùng giá niêm yết có thể chênh nhau khi lăn bánh. Cách tính chi tiết ở bài <a href="/bang-gia/gia-lan-banh-xe-may-dien-xe-50cc/">giá lăn bánh</a>.</p>
@@ -363,10 +363,9 @@ def gioi_thieu(site, extra):
         return f'''<div class="wrap"><div class="duong"><a href="/">Trang chủ</a> › <b>Giới thiệu</b></div>
 <div class="dau-trang"><h1>Giới thiệu Phố Xe Điện</h1></div><div class="noi-dung">
 <p>{extra}</p>
-<p>Trang do Smile Motor biên soạn. Giá trên trang là giá tham khảo theo bảng giá Smile Motor, có ghi ngày cập nhật. Khi bạn mua xe, người bán là Smile Motor; hotline và Zalo: 0888.266.233.</p>
-<h2>Cách chúng tôi viết</h2><ul><li>Bài viết mới hoàn toàn, có tên người viết (bút danh của ban biên tập) ở cuối bài.</li><li>Luật và quy định trích từ văn bản đang có hiệu lực, có ghi số hiệu.</li><li>Không bịa con số: giá chưa có thì ghi "liên hệ".</li></ul>
-<h2>Người viết</h2><ul>{"".join('<li><a href="/tac-gia/%s/">%s</a>: %s</li>' % (k, v["name"], v["bio"]) for k, v in site["authors"].items())}</ul>
-<p class="luu-y">Phố Xe Điện (trang này) không liên quan tới chuỗi cửa hàng hay website nào khác có tên tương tự.</p></div></div>'''
+<p>Giá trên trang là giá tham khảo theo bảng giá Smile Motor, cập nhật hằng tháng. Mua xe tại 6 cửa hàng Smile Motor, gọi hoặc Zalo 0888.266.233.</p>
+<h2>Cách chúng tôi viết</h2><ul><li>Giá có ghi ngày cập nhật, mẫu chưa có giá ghi "Liên hệ".</li><li>Luật và quy định trích từ văn bản đang có hiệu lực, có ghi số hiệu.</li><li>Mỗi bài có tên người viết.</li></ul>
+<h2>Người viết</h2><ul>{"".join('<li><a href="/tac-gia/%s/">%s</a>: %s</li>' % (k, v["name"], v["bio"]) for k, v in site["authors"].items())}</ul></div></div>'''
     return f
 
 
@@ -402,10 +401,11 @@ COMVN = {
              "nen": "#f3f4f4", "nen2": "#ffffff", "hero": "radial-gradient(120% 90% at 85% 10%,#2c3a2a,#15181a 70%)",
              "nhan-hero": "#a6f07a", "btn": "#6fd92e", "bong": "rgba(15,17,18,.35)",
              "keu": "#15181a", "chan": "#0f1112", "gia": "#2b8f1e"},
-    "menu": [("Xe cho học sinh", "/cam-nang/?muc=hoc-sinh"), ("Tuổi, bằng lái, biển số", "/cam-nang/?muc=giay-to"), ("Pin, sạc, sửa xe", "/cam-nang/?muc=sua-xe"),
-             ("Xe ga 50cc cho học sinh", "/xe-ga-50cc-cho-hoc-sinh/"), ("Xe số 50cc cho học sinh", "/xe-so-50cc-cho-hoc-sinh/"),
+    # xe trước, tin tức sau (anh góp ý 20/10 18:58: trực quan như web bán xe)
+    "menu": [("Xe ga 50cc cho học sinh", "/xe-ga-50cc-cho-hoc-sinh/"), ("Xe số 50cc cho học sinh", "/xe-so-50cc-cho-hoc-sinh/"),
              ("Xe máy điện cho học sinh", "/xe-may-dien-cho-hoc-sinh/"), ("Xe đạp điện cho học sinh", "/xe-dap-dien-cho-hoc-sinh/"),
-             ("Tất cả cẩm nang", "/cam-nang/"), ("Hỏi đáp", "/hoi-dap/"), ("Giá xe 50cc", "/gia-xe-50cc/"), ("Giới thiệu", "/gioi-thieu/")],
+             ("Giá xe 50cc", "/gia-xe-50cc/"), ("Tin tức, cẩm nang", "/cam-nang/"), ("Tuổi, bằng lái, biển số", "/cam-nang/?muc=giay-to"),
+             ("Pin, sạc, sửa xe", "/cam-nang/?muc=sua-xe"), ("Hỏi đáp", "/hoi-dap/"), ("Giới thiệu", "/gioi-thieu/")],
     "foot": [("Cẩm nang", "/cam-nang/"), ("Hỏi đáp", "/hoi-dap/"), ("Giá xe 50cc", "/gia-xe-50cc/"), ("Giới thiệu", "/gioi-thieu/")],
     "footer": "Phố Xe Điện (phoxedien.com.vn) là cẩm nang và hỏi đáp về xe 50cc, xe điện: chọn xe cho học sinh, tuổi, bằng lái, biển số, pin sạc và bảo dưỡng.",
     "authors": {
@@ -416,15 +416,15 @@ COMVN = {
     "articles": BAI_COMVN,
     "chat": "phoxedien.com.vn", "hot": "0833.666.916", "bot": "Ngọc Anh",
 }
-COMVN["cta_title"] = "Còn băn khoăn? Hỏi người bán xe"
-COMVN["cta_text"] = "Chat hoặc gọi hotline Xe điện Smile 0888.266.233, nhân viên trả lời về giá, giấy tờ và mẫu hợp với con. Người bán là Smile Motor."
+COMVN["cta_title"] = "Cần tư vấn chọn xe cho con?"
+COMVN["cta_text"] = "Gọi hoặc nhắn Zalo 0888.266.233, nhân viên Smile Motor tư vấn giá, giấy tờ và mẫu xe hợp với con."
 
 FAQ_COMVN = [
     ("Học sinh bao nhiêu tuổi được đi xe 50cc?", "Từ đủ 16 tuổi, theo Luật Trật tự, an toàn giao thông đường bộ 2024 (hiệu lực 01/01/2025). Xe gắn máy gồm xe dưới 50cc và xe điện đến 4 kW, tốc độ thiết kế đến 50 km/h."),
     ("Đi xe 50cc có cần bằng lái không?", "Không. Xe gắn máy không thuộc hạng giấy phép lái xe nào. Người đi vẫn phải mang đăng ký xe, bảo hiểm bắt buộc và giấy tờ tuỳ thân."),
     ("Xe điện hay xe 50cc rẻ hơn khi đi hằng ngày?", "Tiền sạc điện mỗi km thường thấp hơn tiền xăng. Bù lại xe điện có chi phí thay pin sau vài năm. Xem bài chọn xe cho con để tính đủ hai khoản."),
     ("Xe điện không lên nguồn có phải hỏng pin không?", 'Chưa chắc. Nhiều lần chỉ do khoá, cầu chì, giắc nối hoặc công tắc phanh. Xem <a href="/sua-xe/xe-dien-khong-len-nguon/">4 chỗ tự kiểm</a> trước khi gọi thợ.'),
-    ("Muốn mua xe thì liên hệ ai?", "Phố Xe Điện là trang cẩm nang do Smile Motor biên soạn. Bấm Chat trên trang hoặc gọi, nhắn Zalo 0888.266.233, người bán là Smile Motor."),
+    ("Muốn mua xe thì liên hệ ai?", "Smile Motor có 6 cửa hàng ở TP.HCM, Đồng Tháp và Phan Thiết, mở cửa 8h–21h. Gọi hoặc nhắn Zalo 0888.266.233 để được tư vấn và đặt xe."),
 ]
 
 
