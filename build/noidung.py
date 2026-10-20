@@ -379,12 +379,13 @@ VN["pages"][0]["schemas"] = []
 # =====================================================================
 COMVN = {
     "domain": "phoxedien.com.vn", "sitename": "Phố Xe Điện: cẩm nang và hỏi đáp xe 50cc, xe điện",
-    "tagline": "Cẩm nang xe 50cc và xe điện", "theme": "#f5fdee", "skin": "sup", "logo_ten": "Phố Xe Điện",
+    "tagline": "Cẩm nang xe 50cc và xe điện", "theme": "#0f1112", "skin": "sup", "logo_ten": "Phố Xe Điện",
     "icon": ICON_COMVN, "logo_svg": logo_svg(ICON_COMVN, "CẨM NANG XE 50CC", "#14280f", "#3aa52a"), "favicon": fav(ICON_COMVN),
-    "vars": {"c1": "#14280f", "c2": "#3aa52a", "c2d": "#2b8f1e", "chu": "#14280f", "phu": "#4b5a45", "vien": "#dfe9d7",
-             "nen": "#f5fdee", "nen2": "#f3fceb", "hero": "linear-gradient(165deg,#f3fceb,#ffffff)",
-             "nhan-hero": "#2b8f1e", "btn": "linear-gradient(135deg,#5cc93a,#2b8f1e)", "bong": "rgba(43,143,30,.45)",
-             "keu": "#0f2a1a", "chan": "#0f2a1a", "gia": "#c2275f"},
+    # Bảng màu M5 anh chọn 20/10 (thay mint): đầu trang và thanh đáy #0F1112, nền #F3F4F4, nút xanh chanh, giá xanh #2B8F1E
+    "vars": {"c1": "#1c2124", "c2": "#3aa52a", "c2d": "#2b8f1e", "chu": "#1c2124", "phu": "#5d666c", "vien": "#dce0e2",
+             "nen": "#f3f4f4", "nen2": "#ffffff", "hero": "radial-gradient(120% 90% at 85% 10%,#2c3a2a,#15181a 70%)",
+             "nhan-hero": "#a6f07a", "btn": "#6fd92e", "bong": "rgba(15,17,18,.35)",
+             "keu": "#15181a", "chan": "#0f1112", "gia": "#2b8f1e"},
     "menu": [("Xe cho học sinh", "/cam-nang/?muc=hoc-sinh"), ("Tuổi, bằng lái, biển số", "/cam-nang/?muc=giay-to"), ("Pin, sạc, sửa xe", "/cam-nang/?muc=sua-xe"),
              ("Xe ga 50cc cho học sinh", "/xe-ga-50cc-cho-hoc-sinh/"), ("Xe số 50cc cho học sinh", "/xe-so-50cc-cho-hoc-sinh/"),
              ("Xe máy điện cho học sinh", "/xe-may-dien-cho-hoc-sinh/"), ("Xe đạp điện cho học sinh", "/xe-dap-dien-cho-hoc-sinh/"),

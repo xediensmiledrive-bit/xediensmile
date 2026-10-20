@@ -229,6 +229,8 @@ def logo_html(site, ten, dau):
     if not co_logo(site):
         return ('<a class="logo" href="/" aria-label="%s - trang chủ">%s<span><b>%s</b><small>%s</small></span></a>' % (site["sitename"], site["icon"], ten, site["tagline"])
                 if dau else '<a class="logo" href="/">%s<span><b>%s</b><small>%s</small></span></a>' % (site["icon"], ten, site["tagline"]))
+    if os.path.isfile(os.path.join(HERE, "logo", site["domain"], "logo-nen-toi.svg")):  # đầu trang, chân trang nền tối (M5 .com.vn)
+        return '<a class="logo logo-anh toi" href="/"><img src="/logo-nen-toi.svg" alt="%s" height="40"></a>' % html.escape(site["sitename"])
     return '<a class="logo logo-anh%s" href="/"><img src="/logo.svg" alt="%s" height="40"></a>' % ("" if dau else " chan", html.escape(site["sitename"]))
 
 
@@ -282,7 +284,7 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
                              "url": "https://%s/" % d, "inLanguage": "vi"})
     skin = site.get("skin")
     skin_head = ('<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">'
-                 '<link rel="stylesheet" href="/skin-%s.css?v=4">' % skin) if skin else ""
+                 '<link rel="stylesheet" href="/skin-%s.css?v=5">' % skin) if skin else ""
     ten = site.get("logo_ten", "PHỐ <i>XE ĐIỆN</i>")
     goi_dau = ('<a class="nut-goi" href="tel:%s" aria-label="Gọi %s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></a>' % (TEL, HOTLINE)) if skin else ""
     if skin:

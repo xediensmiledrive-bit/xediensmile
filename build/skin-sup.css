@@ -102,3 +102,36 @@
 .skin-sup .o-xe .hoi-gia{background:var(--lime);color:var(--limeTx);border-radius:14px}
 /* Khung SB1 "Nền sạch" khi chưa có ảnh đóng khung: nền trắng ngả mint, ảnh hoà nền */
 .skin-sup .o-xe img:not([src*="/khung/"]){background:linear-gradient(#fff 62%,#f5fdee);mix-blend-mode:multiply}
+
+/* ===== Bảng màu M5 (anh chọn 20/10, thay mint; giữ Lexend + bố cục) ===== */
+.skin-sup{--mint:#f3f4f4;--ink:#1c2124;--ink2:#5d666c;--line:#dce0e2;--lime:#6fd92e;--limeTx:#0f1112;--pinkTx:#2b8f1e;--forest:#0f1112;--g3:#2b8f1e;--cream:#6fd92e;
+  background:#f3f4f4;color:#1c2124}
+.skin-sup .top{background:#0f1112;border-bottom:0}
+.skin-sup .top.cuon{box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.skin-sup .nut-menu{background:#2a2f33;border:0}
+.skin-sup .nut-menu span,.skin-sup .nut-menu span:before,.skin-sup .nut-menu span:after{background:#e3e7e9}
+.skin-sup .ngan-menu{background:#fff}
+.skin-sup .hero{background:radial-gradient(120% 90% at 85% 10%,#2c3a2a,#15181a 70%);color:#fff;border:0;box-shadow:0 18px 40px -26px rgba(0,0,0,.6)}
+.skin-sup .hero p{color:#c9cfd2}
+.skin-sup .hero h1 em{color:#0f1112;background:#6fd92e}
+.skin-sup .nhan{background:#1e2326;color:#a6f07a}
+.skin-sup .hinh-hero{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.1)}
+.skin-sup .sticker{background:#6fd92e;color:#0f1112}
+.skin-sup .btn-chinh{background:#6fd92e;color:#0f1112;box-shadow:0 8px 18px -8px rgba(111,217,46,.6)}
+.skin-sup .hero .btn-phu{background:#2a2f33;color:#e3e7e9;border:0}
+.skin-sup .chip.on,.skin-sup .chip:hover{background:#6fd92e;border-color:#6fd92e;color:#0f1112}
+.skin-sup .bang .dau,.skin-sup .noi-dung th,.skin-sup .bai-muse th{background:#e9eced;color:#1c2124}
+.skin-sup .bang .gia,.skin-sup .the-xe .gia,.skin-sup .o-xe .gia{color:#2b8f1e}
+.skin-sup .nhanh,.skin-sup .bai-muse .tra-loi-nhanh{background:#fff;border-color:#6fd92e}
+.skin-sup .keu,.skin-sup .bai-muse .khoi-chot{background:#15181a}
+.skin-sup .keu .btn-phu{background:#2a2f33;border-color:#2a2f33;color:#e3e7e9}
+.skin-sup footer{background:#0f1112;color:#c9cfd2}
+.skin-sup .day.dock{background:#0f1112;border-top:0}
+.skin-sup .dock .hoi,.skin-sup .dock .zalo{background:#2a2f33;color:#e3e7e9}
+.skin-sup .dock .hoi svg{color:#a6f07a}
+.skin-sup .dock .goi{background:#6fd92e;color:#0f1112;box-shadow:none}
+.skin-sup .chat-dau{background:#0f1112}
+.skin-sup .tn.toi{background:#2b8f1e}
+.skin-sup .o-xe img:not([src*="/khung/"]){background:#e9eced;mix-blend-mode:multiply}
+.skin-sup .o-xe .hoi-gia{background:#6fd92e;color:#0f1112}
+.skin-sup .logo-anh.toi img{height:40px}
