@@ -12,8 +12,8 @@ from noidung import (NHOM, THANG, NGAY_VN, VN, COMVN, vnd, models_of, bang, faq_
 
 TOI_THIEU = 2
 # Thứ tự ưu tiên từ khoá chung (anh chốt 20/10): xediensmile/smilemotor > dvmotor.vn/dvmotors > 2 web phoxedien.
-# Hãng do web DV Motor giữ từ khoá: trang hãng vẫn có cho khách xem nhưng ẩn khỏi Google để không giành hạng.
-NHUONG_HANG = {"dv-motor", "dvmotor", "takashi"}
+# Anh chốt 10:09: trùng từ khoá thì viết khác góc, mỗi web số điện thoại riêng, không ẩn trang nào. Để trống.
+NHUONG_HANG = set()
 LUAT = "Luật Trật tự, an toàn giao thông đường bộ 2024 (hiệu lực 01/01/2025)"
 
 # Loại xe trên phoxedien.vn: khoá -> (đường dẫn, tên)
