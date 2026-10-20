@@ -21,6 +21,14 @@ import anhxe  # noqa: E402
 _vn, _comvn = noidung.VN, noidung.COMVN
 for _k in ("may", "dap"):
     noidung.CHIP_HANG[_k] = hang.chip_hang(_k, hang.LOAI_VN[_k][0])
+# Smile ngừng bán xe đạp điện từ 25/9/2026: trang giữ dạng thông tin + mẫu tương đương đang bán (luật: không bịa giá)
+if not noidung.models_of("dap"):
+    _tg = [m for m in hang.sap(noidung.models_of("may")) if m.get("price") and (m.get("brand") or "") in ("DV Motor", "Dibao", "Detech", "Yaka")][:6]
+    if _tg:
+        noidung.CHIP_HANG["dap"] = ('<section><div class="tieude"><h2>Mẫu tương đương đang bán tại Smile</h2></div>'
+                                    '<p class="meta">Smile Motor hiện không bán xe đạp điện. Nếu con đã đủ 16 tuổi, đây là các mẫu xe máy điện giá thấp nhất đang có, không cần bằng lái:</p>'
+                                    '<div class="the bang hd-in">%s<div class="chu-thich">Giá tham khảo cập nhật %s.</div></div></section>'
+                                    % ("".join(hang.dong(m, "may") for m in _tg), noidung.NGAY_VN)) + noidung.CHIP_HANG.get("dap", "")
 for _p in _vn["pages"]:
     _f = _p.get("body")
     if getattr(_f, "faqs", None):

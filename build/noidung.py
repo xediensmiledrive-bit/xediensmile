@@ -40,9 +40,20 @@ def vnd(n):
     return "{:,}".format(int(n)).replace(",", ".") + "đ"
 
 
+# Smile bán xe số 50cc dáng wave nhưng file giá ghi "Xe Số 50cc" (luồng giá trang trống, 20/10): ghép theo tên mẫu
+WAVE_TEN = ["espero classic vvip ii", "espero 50c2a-2", "espero plus 2", "espero 50c3he",
+            "kaiser w2", "kaiser m2", "kaiser d2", "daelim si7"]
+
+
 def models_of(k):
     types = NHOM[k][1]
+    if k == "wave":
+        return [m for m in MODELS if (m.get("type") or "").lower() == "wave"
+                or ((m.get("type") or "").lower() in NHOM["so"][1] and any(t in (m.get("name") or "").lower() for t in WAVE_TEN))]
     return [m for m in MODELS if (m.get("type") or "").lower() in types]
+
+
+NGUNG_BAN = {"dap", "ba"}
 
 
 def rows(k, limit=None):
@@ -54,6 +65,8 @@ def rows(k, limit=None):
             spec = " · ".join(x for x in [m.get("brand"), m.get("range"), m.get("speed")] if x)
             g = '<span class="gia">%s</span>' % vnd(m["price"]) if m.get("price") else '<span class="gia lh">Liên hệ</span>'
             out.append('<div class="dong" data-n="%s">%s<div class="ten">%s<small>%s</small></div>%s</div>' % (k, anhxe.tn(m), m["name"], spec or NHOM[k][0], g))
+    elif k in NGUNG_BAN:
+        return ""  # Smile ngừng bán từ 25/9/2026: không liệt kê hàng chờ giá
     else:
         for b in CHO[k][:limit]:
             ten = b if k in ("ba", "so", "wave") else "%s %s" % (NHOM[k][0], b)
@@ -67,6 +80,9 @@ def gia_tu(k):
 
 
 def bang(keys, bid, limit=None, loc=True):
+    keys = [k for k in keys if rows(k, 1)] or keys[:0]
+    if not keys:
+        return ""
     chips = ""
     if loc and len(keys) > 1:
         chips = '<div class="chips" style="padding:0 0 12px" data-loc="%s"><span class="chip on" data-k="all">Tất cả</span>%s</div>' % (

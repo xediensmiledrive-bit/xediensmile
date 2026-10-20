@@ -217,6 +217,8 @@ def trang_vn():
         goc, ten = LOAI_VN[k]
         out.append(_trang_loai(VN, k, goc, ten, GIOI_THIEU_VN[k], FAQ_VN[k], ("minh-trang", "Minh Trang"), "M", chip_hang(k, goc)))
     for k in LOAI_VN:
+        if k == "wave":
+            continue  # mẫu dáng wave đã nằm trong trang hãng xe số 50cc, không dựng trang hãng trùng
         for b, ms in hang_cua(k).items():
             out.append(trang_hang(k, b, ms))
     return out
