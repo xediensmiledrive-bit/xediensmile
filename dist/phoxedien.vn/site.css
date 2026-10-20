@@ -215,3 +215,32 @@ footer .cua-hang{margin-top:14px}footer .cua-hang ul{list-style:none;margin-top:
 .chat-o input{flex:1;min-width:0;height:44px;border-radius:12px;border:1.5px solid var(--vien);padding:0 12px;font:inherit;font-size:16px}
 .chat-o button{width:44px;height:44px;border-radius:12px;border:0;background:var(--btn);color:#fff;font-size:16px;cursor:pointer}
 @media (min-width:760px){.chat{left:auto;right:20px;bottom:20px;width:380px}}
+/* Bài Muse (Khung A) */
+.bai-muse h1{font-size:30px;font-weight:800;color:var(--c1);margin:8px 0 8px;line-height:1.25}
+.bai-muse .anh-bia{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:16px;margin:10px 0 4px;background:var(--nen)}
+.bai-muse .dong-tac-gia{font-size:13px;color:var(--phu);margin:0 0 6px}
+.bai-muse .tra-loi-nhanh{border:2px solid var(--c2);border-radius:16px;padding:14px 16px;margin:18px 0;background:var(--nen2)}
+.bai-muse .tra-loi-nhanh h2{font-size:17px;color:var(--c2d);margin:0 0 6px}
+.bai-muse .tra-loi-nhanh ul{margin:6px 0 0 18px}
+.bai-muse .muc-luc a{display:block}
+.bai-muse h2{font-size:24px;color:var(--c1);margin:28px 0 10px;scroll-margin-top:76px}
+.bai-muse h3{font-size:19px;margin:20px 0 6px}
+.bai-muse p{margin:0 0 14px}
+.bai-muse ul,.bai-muse ol{margin:0 0 14px 20px}
+.bai-muse li{margin:5px 0}
+.bai-muse a{color:var(--c2d);font-weight:600}
+.bai-muse table{width:100%;border-collapse:collapse;margin:0 0 16px;font-size:14.5px;display:block;overflow-x:auto}
+.bai-muse th,.bai-muse td{border:1px solid var(--vien);padding:9px 10px;text-align:left;vertical-align:top}
+.bai-muse th{background:var(--nen);color:var(--c1)}
+.bai-muse .hoi-dap details{border:1px solid var(--vien);border-radius:14px;margin-bottom:8px;background:#fff;overflow:hidden}
+.bai-muse .hoi-dap summary{list-style:none;padding:14px 44px 14px 16px;font-weight:600;cursor:pointer;position:relative;font-size:15px}
+.bai-muse .hoi-dap summary::-webkit-details-marker{display:none}
+.bai-muse .hoi-dap summary:after{content:"+";position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:22px;color:var(--c2)}
+.bai-muse .hoi-dap details[open] summary:after{transform:translateY(-50%) rotate(45deg)}
+.bai-muse .hoi-dap details>*:not(summary){padding:0 16px 14px;margin:0}
+.bai-muse .khoi-chot{border-radius:20px;padding:20px 18px;margin:22px 0;color:#fff;background:var(--keu)}
+.bai-muse .khoi-chot h2,.bai-muse .khoi-chot h3{color:#fff;margin-top:0}
+.bai-muse .khoi-chot a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;margin:6px 6px 0 0;border-radius:14px;background:#fff;color:var(--c1);text-decoration:none}
+.bai-muse .khoi-chot a.nut-zalo{background:#0068ff;color:#fff}
+.bai-muse .chu-ky{margin:26px 0 0;padding:16px;border-radius:16px;background:var(--nen);font-size:14.5px}
+@media(min-width:900px){.bai-muse h1{font-size:40px}}

@@ -87,3 +87,13 @@
 .skin-sup .chat-than{background:var(--mint)}
 .skin-sup .tn.toi{background:var(--g2)}
 .skin-sup .chat-goi button,.skin-sup .chat-goi a{border-color:var(--line);color:var(--g3);font-weight:500}
+
+/* Bài Muse */
+.skin-sup .bai-muse h1,.skin-sup .bai-muse h2{color:var(--ink)}
+.skin-sup .bai-muse .tra-loi-nhanh{border-color:var(--lime);background:#f3fceb;border-radius:20px}
+.skin-sup .bai-muse .tra-loi-nhanh h2{color:var(--g3)}
+.skin-sup .bai-muse a{color:var(--g3)}
+.skin-sup .bai-muse .khoi-chot{background:var(--forest)}
+.skin-sup .bai-muse .khoi-chot a{background:var(--lime);color:var(--limeTx)}
+.skin-sup .bai-muse .khoi-chot a.nut-zalo{background:#0068ff;color:#fff}
+.skin-sup .bai-muse .hoi-dap details{border-radius:20px}

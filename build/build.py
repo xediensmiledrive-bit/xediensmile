@@ -14,6 +14,7 @@ sys.path.insert(0, HERE)
 from noidung import SITES, keu  # noqa: E402
 import noidung  # noqa: E402
 import hang  # noqa: E402
+import muse  # noqa: E402
 
 # Trang loại xe và trang hãng cho 2 web (tối ưu SEO 20/10: cả 2 web đánh xe xăng 50cc lẫn xe điện)
 _vn, _comvn = noidung.VN, noidung.COMVN
@@ -91,7 +92,42 @@ def stores_html(site):
     return '<div class="cua-hang"><b>Cửa hàng Smile Motor · mở cửa 8h–21h</b><ul>%s</ul></div>' % li
 
 
-def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,follow"):
+def og_img_html(site, src):
+    if not src:
+        return ""
+    return ('<meta property="og:image" content="https://%s%s">' % (site["domain"], src) +
+            '<meta property="og:image:width" content="1200"><meta property="og:image:height" content="675">')
+
+
+def muse_page(site, a, src):
+    """Bài Muse đã đạt soát: giữ nguyên đoạn <article> Khung A, thêm đường dẫn, ảnh bìa, bài liên quan."""
+    au = site["authors"][a["author"]]
+    d = site["domain"]
+    ngay = a["ngay"] or NGAY
+    crumbs = [("Trang chủ", "/"), (a["cat_name"], a["cat_url"]), (a["h1"], a["url"])]
+    art = {"@context": "https://schema.org", "@type": "Article", "headline": a["h1"], "description": a["desc"],
+           "datePublished": ngay, "dateModified": ngay, "inLanguage": "vi",
+           "author": {"@type": "Person", "name": au["name"], "url": "https://%s/tac-gia/%s/" % (d, a["author"])},
+           "publisher": {"@type": "Organization", "name": "Phố Xe Điện", "logo": {"@type": "ImageObject", "url": "https://%s/logo.svg" % d}},
+           "mainEntityOfPage": "https://%s%s" % (d, a["url"])}
+    if src:
+        art["image"] = "https://%s%s" % (d, src)
+    sch = [art] + ([faq_ld(a["faq"])] if a["faq"] else [])
+    bai = a["html"]
+    if src:
+        img = '<img class="anh-bia" src="%s" width="1200" height="675" alt="%s" loading="eager" fetchpriority="high">' % (src, html.escape(a["anh_alt"]))
+        bai = bai.replace("</h1>", "</h1>" + img, 1) if "</h1>" in bai else img + bai
+    rel = "".join(f'<a class="bai-nho" href="{r["url"]}"><div class="o">{r["emoji"]}</div><div><div class="muc">{r["cat_name"]}</div><h3>{r["h1"]}</h3><div class="meta">{r["read"]} phút đọc</div></div></a>'
+                  for r in ([x for x in site["articles"] if x["cat_url"] == a["cat_url"] and x["url"] != a["url"]] or [x for x in site["articles"] if x["url"] != a["url"]])[:6])
+    body = f'''<div class="wrap">
+<div class="duong"><a href="/">Trang chủ</a> › <a href="{a['cat_url']}">{a['cat_name']}</a> › <b>{html.escape(a['crumb'])}</b></div>
+{bai}
+{'<section class="hd-in"><div class="tieude"><h2>Bài liên quan</h2></div>%s</section>' % rel if rel else ''}
+</div>'''
+    return page(site, a["url"], a["title"], a["desc"], body, sch, crumbs, og_img=src)
+
+
+def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,follow", og_img=None):
     d = site["domain"]
     css_vars = ";".join("--%s:%s" % kv for kv in site["vars"].items())
     menu = "".join('<a href="%s">%s</a>' % (u, n) for n, u in site["menu"])
@@ -105,7 +141,7 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
                              "url": "https://%s/" % d, "inLanguage": "vi"})
     skin = site.get("skin")
     skin_head = ('<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">'
-                 '<link rel="stylesheet" href="/skin-%s.css?v=1">' % skin) if skin else ""
+                 '<link rel="stylesheet" href="/skin-%s.css?v=2">' % skin) if skin else ""
     ten = site.get("logo_ten", "PHỐ <i>XE ĐIỆN</i>")
     goi_dau = ('<a class="nut-goi" href="tel:%s" aria-label="Gọi %s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></a>' % (TEL, HOTLINE)) if skin else ""
     if skin:
@@ -135,9 +171,10 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
 <meta property="og:description" content="{html.escape(desc)}">
 <meta property="og:url" content="https://{d}{path}">
 <meta property="og:locale" content="vi_VN">
+{og_img_html(site, og_img)}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 {FONT}
-<link rel="stylesheet" href="/site.css?v=1">
+<link rel="stylesheet" href="/site.css?v=2">
 {skin_head}
 <style>:root{{{css_vars}}}</style>
 {sch}
@@ -243,22 +280,30 @@ def build(site):
     open(os.path.join(base, ".htaccess"), "w").write(HTACCESS)
     for fn, svg in (("logo.svg", site["logo_svg"]), ("favicon.svg", site["favicon"])):
         open(os.path.join(base, fn), "w").write(svg)
-    urls = []
+    urls, lastmod = [], {}
+    bai_muse = muse.doc_bai(site)
+    site["articles"][:0] = bai_muse  # sửa tại chỗ để trang chủ, chuyên mục (đọc BAI_VN/BAI_COMVN) thấy bài mới
+    for a in bai_muse:
+        write(site, a["url"], muse_page(site, a, muse.chep_anh(a, base)))
+        urls.append(a["url"])
+        lastmod[a["url"]] = a["ngay"] or NGAY
     for p in site["pages"]:
         write(site, p["url"], page(site, p["url"], p["title"], p["desc"], p["body"](site), p.get("schemas", []), p.get("crumbs"), p.get("robots", "index,follow")))
         if p.get("robots", "index,follow").startswith("index"):
             urls.append(p["url"])
     for a in site["articles"]:
+        if a.get("muse"):
+            continue
         write(site, a["url"], article_page(site, a))
         urls.append(a["url"])
     for slug in site["authors"]:
         write(site, "/tac-gia/%s/" % slug, author_page(site, slug))
         urls.append("/tac-gia/%s/" % slug)
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(
-        "<url><loc>https://%s%s</loc><lastmod>%s</lastmod></url>\n" % (d, u, NGAY) for u in urls) + "</urlset>\n"
+        "<url><loc>https://%s%s</loc><lastmod>%s</lastmod></url>\n" % (d, u, lastmod.get(u, NGAY)) for u in urls) + "</urlset>\n"
     open(os.path.join(base, "sitemap.xml"), "w").write(sm)
     open(os.path.join(base, "robots.txt"), "w").write("User-agent: *\nAllow: /\n\nSitemap: https://%s/sitemap.xml\n" % d)
-    print(d, len(urls), "trang")
+    print(d, len(urls), "trang,", len(bai_muse), "bài Muse")
 
 
 for s in SITES:

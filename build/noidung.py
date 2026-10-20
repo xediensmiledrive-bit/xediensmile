@@ -175,7 +175,7 @@ ART_VN = {a["url"]: a for a in BAI_VN}
 
 
 def vn_home(s):
-    so_sanh = [a for a in BAI_VN]
+    so_sanh = BAI_VN[:8]
     return f'''<div class="hero"><span class="cau a"></span><span class="cau b"></span>
 <div><span class="nhan">Cập nhật tháng {THANG}</span><h1>Bảng giá xe điện <em>tháng {THANG}</em></h1>
 <p>Giá tham khảo mới nhất của xe máy điện, xe đạp điện và xe 50cc, kèm so sánh để chọn đúng xe cho đi học, đi làm.</p></div>
@@ -390,7 +390,7 @@ def comvn_home(s):
         ("Con 14–15 tuổi", 'Chưa đủ 16 tuổi thì chỉ nên đi xe đạp hoặc <b>xe đạp điện</b>. Đọc <a href="/hoc-sinh/chon-xe-cho-con-hoc-cap-3/">cách chọn xe cho con</a>.'),
         ("Con đủ 16", 'Đi được xe gắn máy: xe dưới 50cc hoặc xe máy điện đến 4 kW, không cần bằng lái. Xem <a href="/giay-to/16-tuoi-di-xe-50cc-can-giay-to-gi/">giấy tờ cần có</a>.'),
         ("Xe đang hỏng", 'Xe điện không lên nguồn? Thử <a href="/sua-xe/xe-dien-khong-len-nguon/">4 bước tự kiểm</a> trước khi gọi thợ.')])}</section>
-<section><div class="tieude"><h2>Cẩm nang</h2><a href="/cam-nang/">Tất cả ›</a></div>{list_bai(BAI_COMVN, ico=xe_svg("#fff", "#6fd92e"))}</section>
+<section><div class="tieude"><h2>Cẩm nang</h2><a href="/cam-nang/">Tất cả ›</a></div>{list_bai(BAI_COMVN[:8], ico=xe_svg("#fff", "#6fd92e"))}</section>
 {keu(COMVN["cta_title"], COMVN["cta_text"])}
 <section class="hd-in"><div class="tieude"><h2>Hỏi nhanh đáp gọn</h2><a href="/hoi-dap/">Thêm ›</a></div>{faq_html_local(FAQ_COMVN[:3])}</section>
 </div>'''
