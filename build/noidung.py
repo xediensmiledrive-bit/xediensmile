@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # LUẬT CỨNG anh chốt 20/10 11:19: nút bấm .vn đa phần màu cam (#f26b1d), .com.vn xanh lá non sáng (#6fd92e). Không đổi lẫn.
 """Nội dung 2 web Phố Xe Điện. Giá đọc từ gia-smile.json nếu có; chưa có thì ghi "Liên hệ"."""
+import html
 import json, os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -36,6 +37,13 @@ CHO = {
     "wave": ["Wave 50cc Detech", "Wave 50cc Victoria", "Wave 50cc Daelim"],
 }
 
+
+
+def o_bai(a):
+    """Ô ảnh đầu dòng trong danh sách bài: ảnh bìa nếu có, chưa có thì ô chữ theo chuyên mục (không dùng emoji)."""
+    if a.get("anh"):
+        return '<div class="o"><img src="/anh/%s.webp" alt="" width="144" height="144" loading="lazy"></div>' % a["slug"]
+    return '<div class="o o-chu"><span>%s</span></div>' % html.escape(a.get("cat_name") or "")
 
 def vnd(n):
     return "{:,}".format(int(n)).replace(",", ".") + "đ"
@@ -83,9 +91,11 @@ def rows(k, limit=None):
             out.append('<div class="dong" data-n="%s" data-hang="%s">%s<div class="ten">%s<small>%s</small></div>%s</div>' % (k, anhxe._slug(m.get("brand") or ""), anhxe.tn(m), m["name"], spec or NHOM[k][0], g))
     elif k in NGUNG_BAN:
         # Smile ngừng bán từ 25/9/2026: chỉ hiện giá thị trường (nếu có), không liệt kê hàng chờ giá
-        for m in sorted(THI_TRUONG.get(k, []), key=lambda m: m["price"])[:limit]:
+        tt = sorted(THI_TRUONG.get(k, []), key=lambda m: m["price"])[:limit]
+        co_anh = any(anhxe.anh(m.get("name")) for m in tt)  # cả nhóm chưa có ảnh thì không để ô trống đầu dòng
+        for m in tt:
             out.append('<div class="dong" data-n="%s">%s<div class="ten">%s<small>%s</small></div><span class="gia">%s</span></div>' % (
-                k, anhxe.tn(m), m["name"], " · ".join(x for x in [m["brand"], "giá thị trường"] if x), vnd(m["price"])))
+                k, anhxe.tn(m) if co_anh else "", m["name"], " · ".join(x for x in [m["brand"], "giá thị trường"] if x), vnd(m["price"])))
     else:
         for b in CHO[k][:limit]:
             ten = b if k in ("ba", "so", "wave") else "%s %s" % (NHOM[k][0], b)
@@ -178,7 +188,7 @@ def list_bai(arts, big_first=True, ico=None):
         if i == 0 and big_first:
             out.append(f'<a class="the bai-to hd-in" href="{a["url"]}" style="display:block;margin-bottom:6px"><div class="anh">{ico or ""}</div><div class="nd"><div class="muc">{a["cat_name"]}</div><h3>{a["h1"]}</h3><div class="meta">{a["read"]} phút đọc · cập nhật {NGAY_VN}</div></div></a>')
         else:
-            out.append(f'<a class="bai-nho hd-in" href="{a["url"]}"><div class="o">{a["emoji"]}</div><div><div class="muc">{a["cat_name"]}</div><h3>{a["h1"]}</h3><div class="meta">{a["read"]} phút đọc</div></div></a>')
+            out.append(f'<a class="bai-nho hd-in" href="{a["url"]}">{o_bai(a)}<div><div class="muc">{a["cat_name"]}</div><h3>{a["h1"]}</h3><div class="meta">{a["read"]} phút đọc</div></div></a>')
     return "".join(out)
 
 
@@ -307,11 +317,20 @@ FAQ_BG_50 = [
 ]
 
 
+def _anh_loai_cat(keys):
+    """Ảnh xe thật đã tách nền của loại xe (build/loai hoặc PXD_ANH/danh-muc), không dùng hình vẽ; chưa có thì bỏ trống."""
+    import trangchu
+    for k in keys:
+        if trangchu.anh_loai(k):
+            return '<div class="anh-loai hd-in"><img src="/loai/%s.webp" alt="%s" width="360" height="270" loading="lazy"></div>' % (k, NHOM[k][0])
+    return ""
+
+
 def vn_cat(slug, h1, desc_p, keys, svg, faqs, extra=""):
     def f(s):
         return f'''<div class="wrap"><div class="duong"><a href="/">Trang chủ</a> › <b>{h1.split(":")[0]}</b></div>
 <div class="dau-trang"><h1>{h1}</h1><div class="tac"><span class="av">M</span><span><a href="/tac-gia/minh-trang/">Minh Trang</a> · cập nhật {NGAY_VN}</span></div></div>
-<div class="hinh-hero hd-in" style="background:var(--hero);height:170px;border-radius:20px;margin:16px 0">{svg}</div>
+{_anh_loai_cat(keys)}
 <div class="noi-dung">{desc_p}</div>
 <section>{bang(keys, "bg-" + slug)}</section>
 {CHIP_HANG.get(slug, "")}
@@ -450,7 +469,7 @@ def comvn_home(s):
 
 def comvn_camnang(s):
     cats = [("hoc-sinh", "Xe cho học sinh"), ("giay-to", "Tuổi, bằng lái, biển số"), ("sua-xe", "Pin, sạc, sửa xe")]
-    items = "".join(f'<a class="bai-nho hd-in" data-n="{a["muc"]}" href="{a["url"]}"><div class="o">{a["emoji"]}</div><div><div class="muc">{a["cat_name"]}</div><h3>{a["h1"]}</h3><div class="meta">{a["read"]} phút đọc · {a["funnel"]}</div></div></a>' for a in BAI_COMVN)
+    items = "".join(f'<a class="bai-nho hd-in" data-n="{a["muc"]}" href="{a["url"]}">{o_bai(a)}<div><div class="muc">{a["cat_name"]}</div><h3>{a["h1"]}</h3><div class="meta">{a["read"]} phút đọc</div></div></a>' for a in BAI_COMVN)
     return f'''<div class="wrap"><div class="duong"><a href="/">Trang chủ</a> › <b>Cẩm nang</b></div>
 <div class="dau-trang"><h1>Cẩm nang xe 50cc, xe điện</h1></div>
 <div class="chips" style="padding:6px 0 12px" data-loc="ds-cn"><span class="chip on" data-k="all">Tất cả</span>{"".join('<span class="chip" data-k="%s">%s</span>' % c for c in cats)}</div>

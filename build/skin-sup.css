@@ -168,3 +168,5 @@
 .skin-sup .dong .gia{color:#2b8f1e}
 .skin-sup .tr-cham button{background:#cfd4d7}
 @media(max-width:480px){.skin-sup .o-xe,.skin-sup .lx,.skin-sup .tin-the{border-radius:18px}.skin-sup .luoi-xe{gap:10px}}
+.skin-sup .bai-nho .o-chu{background:linear-gradient(135deg,#0f1112,#2a3a2a)}
+.skin-sup .bai-nho .o-chu span{color:#a6f07a}

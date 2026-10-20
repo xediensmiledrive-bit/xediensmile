@@ -185,3 +185,13 @@
     f.allow='accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture';f.allowFullscreen=true;f.title=b.getAttribute('aria-label')||'Video';
     b.replaceWith(f)});
 })();
+(function(){
+  /* Tải trước trang khi rê chuột hoặc chạm vào link nội bộ: bấm là mở gần như tức thì */
+  var da={};
+  function tai(e){var a=e.target.closest&&e.target.closest('a[href]');if(!a||a.target||a.hasAttribute('download'))return;
+    var u=new URL(a.href,location.href);if(u.origin!==location.origin||u.pathname===location.pathname||da[u.pathname])return;
+    if(navigator.connection&&(navigator.connection.saveData||/2g/.test(navigator.connection.effectiveType||'')))return;
+    da[u.pathname]=1;var l=document.createElement('link');l.rel='prefetch';l.href=u.pathname;document.head.appendChild(l)}
+  document.addEventListener('mouseover',function(e){clearTimeout(tai.t);tai.t=setTimeout(function(){tai(e)},65)},{passive:true});
+  document.addEventListener('touchstart',tai,{passive:true});
+})();

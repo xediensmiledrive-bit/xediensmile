@@ -399,7 +399,7 @@ def muse_page(site, a, src):
     if src:
         img = '<img class="anh-bia" src="%s" width="1200" height="675" alt="%s" loading="eager" fetchpriority="high">' % (src, html.escape(a["anh_alt"]))
         bai = bai.replace("</h1>", "</h1>" + img, 1) if "</h1>" in bai else img + bai
-    rel = "".join(f'<a class="bai-nho" href="{r["url"]}"><div class="o">{r["emoji"]}</div><div><div class="muc">{r["cat_name"]}</div><h3>{r["h1"]}</h3><div class="meta">{r["read"]} phút đọc</div></div></a>'
+    rel = "".join(f'<a class="bai-nho" href="{r["url"]}">{noidung.o_bai(r)}<div><div class="muc">{r["cat_name"]}</div><h3>{r["h1"]}</h3><div class="meta">{r["read"]} phút đọc</div></div></a>'
                   for r in ([x for x in site["articles"] if x["cat_url"] == a["cat_url"] and x["url"] != a["url"]] or [x for x in site["articles"] if x["url"] != a["url"]])[:6])
     body = f'''<div class="wrap doc">
 <div class="duong"><a href="/">Trang chủ</a> › <a href="{a['cat_url']}">{a['cat_name']}</a> › <b>{html.escape(a['crumb'])}</b></div>
@@ -542,7 +542,7 @@ def article_page(site, a):
             "publisher": {"@type": "Organization", "name": "Phố Xe Điện", "logo": {"@type": "ImageObject", "url": "https://%s/logo.svg" % site["domain"]}},
             "mainEntityOfPage": "https://%s%s" % (site["domain"], a["url"])},
            faq_ld(a["faq"])]
-    rel = "".join(f'<a class="bai-nho" href="{r["url"]}"><div class="o">{r["emoji"]}</div><div><div class="muc">{r["cat_name"]}</div><h3>{r["h1"]}</h3><div class="meta">{r["read"]} phút đọc</div></div></a>'
+    rel = "".join(f'<a class="bai-nho" href="{r["url"]}">{noidung.o_bai(r)}<div><div class="muc">{r["cat_name"]}</div><h3>{r["h1"]}</h3><div class="meta">{r["read"]} phút đọc</div></div></a>'
                   for r in site["articles"] if r["url"] != a["url"])[:4000]
     body = f'''<div class="wrap doc">
 <div class="duong"><a href="/">Trang chủ</a> › <a href="{a['cat_url']}">{a['cat_name']}</a> › <b>{a['crumb']}</b></div>
@@ -564,7 +564,7 @@ def article_page(site, a):
 
 def author_page(site, slug):
     au = site["authors"][slug]
-    lst = "".join(f'<a class="bai-nho" href="{r["url"]}"><div class="o">{r["emoji"]}</div><div><div class="muc">{r["cat_name"]}</div><h3>{r["h1"]}</h3><div class="meta">{r["read"]} phút đọc</div></div></a>'
+    lst = "".join(f'<a class="bai-nho" href="{r["url"]}">{noidung.o_bai(r)}<div><div class="muc">{r["cat_name"]}</div><h3>{r["h1"]}</h3><div class="meta">{r["read"]} phút đọc</div></div></a>'
                   for r in site["articles"] if r["author"] == slug) or '<p class="meta">Bài của %s sẽ sớm có ở đây.</p>' % au["name"]
     url = "/tac-gia/%s/" % slug
     body = f'''<div class="wrap"><div class="duong"><a href="/">Trang chủ</a> › <b>Tác giả</b></div>

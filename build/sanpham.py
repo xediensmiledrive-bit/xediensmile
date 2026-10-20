@@ -99,7 +99,7 @@ def trang(site, k, m):
         a = anhxe.anh(ten)
         if a:
             sp["image"] = "https://%s%s" % (d, a)
-        hinh = ('<img src="%s" alt="%s" width="900" height="900" fetchpriority="high">' % (a, html.escape(ten))) if a else '<div class="khong-anh">%s</div>' % noidung.xe_svg("#3aa52a", "#f26b1d")
+        hinh = ('<img src="%s" alt="%s" width="900" height="900" fetchpriority="high">' % (a, html.escape(ten))) if a else '<div class="khong-anh sp-cho"><b>%s</b><span>Ảnh xe thật đang cập nhật</span></div>' % html.escape(hang or ten)
         return f'''<div class="wrap"><div class="duong"><a href="/">Trang chủ</a> › <a href="{goc}">{loai}</a> › <b>{html.escape(ten)}</b></div>
 <div class="sp">
 <div class="sp-anh">{hinh}</div>
