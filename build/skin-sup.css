@@ -100,3 +100,5 @@
 .skin-sup .o-xe{border-radius:20px}
 .skin-sup .o-xe .gia{color:var(--pinkTx)}
 .skin-sup .o-xe .hoi-gia{background:var(--lime);color:var(--limeTx);border-radius:14px}
+/* Khung SB1 "Nền sạch" khi chưa có ảnh đóng khung: nền trắng ngả mint, ảnh hoà nền */
+.skin-sup .o-xe img:not([src*="/khung/"]){background:linear-gradient(#fff 62%,#f5fdee);mix-blend-mode:multiply}

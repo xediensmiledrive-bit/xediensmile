@@ -12,6 +12,9 @@ MOI_MAU = 3  # số ảnh tối đa chép cho mỗi mẫu
 GOC = os.environ.get("PXD_ANH", "").strip()
 ANH = {}      # tên mẫu (chữ thường) -> [(đường dẫn web, tệp nguồn, hãng)]
 _CHEP = []    # (tệp nguồn, đường dẫn web)
+WEB = ""      # domain đang dựng (build.py đặt), để chọn ảnh đã đóng khung theo từng web
+# Ảnh đóng khung anh chọn 20/10 (.vn SA11 "Sân khấu", .com.vn SB1 "Nền sạch"), vuông 1000x1000, đặt ở
+# PXD_ANH/khung/<domain>/<slug tên mẫu>.webp. Có thì dùng thay ảnh gốc cho web đó.
 
 
 def _slug(s):
@@ -42,20 +45,36 @@ def _nap():
 _nap()
 
 
+def _khung(ten):
+    if not (GOC and WEB and ten):
+        return None
+    f = os.path.join(GOC, "khung", WEB, _slug(ten) + ".webp")
+    return f if os.path.isfile(f) else None
+
+
 def anh(ten):
+    if _khung(ten):
+        return "/anh-xe/khung/%s.webp" % _slug(ten)
     ds = ANH.get((ten or "").strip().lower())
     return ds[0][0] if ds else None
 
 
 def chep(base):
     """Chép ảnh vào web: đổi sang WebP rộng tối đa 900px nếu có Pillow, không thì chép nguyên (vẫn phục vụ được)."""
+    n = 0
+    tm = os.path.join(GOC, "khung", WEB) if GOC and WEB else ""
+    if tm and os.path.isdir(tm):
+        os.makedirs(os.path.join(base, "anh-xe", "khung"), exist_ok=True)
+        for fn in os.listdir(tm):
+            if fn.lower().endswith(".webp"):
+                shutil.copy(os.path.join(tm, fn), os.path.join(base, "anh-xe", "khung", fn))
+                n += 1
     if not _CHEP:
-        return 0
+        return n
     try:
         from PIL import Image
     except Exception:
         Image = None
-    n = 0
     for nguon, web in _CHEP:
         dich = os.path.join(base, web.lstrip("/"))
         os.makedirs(os.path.dirname(dich), exist_ok=True)
