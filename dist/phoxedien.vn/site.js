@@ -1,0 +1,85 @@
+(function(){
+  var d=document,top=d.querySelector('.top');
+  // Đầu trang có viền khi cuộn
+  addEventListener('scroll',function(){top.classList.toggle('cuon',scrollY>8)},{passive:true});
+  // Menu
+  var nut=d.querySelector('.nut-menu');
+  if(nut)nut.addEventListener('click',function(){var m=d.body.classList.toggle('mo');nut.setAttribute('aria-expanded',m)});
+  // Hiện dần khi cuộn tới
+  var els=d.querySelectorAll('.hd-in');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('vao');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px'});
+    els.forEach(function(el){io.observe(el)});
+  }else els.forEach(function(el){el.classList.add('vao')});
+  // Lọc bảng giá theo nhóm
+  d.querySelectorAll('[data-loc]').forEach(function(nhom){
+    var bang=d.getElementById(nhom.getAttribute('data-loc'));
+    nhom.addEventListener('click',function(e){
+      var c=e.target.closest('.chip');if(!c)return;
+      nhom.querySelectorAll('.chip').forEach(function(x){x.classList.toggle('on',x===c)});
+      var k=c.getAttribute('data-k');
+      bang.querySelectorAll('[data-n]').forEach(function(r){r.classList.toggle('an',k!=='all'&&r.getAttribute('data-n')!==k)});
+    });
+  });
+  // Chọn xe giúp tôi
+  d.querySelectorAll('.chon').forEach(function(k){
+    var gy=k.querySelector('.goi-y');
+    k.addEventListener('click',function(e){
+      var b=e.target.closest('button[data-g]');if(!b)return;
+      k.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x===b)});
+      gy.innerHTML=b.getAttribute('data-g');gy.classList.remove('hien');void gy.offsetWidth;gy.classList.add('hien');
+    });
+  });
+})();
+(function(){
+  /* Chatbot kiểu chatbot2: có tên người tư vấn, cây ý định, nút gợi ý, xin số rồi chuyển nhân viên */
+  var d=document,P=window.PXD||{},k=d.querySelector('.chat');if(!k)return;
+  var than=k.querySelector('.chat-than'),goi=k.querySelector('.chat-goi'),f=k.querySelector('.chat-o'),inp=f.querySelector('input');
+  var TEN=P.bot||'bạn tư vấn',HOT=P.hot,opened=false,gotPhone=false,askIdx=0;
+  var DC=(P.stores&&P.stores.length)?P.stores:null;
+  var A={
+    hello:{t:['Chào bạn, em là '+TEN+', tư vấn của Xe điện Smile. Bạn đang tìm xe cho mình hay cho con đi học ạ?'],c:[['Cho con đi học','hoc_sinh'],['Cho mình đi làm','di_lam'],['Hỏi giá','gia'],['Hỏi giấy tờ','bang_lai']]},
+    hoc_sinh:{t:['Dạ, bé nhà mình năm nay bao nhiêu tuổi rồi ạ? Tuổi quyết định đi được loại xe nào nên em hỏi trước.'],c:[['Chưa đủ 16 tuổi','duoi16'],['Đủ 16 tuổi trở lên','du16']]},
+    duoi16:{t:['Dưới 16 tuổi thì luật chưa cho đi xe 50cc hay xe máy điện ạ. Bé đi xe đạp điện là đúng luật: không cần bằng, không cần biển số.','Bé cao khoảng bao nhiêu, nhà cách trường xa không ạ? Em gợi ý mẫu vừa người bé.'],c:[['Xem giá xe đạp điện','gia'],['Nhà gần, dưới 5 km','gan'],['Nhà xa trên 5 km','xa']]},
+    du16:{t:['Đủ 16 tuổi là đi được xe gắn máy rồi ạ: xe dưới 50cc hoặc xe máy điện đến 4 kW, tốc độ đến 50 km/h, không cần bằng lái.','Nhà mình có chỗ sạc điện cho xe không ạ? Có thì xe điện tiết kiệm hơn, không thì xe 50cc đỡ lo.'],c:[['Có chỗ sạc','co_sac'],['Không có chỗ sạc','khong_sac'],['Cần giấy tờ gì?','bang_lai']]},
+    gan:{t:['Nhà gần thì xe đạp điện là đủ, nhẹ, bé tự dắt được. Bạn để số, bên em báo giá các mẫu đang có màu bé thích nha.'],ask:1},
+    xa:{t:['Đi xa thì nên chọn xe đạp điện pin lithium, nhẹ mà đi được xa hơn bản ắc quy. Em nhờ bạn bên em gọi tư vấn mẫu cụ thể nha.'],ask:1},
+    co_sac:{t:['Vậy xe máy điện hợp lắm ạ: êm, không xăng, sạc qua đêm ở nhà. Bạn cho em biết tầm tiền dự định để em lọc mẫu?'],c:[['Dưới 15 triệu','tam_tien'],['15 đến 25 triệu','tam_tien'],['Trên 25 triệu','tam_tien']]},
+    khong_sac:{t:['Không có chỗ sạc thì xe 50cc tiện hơn ạ, đổ xăng vài phút là đi. Bé thích xe ga hay xe số?'],c:[['Xe ga','tam_tien'],['Xe số, wave, cub','tam_tien'],['Chưa biết, so giúp em','so_sanh']]},
+    di_lam:{t:['Dạ, mỗi ngày mình đi khoảng bao nhiêu km, và có chỗ sạc ở nhà hoặc chỗ làm không ạ?'],c:[['Dưới 30 km, có chỗ sạc','co_sac'],['Đi xa hoặc không có chỗ sạc','khong_sac']]},
+    tam_tien:{t:['Em ghi nhận rồi ạ. Giá từng mẫu có trong bảng giá trên trang, còn giá hôm nay kèm quà tặng và màu còn hàng thì bạn bên em báo chính xác hơn.'],ask:1},
+    gia:{t:['Giá trên trang là giá tham khảo tháng này ạ, chưa gồm trước bạ, biển số và bảo hiểm. Bạn đang xem mẫu nào, hoặc tầm tiền bao nhiêu để em báo giá lăn bánh?'],c:[['Dưới 15 triệu','tam_tien'],['15 đến 25 triệu','tam_tien'],['Trên 25 triệu','tam_tien'],['Có trả góp không?','gop']]},
+    gop:{t:['Nhiều mẫu mua trả góp được ạ. Số trả trước và giấy tờ tuỳ chương trình từng tháng, thường chỉ cần căn cước. Bạn để số, bên em tính đúng số tiền mỗi tháng theo mẫu bạn chọn nha.'],ask:1},
+    bang_lai:{t:['Xe gắn máy (dưới 50cc hoặc xe điện đến 4 kW, tốc độ đến 50 km/h): đủ 16 tuổi là đi được, không cần bằng lái.','Khi đi đường mang đăng ký xe, bảo hiểm bắt buộc và căn cước; đã tích hợp VNeID thì xuất trình trên điện thoại được.'],c:[['Đăng ký biển số thế nào?','bien_so'],['Hỏi giá','gia']]},
+    bien_so:{t:['Xe máy điện và xe 50cc đều phải đăng ký biển số ạ, làm ở công an xã, phường nơi mình cư trú. Mua ở Smile thì bên em hỗ trợ hướng dẫn hồ sơ. Xe đạp điện thì không cần biển số.'],c:[['Hỏi giá lăn bánh','gia']]},
+    so_sanh:{t:['Xe ga: không sang số, có cốp, hợp bạn nữ, nặng hơn chút. Xe số, wave, cub: rẻ, nhẹ, bền, sửa đâu cũng được.','Bé nhỏ người thì nên ngồi thử xem chống chân được không trước khi chọn ạ.'],c:[['Hỏi giá xe ga','gia'],['Hỏi giá xe số','gia']]},
+    pin:{t:['Pin lithium nhẹ, bền hơn nhưng đắt hơn ắc quy chì. Xe đang không lên nguồn thì bạn thử kiểm khoá chống trộm, cầu chì, giắc pin và tay phanh trước nha.','Vẫn không được thì gọi '+HOT+', thợ bên em hướng dẫn tiếp.']},
+    dc:{t:DC?['Smile Motor có các cửa hàng:'].concat(DC):['Smile Motor có nhiều cửa hàng ạ. Bạn ở quận, huyện nào để em chỉ cửa hàng gần nhất?'],ask:1},
+    nguoi:{t:['Em là trợ lý tự động của Xe điện Smile ạ, trả lời nhanh các câu hay gặp. Cần nói chuyện với nhân viên thật thì bạn gọi hoặc Zalo '+HOT+' nha.']},
+    fallback:{t:['Câu này em chưa chắc, để nhân viên bên em trả lời cho chính xác ạ.'],ask:1}
+  };
+  var ASKS=['Bạn cho em xin số điện thoại, bạn bên em gọi tư vấn kỹ nha?','Mình để lại số, bên em gọi báo giá đúng mẫu cho bạn liền.','Bạn nhắn em số điện thoại, hoặc gọi thẳng '+HOT+' cho nhanh ạ.'];
+  function add(t,who){var e=d.createElement('div');e.className='tn '+(who||'bot');e.textContent=t;than.appendChild(e);than.scrollTop=than.scrollHeight;return e}
+  function chips(list){goi.innerHTML='';(list||[]).forEach(function(c){var b=d.createElement('button');b.type='button';b.textContent=c[0];b.onclick=function(){add(c[0],'toi');run(c[1])};goi.appendChild(b)});
+    var a=d.createElement('a');a.href='tel:'+P.tel;a.textContent='Gọi '+HOT;goi.appendChild(a);
+    var z=d.createElement('a');z.href='https://zalo.me/'+P.tel;z.target='_blank';z.rel='noopener nofollow';z.textContent='Zalo';goi.appendChild(z)}
+  function say(lines,done){var i=0;goi.innerHTML='';(function next(){if(i>=lines.length){done&&done();return}
+    var t=add('','bot');t.innerHTML='<span class="dang-go"><i></i><i></i><i></i></span>';
+    setTimeout(function(){t.textContent=lines[i++];than.scrollTop=than.scrollHeight;next()},Math.min(1300,450+String(lines[i]).length*10))})()}
+  function run(key){var a=A[key]||A.fallback,l=a.t.slice();if(a.ask&&!gotPhone){l.push(ASKS[askIdx++%ASKS.length])}say(l,function(){chips(a.c||[['Hỏi giá','gia'],['Giấy tờ, bằng lái','bang_lai'],['Cửa hàng ở đâu?','dc']])})}
+  function classify(s){s=s.toLowerCase();
+    var r=[['nguoi','người thật|người hay máy|bot|robot|máy trả lời'],['gop','góp|trả trước|lãi'],['gia','giá|bao nhiêu|bn|tiền|triệu|rẻ|đắt|mắc'],['bien_so','biển|đăng ký|đăng kí'],['bang_lai','bằng|giấy tờ|tuổi|luật|phạt'],['dc','địa chỉ|cửa hàng|ở đâu|chi nhánh|showroom'],['pin','pin|sạc|ắc quy|hỏng|lỗi|không lên|không chạy'],['so_sanh','so sánh|hay là|xe ga|xe số|wave|cub'],['hoc_sinh','con|học sinh|đi học|lớp'],['di_lam','đi làm']];
+    for(var i=0;i<r.length;i++)if(new RegExp(r[i][1]).test(s))return r[i][0];return 'fallback'}
+  function phone(s){var x=s.replace(/\D/g,'');if(x.length<8)return null;if(x.length===10&&/^0[35789]/.test(x))return{ok:1,n:x};return{ok:0}}
+  function guiSo(n){/* Gửi số về máy chủ nếu có điểm nhận; không có thì mời khách gọi, Zalo */
+    var ok=function(){say(['Em cảm ơn, em đã chuyển số '+n.replace(/(\d{4})(\d{3})(\d{3})/,'$1.$2.$3')+' cho nhân viên, bên em gọi lại trong giờ làm việc nha. Cần gấp thì bạn gọi '+HOT+'.'],function(){chips()})};
+    var fail=function(){say(['Em chưa gửi được số tự động. Bạn bấm Gọi hoặc Zalo '+HOT+' bên dưới, nhân viên nghe máy ngay ạ.'],function(){chips()})};
+    try{fetch('/api/lien-he.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sdt:n,web:P.web,trang:location.pathname,luc:new Date().toISOString()})}).then(function(r){r.ok?ok():fail()}).catch(fail)}catch(e){fail()}}
+  function mo(intent){k.classList.add('mo');k.setAttribute('aria-hidden','false');
+    if(!opened){opened=true;run(intent||'hello')}else if(intent){run(intent)}}
+  d.addEventListener('click',function(e){var b=e.target.closest('[data-chat]');if(b){e.preventDefault();mo(b.getAttribute('data-chat')||'')}});
+  k.querySelector('.chat-dong').addEventListener('click',function(){k.classList.remove('mo');k.setAttribute('aria-hidden','true')});
+  f.addEventListener('submit',function(e){e.preventDefault();var v=inp.value.trim();if(!v)return;inp.value='';add(v,'toi');
+    var p=phone(v);if(p){if(p.ok){gotPhone=true;guiSo(p.n)}else say(['Số này chưa đúng 10 số di động, bạn gõ lại giúp em nha.']);return}
+    run(classify(v))});
+})();
