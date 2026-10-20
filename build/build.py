@@ -415,6 +415,14 @@ def stores_html(site):
             % (li, html.escape(_ban_do(st[0]), quote=True)))
 
 
+# Nền tia điện chạy mờ sau chân trang (anh góp ý 21/10 1:18): vẽ SVG nhẹ, chạy bằng CSS, tắt khi người dùng giảm chuyển động
+_TIA = ["M40 0 L120 90 L80 110 L170 220 L130 240 L210 400", "M1180 0 L1090 80 L1130 105 L1030 210 L1075 235 L980 400",
+        "M560 0 L610 70 L585 85 L650 170 L620 185 L690 290", "M300 400 L360 310 L330 295 L410 200 L380 185 L450 110",
+        "M860 400 L900 320 L875 305 L940 230 L915 215 L990 130"]
+TIA_DIEN = ('<div class="chan-dien" aria-hidden="true"><svg viewBox="0 0 1200 400" preserveAspectRatio="none">'
+            + "".join('<g class="tia t%d"><path d="%s" class="quang"/><path d="%s" class="loi"/></g>' % (i, d, d) for i, d in enumerate(_TIA))
+            + '</svg></div>')
+
 LOGO_OG = "/logo-1200.png"
 
 
@@ -593,16 +601,16 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
 <main>
 {body}
 </main>
-<footer><div class="wrap wide">
+<footer>{TIA_DIEN}<div class="wrap wide">
 <div class="chan-luoi">
 <div class="chan-cot chan-gt">{logo_html(site, ten, False)}
 <p>{site['footer']}</p>
 <p>Mở cửa 8h–21h mỗi ngày. Gọi hoặc Zalo <a href="tel:{site['hot'].replace('.', '')}">{site['hot']}</a> để được tư vấn ngay.</p>
 {chinhsach.cong_ty_html()}
-{mxh.hang(site["hot"], "mxh-chan")}
-{mxh.tra_gop("tg-chan")}</div>
-<div class="chan-cot"><h3>Danh mục</h3><nav>{"".join('<a href="%s">%s</a>' % (u, n) for n, u in site['foot'])}</nav></div>
+{mxh.hang(site["hot"], "mxh-chan")}</div>
+<div class="chan-cot"><h3>Danh mục</h3><nav>{"".join('<a href="%s">%s</a>' % (u, n) for n, u in site['foot'])}<a href="/tin-tuc/">Tin tức</a><a href="/lien-he/">Liên hệ</a></nav></div>
 {('<div class="chan-cot"><h3>Chính sách</h3><nav>%s</nav></div>' % "".join('<a href="%s">%s</a>' % (u, n) for n, u in chinhsach.link_chan())) if chinhsach.link_chan() else ""}
+{('<div class="chan-cot chan-tg">%s</div>' % mxh.tra_gop("tg-chan")) if mxh.tra_gop() else ""}
 </div>
 {stores_html(site)}
 <div class="chan-cuoi">© 2026 {html.escape(chinhsach.cong_ty().get("ten") or "Xe Điện Smile")} · {site['domain']}</div>

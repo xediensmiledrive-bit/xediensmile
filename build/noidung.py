@@ -136,8 +136,9 @@ def bang(keys, bid, limit=None, loc=True):
 
 
 def tom_gia(keys):
+    # nhóm chưa có giá thì ẩn cho gọn (anh chốt 21/10 1:17)
     return "".join('<div class="dong"><div class="ten">%s<small>cập nhật %s</small></div><span class="gia%s">%s</span></div>' % (
-        NHOM[k][0], NGAY_VN, "" if models_of(k) else " lh", gia_tu(k)) for k in keys)
+        NHOM[k][0], NGAY_VN, "", gia_tu(k)) for k in keys if gia_tu(k) != "Liên hệ")
 
 
 # ---------- Hình minh hoạ (vẽ tay, không phải ảnh xe thật) ----------

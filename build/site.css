@@ -688,7 +688,7 @@ body .lx:nth-child(3n),body .o-xe:nth-child(3n){animation-delay:-2.6s}
 /* 21/10 0:01: clip TikTok Smile Motor chạy vòng, clip nào lọt vào màn hình thì tự phát không tiếng */
 .tiktok .tt-dai{overflow:hidden;margin:0 -16px;padding:2px 0 12px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
 .tiktok .tt-chay,.tiktok .tt-lap{display:flex;gap:12px;width:max-content}
-.tiktok .tt-chay{padding-left:16px;animation:dg-troi 80s linear infinite}
+.tiktok .tt-chay{padding-left:16px;animation:dg-troi 80s linear infinite reverse}
 .tiktok .tt-dai:hover .tt-chay,.tiktok .tt-dai:active .tt-chay{animation-play-state:paused}
 .tt-o{position:relative;flex:none;width:168px;aspect-ratio:9/16;border-radius:18px;overflow:hidden;background:#111;color:#fff;display:grid;place-items:center;box-shadow:0 12px 26px -16px rgba(0,0,0,.6)}
 .tt-o img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -785,3 +785,49 @@ footer .logo-anh:after{display:none}footer .logo-anh img{animation:none}
 @media(min-width:1100px){.ngan-menu{inset:90px 0 auto 0}}
 @media(prefers-reduced-motion:reduce){.dm,.dm svg,.dm .dm-ic:after,.dm .dm-ic i,.logo-anh img,.logo-anh:after{animation:none}}
 .skin-sup .dm svg{background:#0f1112!important;stroke:#a6f07a}
+
+/* chủ đề xe trôi chậm phải qua trái trên trang chủ (21/10 1:17) */
+.tin-dai{overflow:hidden;margin:0 -16px;padding:2px 0 8px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
+.tin-chay,.tin-lap{display:flex;gap:12px;width:max-content;align-items:stretch}
+.tin-chay{padding-left:16px;animation:dg-troi 90s linear infinite}
+.tin-lap{padding-left:0}
+.tin-dai:hover .tin-chay,.tin-dai:active .tin-chay,.tin-dai:focus-within .tin-chay{animation-play-state:paused}
+.tin-dai .tin-the{flex:none;width:250px;flex-direction:column;align-items:stretch}
+.tin-dai .tin-bia{flex:none;width:100%}
+.tin-dai .tin-the .nd{padding:10px 12px 14px}
+@media(min-width:900px){.tin-dai{margin:0}.tin-dai .tin-the{width:300px}}
+@media(prefers-reduced-motion:reduce){.tin-chay{animation:none}.tin-dai{overflow-x:auto}.tin-lap{display:none}}
+
+/* 21/10 1:18 chân trang ngăn nắp: giới thiệu | danh mục | chính sách | trả góp; nền tia điện chạy mờ */
+footer{position:relative;overflow:hidden;isolation:isolate}
+footer>.wrap{position:relative;z-index:1}
+.chan-dien{position:absolute;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:40px 40px}
+.chan-dien svg{position:absolute;top:0;left:50%;transform:translateX(-50%);width:max(100%,1100px);height:100%;display:block}
+.chan-dien .tia path{fill:none;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.chan-dien .quang{stroke:var(--vc1);stroke-width:12;opacity:.22}
+.chan-dien .loi{stroke:#f4ffe9;stroke-width:2;opacity:.75}
+.chan-dien .tia{opacity:0;stroke-dasharray:900;stroke-dashoffset:900;animation:tia-xet 7s ease-out infinite}
+.chan-dien .t1{animation-delay:1.4s}.chan-dien .t2{animation-delay:2.9s;--vc1:var(--vc2)}.chan-dien .t3{animation-delay:4.2s}.chan-dien .t4{animation-delay:5.6s;--vc1:var(--vc2)}
+.chan-dien .t2 .quang,.chan-dien .t4 .quang{stroke:var(--vc2)}
+@keyframes tia-xet{0%{opacity:0;stroke-dashoffset:900}4%{opacity:.9}10%{stroke-dashoffset:0;opacity:.55}12%{opacity:.95}15%{opacity:.35}18%{opacity:.8}30%{opacity:0;stroke-dashoffset:0}100%{opacity:0;stroke-dashoffset:0}}
+footer:before{content:"";position:absolute;inset:-30% -10% auto;height:70%;z-index:0;pointer-events:none;background:radial-gradient(ellipse at 20% 0,color-mix(in srgb,var(--vc1) 22%,transparent),transparent 60%),radial-gradient(ellipse at 85% 10%,color-mix(in srgb,var(--vc2) 14%,transparent),transparent 55%);animation:chan-sang 9s ease-in-out infinite alternate}
+@keyframes chan-sang{to{transform:translateX(4%);opacity:.6}}
+@media(prefers-reduced-motion:reduce){.chan-dien .tia{animation:none;opacity:.25;stroke-dashoffset:0}footer:before{animation:none}}
+.chan-luoi{grid-template-columns:1fr 1fr;gap:24px 18px}
+.chan-gt,.chan-tg{grid-column:1/-1}
+.chan-gt p{max-width:520px}
+footer .tra-gop{margin:0}
+footer .tra-gop b{font-family:"Be Vietnam Pro",sans-serif;font-size:13px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:#fff;margin-bottom:2px}
+footer .tg-logo{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:360px}
+footer .tg-logo img{width:100%;max-width:none;height:42px;padding:6px 8px;border:0;border-radius:10px;object-fit:contain;background:#fff}
+.mxh-chan{margin-top:16px}
+.mxh-chan a{width:38px;height:38px;border-radius:11px}
+footer .cua-hang h3{margin-bottom:12px}
+.ch-luoi>.xem-gon{justify-self:start;margin:2px 0 0;padding:8px 16px;font-size:13.5px;min-height:0;height:auto;background:transparent;color:#fff;border:1px solid rgba(255,255,255,.28);box-shadow:none;text-shadow:none}
+.ch-luoi>.xem-gon:before,.ch-luoi>.xem-gon:after{display:none}
+@media(min-width:900px){
+  .chan-luoi{grid-template-columns:1.5fr .8fr .9fr 1.1fr;gap:30px}
+  .chan-gt,.chan-tg{grid-column:auto}
+  .ch-luoi>ul,.ch-luoi>.xem-gon{grid-column:1}
+  .ch-map{grid-column:2;grid-row:1/span 2}
+}

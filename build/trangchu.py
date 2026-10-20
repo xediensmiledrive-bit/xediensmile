@@ -95,15 +95,17 @@ def _hang(xe):
 
 
 def _tin(site, arts, chips):
+    """Chủ đề xe trôi chậm từ phải qua trái (anh chốt 21/10 1:17); bản lặp ẩn với trình đọc màn hình."""
     o = []
-    for a in arts[:6]:
+    for a in arts[:12]:
         # chưa có ảnh bìa: ô chữ theo chuyên mục, không dùng emoji
         bia = ('<img src="/anh/%s.webp" alt="%s" width="400" height="225" loading="lazy">' % (a["slug"], html.escape(a.get("anh_alt") or a["h1"])) if a.get("anh")
                else '<span class="tin-o">%s</span>' % html.escape(a["cat_name"]))
-        o.append('<a class="tin-the hd-in" href="%s"><span class="tin-bia">%s</span><span class="nd"><small>%s</small><b>%s</b></span></a>' % (a["url"], bia, a["cat_name"], html.escape(a["h1"])))
+        o.append('<a class="tin-the" href="%s"><span class="tin-bia">%s</span><span class="nd"><small>%s</small><b>%s</b></span></a>' % (a["url"], bia, a["cat_name"], html.escape(a["h1"])))
     c = "".join('<a class="chip" href="%s">%s</a>' % (u, n) for n, u in chips)
+    lap = "".join(o).replace('<a class="tin-the"', '<a tabindex="-1" class="tin-the"')
     return ('<section class="tin"><div class="tieude"><h2>Tin tức</h2><a href="%s">Tất cả ›</a></div><nav class="chips" style="padding:0 0 12px">%s</nav>'
-            '<div class="luoi-tin">%s</div></section>' % (chips[0][1], c, "".join(o)))
+            '<div class="tin-dai"><div class="tin-chay">%s<div class="tin-lap" aria-hidden="true">%s</div></div></div></section>' % (chips[0][1], c, "".join(o), lap))
 
 
 # Điểm mạnh Smile (anh nêu 20/10 23:33): hiện ngay dưới banner trang chủ và trên trang xe
@@ -146,9 +148,9 @@ def trang_chu(site, h1, mo_ta, bang_gia, tom, chips, faqs):
 {diem_manh()}
 <div class="mo-dau"><h1>{h1}</h1><p>{mo_ta}</p></div>
 {ban}
-{tiktok.html_muc(site)}
 <section><div class="tieude"><h2>Giá tham khảo tháng {THANG}</h2><a href="{bang_gia}">Xem đủ ›</a></div>
 <div class="the bang hd-in"><div class="dong dau"><span>Nhóm xe</span><span>Giá tham khảo</span></div>{tom_gia(tom)}</div></section>
+{tiktok.html_muc(site)}
 {_tin(site, site["articles"], chips)}
 {keu(site["cta_title"], site["cta_text"])}
 <section class="hd-in"><div class="tieude"><h2>Hỏi nhanh đáp gọn</h2></div>{faq_html_local(faqs)}</section>

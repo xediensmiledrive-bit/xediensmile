@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-"""Clip TikTok Smile Motor chạy vòng trên trang chủ phoxedien.vn, tự phát không tiếng (anh chốt 21/10 0:01), kèm link web Smile Motor.
+"""Clip review thật từ kênh TikTok @xediensmiledrama (anh chốt 21/10 1:17: clip dọc có khung, trôi từ trái qua phải, đặt ngay trên mục tin tức);
+trước đó là clip TikTok Smile Motor chạy vòng trên trang chủ phoxedien.vn, tự phát không tiếng (anh chốt 21/10 0:01), kèm link web Smile Motor.
 Máy nhà lấy clip mới nhất của kênh mỗi ngày, ghi PXD_KHO/tiktok-smile.json:
 {"cap_nhat", "tai_khoan": "@...", "link": "https://www.tiktok.com/@...", "web": "https://...", "web_ten": "Smile Motor",
  "video": [{"id": "7xxxxxxxxxxxxxxxxxx", "mo_ta": "...", "anh": "<id>.webp"}]}
@@ -50,7 +51,7 @@ def html_muc(site):
     for v in d["video"]:
         mo = html.escape((v.get("mo_ta") or "").strip()[:90], quote=True)
         a = _anh(v)
-        bia = ('<img src="/tiktok/%s" alt="%s" width="270" height="480" loading="lazy">' % (a, mo or "Clip TikTok Smile Motor")) if a else LOGO
+        bia = ('<img src="/tiktok/%s" alt="%s" width="270" height="480" loading="lazy">' % (a, mo or "Clip review xe trên TikTok")) if a else LOGO
         o.append('<a class="tt-o" href="https://www.tiktok.com/%s/video/%s" target="_blank" rel="noopener nofollow" data-tt="%s" aria-label="Xem clip trên TikTok">%s'
                  '<span class="tt-chu">%s</span></a>' % (html.escape(d.get("tai_khoan") or "@", quote=True), v["id"], v["id"], bia, mo))
     kenh = _https(d.get("link"))
@@ -58,7 +59,7 @@ def html_muc(site):
     nut = "".join([
         ('<a class="tt-nut" href="%s" target="_blank" rel="noopener nofollow">%s Kênh TikTok %s</a>' % (html.escape(kenh, quote=True), LOGO, html.escape(d.get("tai_khoan") or ""))) if kenh else "",
         ('<a class="tt-nut tt-web" href="%s" target="_blank" rel="noopener">Web %s ›</a>' % (html.escape(web, quote=True), html.escape(d.get("web_ten") or "Smile Motor"))) if web else ""])
-    return ('<section class="tiktok"><div class="tieude"><h2>Clip mới từ Smile Motor</h2></div>'
+    return ('<section class="tiktok"><div class="tieude"><h2>Clip review thật trên TikTok</h2></div>'
             '<div class="tt-dai"><div class="tt-chay">%s<div class="tt-lap" aria-hidden="true">%s</div></div></div><div class="tt-nuts">%s</div></section>'
             % ("".join(o), "".join(o).replace('data-tt=', 'tabindex="-1" data-tt='), nut))
 
