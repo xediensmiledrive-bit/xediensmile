@@ -41,6 +41,12 @@ for _p in _vn["pages"]:
     if _k and not noidung.models_of(_k) and not noidung.THI_TRUONG.get(_k):
         _p["robots"] = "noindex,follow"  # chưa có mẫu trong bảng giá
 # Ảnh xe thật (PXD_ANH): lưới thẻ xe trên trang chủ, bảng giá, trang loại xe
+
+def _ban(ten):
+    """Số phiên bản theo nội dung tệp, đổi tệp là trình duyệt tải lại (tránh khách thấy CSS cũ như 20/10 19:24)."""
+    import hashlib
+    return hashlib.md5(open(os.path.join(HERE, ten), "rb").read()).hexdigest()[:8]
+
 _LUOI = {"/bang-gia-xe-dien/": (["may", "dap", "ba"], "Ảnh xe điện thật"),
          "/bang-gia-xe-50cc/": (["ga", "so"], "Ảnh xe 50cc thật"), "/gia-xe-50cc/": (["ga", "so"], "Ảnh xe 50cc thật"),
          "/xe-may-dien/": (["may"], "Ảnh xe máy điện thật"), "/xe-ga-50cc/": (["ga"], "Ảnh xe ga 50cc thật"), "/xe-so-50cc/": (["so"], "Ảnh xe số 50cc thật"),
@@ -149,9 +155,11 @@ def _truot(site, bn):
         if not u or u.split("?")[0] not in _co_url(site):
             u = bn["mac_dinh"]
         mua = MUA_BANNER.get(i + 1)
-        o.append('<a class="tr-o" href="%s"%s><picture><source media="(max-width:767px)" srcset="/banner/%s" width="1080" height="1200">'
-                 '<img src="/banner/banner-hero-may-tinh%s.webp" width="1920" height="720" alt="%s"%s></picture></a>'
-                 % (u, ' data-mua="%s,%s"' % mua if mua else "", dt, hau, html.escape(alt), ' fetchpriority="high"' if dau else ' loading="lazy"'))
+        mt = "banner-hero-may-tinh%s.webp" % hau
+        v = lambda t: _ban(os.path.join("banner", site["domain"], t))  # ảnh banner thay cùng tên thì khách vẫn thấy bản mới
+        o.append('<a class="tr-o" href="%s"%s><picture><source media="(max-width:767px)" srcset="/banner/%s?v=%s" width="1080" height="1200">'
+                 '<img src="/banner/%s?v=%s" width="1920" height="720" alt="%s"%s></picture></a>'
+                 % (u, ' data-mua="%s,%s"' % mua if mua else "", dt, v(dt), mt, v(mt), html.escape(alt), ' fetchpriority="high"' if dau else ' loading="lazy"'))
     if len(o) < 2:
         return '<div class="banner-dau">%s</div>' % "".join(o)
     cham = "".join('<button type="button" aria-label="Banner %d"%s></button>' % (i + 1, ' aria-current="true"' if not i else "") for i in range(len(o)))
@@ -341,11 +349,6 @@ def _menu(site):
             o.append('<a href="%s">%s</a>' % (u, n))
     return "".join(o)
 
-
-def _ban(ten):
-    """Số phiên bản theo nội dung tệp, đổi tệp là trình duyệt tải lại (tránh khách thấy CSS cũ như 20/10 19:24)."""
-    import hashlib
-    return hashlib.md5(open(os.path.join(HERE, ten), "rb").read()).hexdigest()[:8]
 
 
 def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,follow", og_img=None):

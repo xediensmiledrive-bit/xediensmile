@@ -423,3 +423,4 @@ body:not(.skin-sup) .o-xe .hoi-gia{background:var(--c2)}
 .hx small{font-size:12px}
 @media(min-width:768px){.hang-xe{flex-wrap:wrap;overflow:visible}}
 @media(min-width:900px){.wrap.rong{max-width:1200px}.wrap.rong .luoi-xe{grid-template-columns:repeat(5,minmax(0,1fr))}.wrap.rong .lx{flex-basis:170px}}
+@media(min-width:900px){.wrap.rong .loai-xe{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));overflow:visible}.wrap.rong .lx-anh{width:150px;height:112px;background:transparent}.wrap.rong .lx{padding:14px 8px;background:linear-gradient(180deg,#fff,var(--nen))}.wrap.rong .lx b{font-size:15px}}
