@@ -1,0 +1,127 @@
+# -*- coding: utf-8 -*-
+"""Trang riêng cho từng mẫu xe /xe/<slug>/ (anh chốt 20/10 19:00): mỗi sản phẩm một trang SEO theo tên xe.
+.vn nhắm giá và thông số, .com.vn nhắm góc học sinh, phụ huynh (2 web 2 góc, mỗi web số điện thoại riêng).
+Chỉ dùng dữ liệu có trong gia-smile.json, không tự bịa thông số. Bài Muse có meta "san_pham" = đúng tên mẫu
+sẽ được ghép vào trang (MUSE[domain][tên chữ thường])."""
+import html
+
+import anhxe
+import noidung
+from noidung import NHOM, THANG, NGAY_VN, vnd, models_of, keu, faq_html_local, faq_ld_local
+
+LOAI_SP = ["may", "ga", "so"]
+MUSE = {"phoxedien.vn": {}, "phoxedien.com.vn": {}}
+GOC_LOAI = {"phoxedien.vn": {"may": "/xe-may-dien/", "ga": "/xe-ga-50cc/", "so": "/xe-so-50cc/"},
+            "phoxedien.com.vn": {"may": "/xe-may-dien-cho-hoc-sinh/", "ga": "/xe-ga-50cc-cho-hoc-sinh/", "so": "/xe-so-50cc-cho-hoc-sinh/"}}
+THONG_SO = [("brand", "Hãng"), ("type", "Loại xe"), ("range", "Quãng đường mỗi lần sạc"), ("speed", "Tốc độ tối đa"),
+            ("motor", "Động cơ"), ("battery", "Pin, ắc quy"), ("weight", "Trọng lượng"), ("colors", "Màu")]
+LUAT = ('Theo Luật Trật tự, an toàn giao thông đường bộ 2024 (hiệu lực 01/01/2025), xe gắn máy gồm xe dưới 50cc và xe điện '
+        'công suất đến 4 kW, tốc độ thiết kế đến 50 km/h; người đủ 16 tuổi được đi và không cần giấy phép lái xe.')
+
+
+def ds_xe():
+    ra, thay = [], set()
+    for k in LOAI_SP:
+        for m in models_of(k):
+            t = (m.get("name") or "").strip()
+            if t and t.lower() not in thay:
+                thay.add(t.lower())
+                ra.append((k, m))
+    return ra
+
+
+def _gia(m):
+    if m.get("price"):
+        return vnd(m["price"]), "Giá tham khảo tại Smile Motor, cập nhật %s, chưa gồm lệ phí trước bạ, biển số và bảo hiểm." % NGAY_VN, True
+    tt = noidung.GIA_TT.get(m["name"].strip().lower())
+    if tt:
+        return vnd(tt), "Giá thị trường tham khảo tháng %s, không phải giá bán của Smile Motor. Bấm Đặt xe để biết giá hôm nay." % THANG, True
+    return "Liên hệ", "Mẫu này đang cập nhật giá, bấm Hỏi giá để biết giá hôm nay.", False
+
+
+def _lien_quan(k, m, n=4):
+    cung = [x for kk, x in ds_xe() if x is not m and kk == k]
+    p = m.get("price") or 0
+    cung.sort(key=lambda x: (x.get("brand") != m.get("brand"), abs((x.get("price") or 10**9) - p)))
+    return cung[:n]
+
+
+def trang(site, k, m):
+    d = site["domain"]
+    ten, hang = m["name"], (m.get("brand") or "").strip()
+    url = anhxe.url_xe(ten)
+    loai = NHOM[k][0]
+    gia, chu_gia, co_gia = _gia(m)
+    vn = d == "phoxedien.vn"
+    if vn:
+        h1 = "%s: giá tham khảo tháng %s và thông số" % (ten, THANG)
+        title = "%s giá bao nhiêu? Giá tham khảo tháng %s" % (ten, THANG)
+        desc = "%s giá tham khảo %s (cập nhật %s). Xem ảnh thật, thông số, mẫu cùng tầm giá và đặt xe tại Smile Motor." % (ten, gia, NGAY_VN)
+    else:
+        h1 = "%s có hợp cho học sinh không? Giá và lưu ý" % ten
+        title = "%s cho học sinh: giá %s, có cần bằng lái?" % (ten, gia)
+        desc = "%s là %s của %s, giá tham khảo %s. Học sinh bao nhiêu tuổi đi được, cần giấy tờ gì, nuôi xe tốn bao nhiêu." % (ten, loai.lower(), hang or "hãng", gia)
+    ts = [(nhan, m.get(key)) for key, nhan in THONG_SO if m.get(key)]
+    bang_ts = "".join('<tr><th>%s</th><td>%s</td></tr>' % (n, html.escape(str(v))) for n, v in ts)
+    dien = k == "may"
+    if vn:
+        gioi = ['%s là mẫu %s của %s, đang có trong bảng giá tham khảo tháng %s của Phố Xe Điện Smile.' % (ten, loai.lower(), hang or "hãng", THANG)]
+        gioi.append('Giá trên trang là giá xe, chưa gồm lệ phí trước bạ, đăng ký biển số và bảo hiểm bắt buộc. Cách cộng ra giá lăn bánh xem ở bài <a href="/bang-gia/gia-lan-banh-xe-may-dien-xe-50cc/">giá lăn bánh</a>.')
+        gioi.append(('Khi so với các mẫu cùng tầm giá, nhìn quãng đường mỗi lần sạc, tốc độ tối đa và loại pin: pin lithium nhẹ, bền hơn nhưng đắt hơn ắc quy chì (<a href="/so-sanh/pin-lithium-hay-ac-quy-chi/">so sánh hai loại pin</a>).')
+                    if dien else ('Khi so với các mẫu cùng tầm giá, xem phanh trước (đĩa hay cơ), vành đúc hay nan và chiều cao yên so với người đi. Phân vân giữa xe ga và xe số thì đọc <a href="/so-sanh/xe-ga-50cc-hay-xe-so-50cc/">so sánh xe ga và xe số 50cc</a>.'))
+    else:
+        gioi = ['%s là %s của %s. Trang này trả lời các câu phụ huynh hay hỏi trước khi mua xe này cho con.' % (ten, loai.lower(), hang or "hãng")]
+        gioi.append(LUAT + ' Khi chọn mẫu điện, xem thông số công suất và tốc độ để chắc xe thuộc nhóm xe gắn máy.' if dien else LUAT)
+        gioi.append('Đi đường cần mang đăng ký xe, bảo hiểm bắt buộc và căn cước. Xem thêm <a href="/giay-to/16-tuoi-di-xe-50cc-can-giay-to-gi/">giấy tờ khi 16 tuổi đi xe 50cc</a>.')
+        gioi.append('Trước khi mua, cho con ngồi thử xem chống chân chạm đất được không và tay với tới phanh thoải mái.')
+    faqs = [("%s giá bao nhiêu?" % ten, "%s: %s. %s" % (ten, gia, chu_gia)),
+            ("Đi %s có cần bằng lái không?" % ten, LUAT),
+            ("Mua %s ở đâu?" % ten, "Smile Motor có 6 cửa hàng (TP.HCM, Đồng Tháp, Phan Thiết), mở cửa 8h–21h. Gọi hoặc Zalo %s để hỏi màu còn hàng và quà tặng." % site["hot"])]
+    so = site["hot"].replace(".", "")
+    t = html.escape(ten, quote=True)
+    nut = ('<button class="btn btn-chinh" data-chat="Mình muốn đặt xe %s">Đặt xe</button>' % t if co_gia
+           else '<button class="btn btn-chinh" data-chat="Cho mình hỏi giá %s">Hỏi giá</button>' % t)
+    goc = GOC_LOAI[d][k]
+    mac_dinh = '<section class="noi-dung hd-in"><h2>%s</h2>%s</section>' % (
+        "Thông tin %s" % ten if vn else "Học sinh đi %s được không?" % ten, "".join("<p>%s</p>" % p for p in gioi))
+    lq = _lien_quan(k, m)
+    sp = {"@context": "https://schema.org", "@type": "Product", "name": ten, "url": "https://%s%s" % (d, url)}
+    if hang:
+        sp["brand"] = {"@type": "Brand", "name": hang}
+    if m.get("price"):
+        sp["offers"] = {"@type": "Offer", "price": int(m["price"]), "priceCurrency": "VND", "availability": "https://schema.org/InStock",
+                        "seller": {"@type": "Organization", "name": "Smile Motor"}}
+
+    def body(s):
+        # ảnh chọn lúc dựng vì anhxe.WEB (khung theo từng web) chỉ đặt trong build(); schemas đọc sau body nên ảnh vẫn vào được
+        muse = MUSE[d].get(ten.lower())  # bài Muse đọc trong build(), sau lúc dựng danh sách trang
+        noi_dung = muse["html"] if muse else mac_dinh
+        a = anhxe.anh(ten)
+        if a:
+            sp["image"] = "https://%s%s" % (d, a)
+        hinh = ('<img src="%s" alt="%s" width="900" height="900" fetchpriority="high">' % (a, html.escape(ten))) if a else '<div class="khong-anh">%s</div>' % noidung.xe_svg("#3aa52a", "#f26b1d")
+        return f'''<div class="wrap"><div class="duong"><a href="/">Trang chủ</a> › <a href="{goc}">{loai}</a> › <b>{html.escape(ten)}</b></div>
+<div class="sp">
+<div class="sp-anh">{hinh}</div>
+<div class="sp-tt"><span class="hang-xe-nho">{html.escape(hang)}</span><h1>{html.escape(h1)}</h1>
+<div class="sp-gia{"" if co_gia else " lh"}">{gia}</div><p class="sp-chu">{chu_gia}</p>
+<div class="hang-nut">{nut}<a class="btn btn-phu" href="tel:{so}">Gọi {site["hot"]}</a><a class="btn btn-phu" href="https://zalo.me/{so}" target="_blank" rel="noopener nofollow">Zalo</a></div>
+{('<table class="sp-ts">%s</table>' % bang_ts) if bang_ts else ""}</div></div>
+{noi_dung}
+{anhxe.luoi(lq, "Mẫu cùng tầm giá", 4, vnd)}
+<section class="hd-in"><div class="tieude"><h2>Hỏi đáp về {html.escape(ten)}</h2></div>{faq_html_local(faqs)}</section>
+{keu(site["cta_title"], site["cta_text"])}</div>'''
+
+    return {"url": url, "title": title, "desc": desc, "body": body, "schemas": [sp, faq_ld_local(faqs)],
+            "crumbs": [("Trang chủ", "/"), (loai, goc), (ten, url)]}
+
+
+def gan(vn, comvn):
+    xe = ds_xe()
+    for site in (vn, comvn):
+        # luật cứng: không thêm trang DV Motor trên .com.vn
+        co = [(k, m) for k, m in xe if not (site["domain"] == "phoxedien.com.vn" and "dv motor" in (m.get("brand") or "").lower())]
+        anhxe.SP[site["domain"]] = {m["name"].strip().lower() for _, m in co}
+        anhxe.WEB = site["domain"]  # url_xe đọc theo web
+        site["pages"][-1:-1] = [trang(site, k, m) for k, m in co]
+    anhxe.WEB = ""

@@ -131,3 +131,18 @@
   b.onclick=function(){k.remove();b.remove();try{localStorage.setItem('tatRoi',new Date().toDateString())}catch(e){}};
   document.body.appendChild(k);document.body.appendChild(b);
 })();
+(function(){
+  /* Trang chủ bán xe: lọc thẻ xe theo loại và hãng ngay trên trang, hiện 12 thẻ rồi Xem thêm */
+  var g=document.querySelector('.ban-xe');if(!g)return;
+  var the=[].slice.call(g.children),buoc=+g.getAttribute('data-hien')||12,hien=buoc,loai='',hang='',
+      them=document.querySelector('.xem-them');
+  function ve(){var n=0;the.forEach(function(o){var hop=(!loai||o.getAttribute('data-loai')===loai)&&(!hang||o.getAttribute('data-hang')===hang);
+      o.classList.toggle('an',!hop);o.classList.toggle('gioi',hop&&++n>hien)});
+    if(them)them.style.display=n>hien?'':'none'}
+  function nhom(sel,attr,cb){document.querySelectorAll(sel).forEach(function(b){b.addEventListener('click',function(){
+      document.querySelectorAll(sel).forEach(function(x){x.classList.toggle('on',x===b)});cb(b.getAttribute(attr)||'');hien=buoc;ve()})})}
+  nhom('.tab-xe [data-tab]','data-tab',function(v){loai=v});
+  nhom('.hang-xe [data-hang]','data-hang',function(v){hang=v});
+  if(them)them.addEventListener('click',function(){hien+=buoc;ve()});
+  ve();
+})();

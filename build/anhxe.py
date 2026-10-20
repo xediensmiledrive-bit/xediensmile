@@ -52,11 +52,37 @@ def _khung(ten):
     return f if os.path.isfile(f) else None
 
 
+_CO_KHUNG = {}
+SP = {}  # domain -> tên mẫu (chữ thường) có trang riêng /xe/<slug>/ trên web đó (sanpham.py điền)
+
+
+def co_khung():
+    """Web đang dựng đã có thư mục ảnh đóng khung chưa. Có thì chỉ dùng ảnh khung (anh chốt 20/10 19:00: đổi hết sang khung)."""
+    if WEB not in _CO_KHUNG:
+        tm = os.path.join(GOC, "khung", WEB) if GOC and WEB else ""
+        _CO_KHUNG[WEB] = bool(tm and os.path.isdir(tm) and any(f.endswith(".webp") for f in os.listdir(tm)))
+    return _CO_KHUNG[WEB]
+
+
 def anh(ten):
     if _khung(ten):
         return "/anh-xe/khung/%s.webp" % _slug(ten)
+    if co_khung():
+        return None
     ds = ANH.get((ten or "").strip().lower())
     return ds[0][0] if ds else None
+
+
+def url_xe(ten):
+    return "/xe/%s/" % _slug(ten) if (ten or "").strip().lower() in SP.get(WEB, ()) else None
+
+
+def nut(m, co_gia):
+    """Có giá thì Đặt xe, chưa có giá mới Hỏi giá (anh góp ý 20/10 19:00)."""
+    t = html.escape(m["name"], quote=True)
+    if co_gia:
+        return '<button class="hoi-gia dat-xe" data-chat="Mình muốn đặt xe %s">Đặt xe</button>' % t
+    return '<button class="hoi-gia" data-chat="Cho mình hỏi giá %s">Hỏi giá</button>' % t
 
 
 def chep(base):
@@ -109,9 +135,13 @@ def luoi(ms, tieu_de="Ảnh xe thật", toi_da=8, gia=None):
         import noidung
         tt = None if m.get("price") else noidung.GIA_TT.get((m.get("name") or "").strip().lower())
         g = (gia(m["price"]) if gia and m.get("price") else (gia(tt) + " (giá thị trường)") if gia and tt else "Liên hệ")
-        o.append('<div class="o-xe hd-in"><img src="%s" alt="%s" width="300" height="225" loading="lazy">'
-                 '<div class="nd"><b>%s</b><span class="gia%s">%s</span><button class="hoi-gia" data-chat="Cho mình hỏi giá %s">Hỏi giá</button></div></div>'
-                 % (anh(m["name"]), html.escape(m["name"]), html.escape(m["name"]), "" if (m.get("price") or tt) else " lh", g, html.escape(m["name"], quote=True)))
+        u = url_xe(m["name"])
+        img = '<img src="%s" alt="%s" width="300" height="225" loading="lazy">' % (anh(m["name"]), html.escape(m["name"]))
+        ten = '<b>%s</b>' % html.escape(m["name"])
+        if u:
+            img, ten = '<a href="%s">%s</a>' % (u, img), '<a class="ten-xe" href="%s">%s</a>' % (u, ten)
+        o.append('<div class="o-xe hd-in">%s<div class="nd">%s<span class="gia%s">%s</span>%s</div></div>'
+                 % (img, ten, "" if (m.get("price") or tt) else " lh", g, nut(m, bool(m.get("price") or tt))))
     return '<section><div class="tieude"><h2>%s</h2></div><div class="luoi-xe">%s</div><p class="chu-anh">Ảnh từ trang chính thức của hãng, màu thực tế có thể khác.</p></section>' % (tieu_de, "".join(o))
 
 

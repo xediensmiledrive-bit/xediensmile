@@ -104,7 +104,7 @@ def doc_bai(site):
             "cat_name": cat_name, "cat_url": cat_url, "crumb": h1, "h1": h1,
             "title": m.get("tieu_de_seo") or h1, "desc": m.get("mo_ta_seo") or m.get("tra_loi_nhanh", "")[:155],
             "ngay": m.get("ngay"), "faq": [tuple(x[:2]) for x in m.get("faq") or [] if len(x) >= 2],
-            "html": _sach(bai, site), "anh": anh, "anh_alt": (m.get("anh_bia") or {}).get("alt") or h1,
+            "html": _sach(bai, site), "anh": anh, "san_pham": m.get("san_pham"), "anh_alt": (m.get("anh_bia") or {}).get("alt") or h1,
         })
     ra.sort(key=lambda a: a["ngay"] or "", reverse=True)
     return ra

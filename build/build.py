@@ -16,6 +16,8 @@ import noidung  # noqa: E402
 import hang  # noqa: E402
 import muse  # noqa: E402
 import anhxe  # noqa: E402
+import sanpham  # noqa: E402
+import trangchu  # noqa: E402
 
 # Trang loại xe và trang hãng cho 2 web (tối ưu SEO 20/10: cả 2 web đánh xe xăng 50cc lẫn xe điện)
 _vn, _comvn = noidung.VN, noidung.COMVN
@@ -39,7 +41,7 @@ for _p in _vn["pages"]:
     if _k and not noidung.models_of(_k) and not noidung.THI_TRUONG.get(_k):
         _p["robots"] = "noindex,follow"  # chưa có mẫu trong bảng giá
 # Ảnh xe thật (PXD_ANH): lưới thẻ xe trên trang chủ, bảng giá, trang loại xe
-_LUOI = {"/": (["may", "ga", "so"], "Xe đang bán, ảnh thật"), "/bang-gia-xe-dien/": (["may", "dap", "ba"], "Ảnh xe điện thật"),
+_LUOI = {"/bang-gia-xe-dien/": (["may", "dap", "ba"], "Ảnh xe điện thật"),
          "/bang-gia-xe-50cc/": (["ga", "so"], "Ảnh xe 50cc thật"), "/gia-xe-50cc/": (["ga", "so"], "Ảnh xe 50cc thật"),
          "/xe-may-dien/": (["may"], "Ảnh xe máy điện thật"), "/xe-ga-50cc/": (["ga"], "Ảnh xe ga 50cc thật"), "/xe-so-50cc/": (["so"], "Ảnh xe số 50cc thật"),
          "/xe-ga-50cc-cho-hoc-sinh/": (["ga"], "Mẫu xe ga 50cc, ảnh thật"), "/xe-so-50cc-cho-hoc-sinh/": (["so"], "Mẫu xe số 50cc, ảnh thật"),
@@ -79,6 +81,8 @@ _vn["pages"][-1:-1] = hang.trang_vn()
 _comvn["pages"][-1:-1] = hang.trang_comvn()
 _gan_luoi(_vn, _LUOI)
 _gan_luoi(_comvn, _LUOI)
+sanpham.gan(_vn, _comvn)   # trang riêng từng xe /xe/<slug>/
+trangchu.gan(_vn, _comvn)  # trang chủ kiểu web bán xe
 
 # Banner chốt kiểu A (luồng Banner Phố Xe Điện, 20/10): tệp ở build/banner/<domain>/, alt theo HUONG-DAN-GAN.md
 BANNER = {
@@ -459,6 +463,10 @@ def build(site):
     anhxe.chep(base)
     urls, lastmod = [], {}
     bai_muse = muse.doc_bai(site)
+    # bài Muse viết cho một mẫu xe (meta "san_pham") ghép vào trang /xe/<slug>/, không thành bài riêng
+    for a in [a for a in bai_muse if a.get("san_pham")]:
+        sanpham.MUSE[d][a["san_pham"].strip().lower()] = a
+    bai_muse = [a for a in bai_muse if not a.get("san_pham")]
     site["articles"][:0] = bai_muse  # sửa tại chỗ để trang chủ, chuyên mục (đọc BAI_VN/BAI_COMVN) thấy bài mới
     for a in bai_muse:
         write(site, a["url"], muse_page(site, a, muse.chep_anh(a, base)))

@@ -136,3 +136,9 @@
 .skin-sup .o-xe .hoi-gia{background:#6fd92e;color:#0f1112}
 .skin-sup .logo-anh.toi img{height:40px}
 .tr-cham button[aria-current]{background:#6fd92e}
+/* Nút bóng 3D .com.vn: xanh lá non sáng, chữ #0F1112 (luật cứng) */
+.skin-sup{--n1:#a8f36f;--n2:#6fd92e;--n3:#3f9a14;--ntx:#0f1112;--nb:rgba(111,217,46,.5)}
+.skin-sup .sp .btn-phu{background:#fff;color:#0f1112;border-color:#dce0e2}
+.skin-sup .hx.on{border-color:#6fd92e;box-shadow:0 0 0 3px rgba(111,217,46,.25)}
+.skin-sup .lx small,.skin-sup .sp-gia{color:#2b8f1e}
+.skin-sup .tin-the small{color:#2b8f1e}
