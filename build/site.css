@@ -725,3 +725,19 @@ body .lx:nth-child(3n),body .o-xe:nth-child(3n){animation-delay:-2.6s}
 .skin-sup .chot{background:#fff;border-color:#6fd92e}.skin-sup .chot h2{color:#0f1112}
 @media(max-width:420px){.chot-tin li{font-size:12.5px;padding:9px 8px 9px 30px}.chot-tin li:before{left:9px}}
 @media(min-width:900px){.chot{padding:24px 28px}.chot-tin{grid-template-columns:repeat(4,1fr)}.chot-nut .btn{flex:0 0 auto}}
+/* 21/10 0:36: logo mạng xã hội và logo công ty trả góp thay cho chữ */
+.mxh{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 4px}
+.mxh a{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:#fff;box-shadow:0 4px 12px -6px rgba(0,0,0,.35);transition:transform .2s}
+.mxh a:hover{transform:translateY(-2px)}
+.mxh svg{width:28px;height:28px;display:block}
+.mxh-to a{width:56px;height:56px;border-radius:16px}.mxh-to svg{width:38px;height:38px}
+.zl svg,.btn-zalo svg,.lh-o svg{width:22px;height:22px;display:block;flex:none}
+.day .zalo{display:flex;align-items:center;justify-content:center;gap:6px}
+.skin-sup .dock .zl{background:none;width:24px;height:24px}
+.btn-zalo{display:inline-flex;align-items:center;gap:6px}
+.lh-o svg{width:28px;height:28px;margin-bottom:4px}
+.tra-gop{margin:12px 0;display:flex;flex-direction:column;gap:8px}
+.tra-gop b{font-size:13px;color:var(--phu);font-weight:700}
+.tg-logo{display:flex;flex-wrap:wrap;gap:8px}
+.tg-logo img{height:34px;width:auto;max-width:110px;object-fit:contain;padding:5px 9px;border-radius:10px;background:#fff;border:1px solid var(--vien)}
+footer .tra-gop b{color:#aab4bc}

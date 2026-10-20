@@ -5,6 +5,8 @@ Luật: không bịa số liệu, giá và thông số luôn đọc từ bảng 
 Phần dài nằm trong khối .chot-dai, mặc định thu gọn, có nút "Đọc tiếp" (anh không muốn trang dài, 21/10 0:08)."""
 import html
 
+import mxh
+
 HOT = "0889.277.112"
 
 
@@ -12,8 +14,8 @@ def _nut(ten_xe=None, hot=HOT):
     so = hot.replace(".", "")
     hoi = html.escape("Mình muốn hỏi giá và màu còn hàng của %s" % ten_xe if ten_xe else "Mình muốn được tư vấn chọn xe", quote=True)
     return ('<div class="chot-nut"><button type="button" class="btn btn-chinh" data-chat="%s">Nhận tư vấn ngay</button>'
-            '<a class="btn btn-phu" href="tel:%s">Gọi %s</a><a class="btn btn-phu" href="https://zalo.me/%s" target="_blank" rel="noopener nofollow">Zalo</a></div>'
-            % (hoi, so, hot, so))
+            '<a class="btn btn-phu" href="tel:%s">Gọi %s</a><a class="btn btn-phu btn-zalo" href="https://zalo.me/%s" target="_blank" rel="noopener nofollow">%sZalo</a></div>%s'
+            % (hoi, so, hot, so, mxh.icon("zalo"), mxh.tra_gop()))
 
 
 def _tin():

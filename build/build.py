@@ -20,6 +20,7 @@ import sanpham  # noqa: E402
 import trangchu
 import danhgia
 import tiktok
+import mxh
 import chinhsach
 import trangphu
 import bannerhang  # noqa: E402
@@ -548,13 +549,13 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
     if skin:
         day = f'''<div class="day dock">
 <button class="hoi" data-chat><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Hỏi</button>
-<a class="zalo" href="https://zalo.me/{TEL}" target="_blank" rel="noopener nofollow"><span class="zl">Z</span>Zalo</a>
+<a class="zalo" href="https://zalo.me/{TEL}" target="_blank" rel="noopener nofollow"><span class="zl">{mxh.icon("zalo")}</span>Zalo</a>
 <a class="goi" href="tel:{TEL}">Gọi tư vấn<small>{HOTLINE} · 8h–21h</small></a>
 </div>'''
     else:
         day = f'''<div class="day">
 <a class="goi" href="tel:{TEL}"><i></i>Gọi tư vấn</a>
-<a class="zalo" href="https://zalo.me/{TEL}" target="_blank" rel="noopener nofollow">Zalo</a>
+<a class="zalo" href="https://zalo.me/{TEL}" target="_blank" rel="noopener nofollow"><span class="zl">{mxh.icon("zalo")}</span>Zalo</a>
 <button class="xem" data-chat>Chat tư vấn</button>
 </div>'''
     return f'''<!doctype html>
@@ -596,7 +597,9 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
 <div class="chan-cot chan-gt">{logo_html(site, ten, False)}
 <p>{site['footer']}</p>
 <p>Giá trên trang là giá tham khảo, cập nhật hằng tháng. Mua xe tại Smile Motor, gọi hoặc Zalo {HOTLINE}.</p>
-{chinhsach.cong_ty_html()}</div>
+{chinhsach.cong_ty_html()}
+{mxh.hang(site["hot"], "mxh-chan")}
+{mxh.tra_gop("tg-chan")}</div>
 <div class="chan-cot"><h3>Danh mục</h3><nav>{"".join('<a href="%s">%s</a>' % (u, n) for n, u in site['foot'])}</nav></div>
 {('<div class="chan-cot"><h3>Chính sách</h3><nav>%s</nav></div>' % "".join('<a href="%s">%s</a>' % (u, n) for n, u in chinhsach.link_chan())) if chinhsach.link_chan() else ""}
 </div>
@@ -689,6 +692,7 @@ def build(site):
             shutil.copy(trangchu.anh_loai(k), os.path.join(base, "loai", k + ".webp"))
     danhgia.chep(site, base)
     tiktok.chep(site, base)
+    mxh.chep(base)
     bannerhang.chep(d, base)
     if os.path.isdir(os.path.join(HERE, "banner", d)):
         shutil.copytree(os.path.join(HERE, "banner", d), os.path.join(base, "banner"))
