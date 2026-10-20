@@ -12,7 +12,7 @@ from noidung import NHOM, THANG, vnd, models_of, tom_gia, keu, faq_html_local, x
 LOAI = {"phoxedien.vn": [("may", "/xe-may-dien/"), ("ga", "/xe-ga-50cc/"), ("so", "/xe-so-50cc/"), ("wave", "/xe-wave-50cc/"), ("dap", "/xe-dap-dien/"), ("ba", "/xe-dien-3-banh/")],
         "phoxedien.com.vn": [("may", "/xe-may-dien-cho-hoc-sinh/"), ("ga", "/xe-ga-50cc-cho-hoc-sinh/"), ("so", "/xe-so-50cc-cho-hoc-sinh/"), ("dap", "/xe-dap-dien-cho-hoc-sinh/")]}
 BAN = ["may", "ga", "so"]  # loại có thẻ xe trên trang chủ
-HIEN = 12                  # số thẻ hiện trước, bấm "Xem thêm" để mở tiếp
+HIEN = 10                  # số thẻ hiện trước, bấm "Xem thêm" để mở tiếp
 
 
 def _gia(m):
@@ -29,6 +29,9 @@ def _xe():
             if m["name"] not in thay:
                 thay.add(m["name"])
                 ra.append((k, m))
+    co = [x for x in ra if anhxe.anh(x[1]["name"])]
+    if co:  # có ảnh thật thì chỉ hiện xe có ảnh (anh không muốn hình vẽ thay ảnh)
+        ra = co
     # có ảnh lên trước, rồi xen kẽ hãng để trang không chỉ toàn một hãng
     theo = {}
     for k, m in sorted(ra, key=lambda x: anhxe.anh(x[1]["name"]) is None):
@@ -92,9 +95,11 @@ def _hang(xe):
 def _tin(site, arts, chips):
     o = []
     for a in arts[:6]:
-        bia = '<img src="/anh/%s.webp" alt="%s" width="400" height="225" loading="lazy">' % (a["slug"], html.escape(a.get("anh_alt") or a["h1"])) if a.get("anh") else '<span class="tin-o">%s</span>' % a["emoji"]
+        # chưa có ảnh bìa: ô chữ theo chuyên mục, không dùng emoji
+        bia = ('<img src="/anh/%s.webp" alt="%s" width="400" height="225" loading="lazy">' % (a["slug"], html.escape(a.get("anh_alt") or a["h1"])) if a.get("anh")
+               else '<span class="tin-o">%s</span>' % html.escape(a["cat_name"]))
         o.append('<a class="tin-the hd-in" href="%s"><span class="tin-bia">%s</span><span class="nd"><small>%s</small><b>%s</b></span></a>' % (a["url"], bia, a["cat_name"], html.escape(a["h1"])))
-    c = "".join('<a class="chip" href="%s">%s</a>' % x for x in chips)
+    c = "".join('<a class="chip" href="%s">%s</a>' % (u, n) for n, u in chips)
     return ('<section class="tin"><div class="tieude"><h2>Tin tức</h2><a href="%s">Tất cả ›</a></div><nav class="chips" style="padding:0 0 12px">%s</nav>'
             '<div class="luoi-tin">%s</div></section>' % (chips[0][1], c, "".join(o)))
 
@@ -133,8 +138,8 @@ def gan(vn, comvn):
                              bang_gia="/bang-gia-xe-dien/", tom=["may", "ga", "so", "dap", "ba"],
                              chips=[("So sánh và đánh giá", "/so-sanh/"), ("Bảng giá xe điện", "/bang-gia-xe-dien/"), ("Bảng giá xe 50cc", "/bang-gia-xe-50cc/")],
                              faqs=FAQ_VN_HOME),
-        "phoxedien.com.vn": dict(h1="Xe 50cc và xe điện cho học sinh",
-                                 mo_ta="Xe ga, xe số 50cc và xe máy điện hợp tuổi học sinh, có ảnh thật và giá tham khảo.",
+        "phoxedien.com.vn": dict(h1="Xe ga, xe số 50cc và xe máy điện",
+                                 mo_ta="Xe hợp tuổi từ 16, không cần bằng lái. Ảnh thật, giá tham khảo cập nhật hằng tháng.",
                                  bang_gia="/gia-xe-50cc/", tom=["ga", "so", "may", "dap"],
                                  chips=[("Cẩm nang", "/cam-nang/"), ("Xe cho học sinh", "/cam-nang/?muc=hoc-sinh"), ("Tuổi và bằng lái", "/cam-nang/?muc=giay-to"),
                                         ("Pin, sạc, sửa xe", "/cam-nang/?muc=sua-xe"), ("Hỏi đáp", "/hoi-dap/")],

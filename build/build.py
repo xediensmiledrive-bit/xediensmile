@@ -182,9 +182,8 @@ def _gan_banner(site):
             dau = _truot(site, bn)
 
             def g(s, f=f, dau=dau):
-                b = f(s)
-                b = b.replace(_MOC_KEU, _dai(site) + _MOC_KEU, 1) if _MOC_KEU in b else b + _dai(site)
-                return dau + b
+                # trang chủ đã có khối tư vấn cuối trang, không thêm dải gọi để khỏi lặp 2 khối tối liền nhau
+                return dau + f(s)
             p["body"] = g
         elif p["url"] in bn["loai"]:
             tep, alt = bn["loai"][p["url"]]
@@ -357,7 +356,7 @@ def muse_page(site, a, src):
         bai = bai.replace("</h1>", "</h1>" + img, 1) if "</h1>" in bai else img + bai
     rel = "".join(f'<a class="bai-nho" href="{r["url"]}"><div class="o">{r["emoji"]}</div><div><div class="muc">{r["cat_name"]}</div><h3>{r["h1"]}</h3><div class="meta">{r["read"]} phút đọc</div></div></a>'
                   for r in ([x for x in site["articles"] if x["cat_url"] == a["cat_url"] and x["url"] != a["url"]] or [x for x in site["articles"] if x["url"] != a["url"]])[:6])
-    body = f'''<div class="wrap">
+    body = f'''<div class="wrap doc">
 <div class="duong"><a href="/">Trang chủ</a> › <a href="{a['cat_url']}">{a['cat_name']}</a> › <b>{html.escape(a['crumb'])}</b></div>
 {bai}
 {anhxe.luoi(anhxe.lien_quan(a['html'], noidung.MODELS), "Mẫu xe nhắc trong bài", 4, noidung.vnd)}
@@ -500,7 +499,7 @@ def article_page(site, a):
            faq_ld(a["faq"])]
     rel = "".join(f'<a class="bai-nho" href="{r["url"]}"><div class="o">{r["emoji"]}</div><div><div class="muc">{r["cat_name"]}</div><h3>{r["h1"]}</h3><div class="meta">{r["read"]} phút đọc</div></div></a>'
                   for r in site["articles"] if r["url"] != a["url"])[:4000]
-    body = f'''<div class="wrap">
+    body = f'''<div class="wrap doc">
 <div class="duong"><a href="/">Trang chủ</a> › <a href="{a['cat_url']}">{a['cat_name']}</a> › <b>{a['crumb']}</b></div>
 <article>
 <div class="dau-trang"><h1>{a['h1']}</h1>

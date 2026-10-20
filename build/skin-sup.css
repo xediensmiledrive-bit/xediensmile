@@ -143,3 +143,28 @@
 .skin-sup .lx small,.skin-sup .sp-gia{color:#2b8f1e}
 .skin-sup .tin-the small{color:#2b8f1e}
 .skin-sup .sp-nut .btn-phu{background:#fff;color:#0f1112;border-color:#dce0e2}
+/* .com.vn M5 làm mượt (anh góp ý 20/10 20:23): nền sáng sạch, thẻ trắng bo lớn, chữ đen #0F1112, nhấn xanh chanh */
+.skin-sup{--vien:#e3e6e8}
+.skin-sup body,.skin-sup main{background:#f3f4f4}
+.skin-sup .mo-dau h1{letter-spacing:-.01em;color:#0f1112}
+.skin-sup .mo-dau p{color:#5d666c}
+.skin-sup .tieude h2{color:#0f1112;letter-spacing:-.01em}
+.skin-sup .tieude a{color:#2b8f1e;font-weight:600}
+.skin-sup .lx,.skin-sup .o-xe,.skin-sup .tin-the,.skin-sup .the.bang,.skin-sup details{background:#fff;border:1px solid #e3e6e8;border-radius:20px;box-shadow:0 1px 2px rgba(15,17,18,.04)}
+.skin-sup .lx-anh{background:#f3f4f4}
+.skin-sup .lx small{color:#2b8f1e}
+.skin-sup .hx{background:#fff;border-color:#e3e6e8;color:#0f1112}
+.skin-sup .hx.on{background:#0f1112;border-color:#0f1112;color:#fff;box-shadow:none}
+.skin-sup .hx.on small{color:#a6f07a}
+.skin-sup .chip{border-color:#e3e6e8}
+.skin-sup .chip.on{background:#0f1112;border-color:#0f1112;color:#fff}
+.skin-sup .o-xe .hang-xe-nho{color:#8a9398}
+.skin-sup .o-xe b{color:#0f1112}
+.skin-sup .o-xe .gia{color:#2b8f1e}
+.skin-sup .o-xe .gia.lh{color:#5d666c}
+.skin-sup .tin-o{background:linear-gradient(135deg,#15181a,#2c3a2a);color:#a6f07a}
+.skin-sup .tin-the small{color:#2b8f1e}
+.skin-sup .tn-xe.trong{background:#f3f4f4}
+.skin-sup .dong .gia{color:#2b8f1e}
+.skin-sup .tr-cham button{background:#cfd4d7}
+@media(max-width:480px){.skin-sup .o-xe,.skin-sup .lx,.skin-sup .tin-the{border-radius:18px}.skin-sup .luoi-xe{gap:10px}}

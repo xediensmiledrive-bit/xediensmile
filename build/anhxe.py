@@ -128,7 +128,8 @@ def chep(base):
 def tn(m):
     """Ảnh nhỏ đặt đầu dòng trong bảng giá."""
     a = anh(m.get("name"))
-    return '<img class="tn-xe" src="%s" alt="%s" width="56" height="42" loading="lazy">' % (a, html.escape(m["name"])) if a else ""
+    # ô trống cùng cỡ khi chưa có ảnh để tên xe các dòng thẳng hàng
+    return '<img class="tn-xe" src="%s" alt="%s" width="56" height="42" loading="lazy">' % (a, html.escape(m["name"])) if a else '<span class="tn-xe trong" aria-hidden="true"></span>'
 
 
 def luoi(ms, tieu_de="Ảnh xe thật", toi_da=8, gia=None):

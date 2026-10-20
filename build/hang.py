@@ -149,7 +149,7 @@ def _trang_loai(site, k, url, ten, gioi, faqs, tac, av, khung_tim):
         return f'''<div class="wrap"><div class="duong"><a href="/">Trang chủ</a> › <b>{ten}</b></div>
 <div class="dau-trang"><h1>{h1}</h1><div class="tac"><span class="av">{av}</span><span><a href="/tac-gia/{tac[0]}/">{tac[1]}</a> · cập nhật {NGAY_VN}</span></div></div>
 <div class="nhanh hd-in"><b>Tóm tắt nhanh</b><ul><li>{len(ms or tt) or "Các"} mẫu {NHOM[k][0].lower()} có giá tham khảo, {khoang(ms or tt)}.</li><li>{dong_gia}</li></ul></div>
-<div class="hinh-hero hd-in" style="background:var(--hero);height:170px;border-radius:20px;margin:16px 0">{svg}</div>
+
 <div class="noi-dung">{gioi}</div>
 <section>{bang([k], "bg-" + slug(ten))}</section>
 {khung_tim}

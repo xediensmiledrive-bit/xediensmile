@@ -129,10 +129,10 @@
   function trong(a,b){var x=a.length>5?ymd:md;return a<=b?(x>=a&&x<=b):(x>=a||x<=b)}
   var h=null;L.forEach(function(r){if(!h&&trong(r[0],r[1]))h=r[2]});if(!h)return;
   var k=document.createElement('div');k.className='roi';k.setAttribute('aria-hidden','true');
-  var so=innerWidth<768?9:20;
+  var so=innerWidth<768?5:10;
   for(var j=0;j<so;j++){var e=document.createElement('i'),z=(innerWidth<768?12:14)+Math.random()*12;
     e.textContent=h[j%h.length];
-    e.style.cssText='left:'+(Math.random()*100)+'%;font-size:'+z+'px;opacity:'+(.55+Math.random()*.4)+';animation-duration:'+(7+Math.random()*7)+'s;animation-delay:-'+(Math.random()*12)+'s;--x:'+(Math.random()*120-60)+'px;--r:'+(Math.random()*540-270)+'deg';
+    e.style.cssText='left:'+(Math.random()*100)+'%;font-size:'+z+'px;opacity:'+(.4+Math.random()*.35)+';animation-duration:'+(7+Math.random()*7)+'s;animation-delay:-'+(Math.random()*12)+'s;--x:'+(Math.random()*120-60)+'px;--r:'+(Math.random()*540-270)+'deg';
     k.appendChild(e)}
   var b=document.createElement('button');b.type='button';b.className='tat-roi';b.textContent='Tắt hiệu ứng';
   b.onclick=function(){k.remove();b.remove();try{localStorage.setItem('tatRoi',new Date().toDateString())}catch(e){}};
