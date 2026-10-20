@@ -163,3 +163,10 @@
   n.innerHTML='Đang xem xe <b></b> · <a href="'+location.pathname+'">Xem tất cả hãng</a>';n.querySelector('b').textContent=ten||h;
   if(b)b.parentNode.insertBefore(n,b);
 })();
+(function(){
+  /* Video: bấm vào ảnh mới tải YouTube (nhẹ trang) */
+  document.addEventListener('click',function(e){var b=e.target.closest('.vd[data-yt]');if(!b)return;
+    var f=document.createElement('iframe');f.src='https://www.youtube-nocookie.com/embed/'+b.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.allow='accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture';f.allowFullscreen=true;f.title=b.getAttribute('aria-label')||'Video';
+    b.replaceWith(f)});
+})();

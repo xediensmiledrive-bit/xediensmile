@@ -200,6 +200,48 @@ def _gan_banner(site):
             p["body"] = g
 
 
+
+# Video YouTube của Smile (anh chốt 20/10 19:50: xe 3 bánh không bán vẫn đánh từ khoá, kéo traffic từ video Smile).
+# Danh sách ở PXD_KHO/video.csv, cột: chu_de (vd 3-banh), youtube_id, tieu_de. Máy nhà điền, build tự gắn.
+VIDEO = {}
+_fv = os.path.join(os.environ.get("PXD_KHO", "").strip(), "video.csv") if os.environ.get("PXD_KHO", "").strip() else ""
+if _fv and os.path.isfile(_fv):
+    import csv as _csv
+    for _r in _csv.DictReader(open(_fv, encoding="utf-8-sig", newline="")):
+        _id = (_r.get("youtube_id") or "").strip()
+        if _id and all(c.isalnum() or c in "-_" for c in _id):
+            VIDEO.setdefault((_r.get("chu_de") or "").strip(), []).append((_id, (_r.get("tieu_de") or "").strip()))
+# trang nào gắn video chủ đề nào; bài Muse có tiêu đề chứa từ khoá cũng được gắn
+VIDEO_TRANG = {"/xe-dien-3-banh/": "3-banh"}
+VIDEO_TU = {"3-banh": "3 bánh"}
+
+
+def video_html(cd, toi_da=4):
+    ds = VIDEO.get(cd, [])[:toi_da]
+    if not ds:
+        return ""
+    o = "".join('<button type="button" class="vd" data-yt="%s" aria-label="Xem video %s"><img src="https://i.ytimg.com/vi/%s/hqdefault.jpg" alt="%s" width="480" height="360" loading="lazy"><span class="vd-nut"></span><b>%s</b></button>'
+                % (i, html.escape(t, quote=True), i, html.escape(t, quote=True), html.escape(t)) for i, t in ds)
+    return '<section class="hd-in"><div class="tieude"><h2>Video thực tế</h2></div><div class="luoi-vd">%s</div></section>' % o
+
+
+def video_cho(url, tieu_de=""):
+    cd = VIDEO_TRANG.get(url) or next((c for c, tu in VIDEO_TU.items() if tu in (tieu_de or "").lower()), None)
+    return video_html(cd) if cd else ""
+
+
+def _gan_video(site):
+    for p in site["pages"]:
+        if p["url"] in VIDEO_TRANG and callable(p.get("body")):
+            def g(s, f=p["body"], u=p["url"]):
+                b, v = f(s), video_cho(u)
+                return b.replace(_MOC_KEU, v + _MOC_KEU, 1) if (v and _MOC_KEU in b) else b + v
+            p["body"] = g
+
+
+_gan_video(_vn)
+_gan_video(_comvn)
+
 _gan_banner(_vn)
 _gan_banner(_comvn)
 
@@ -319,6 +361,7 @@ def muse_page(site, a, src):
 <div class="duong"><a href="/">Trang chủ</a> › <a href="{a['cat_url']}">{a['cat_name']}</a> › <b>{html.escape(a['crumb'])}</b></div>
 {bai}
 {anhxe.luoi(anhxe.lien_quan(a['html'], noidung.MODELS), "Mẫu xe nhắc trong bài", 4, noidung.vnd)}
+{video_cho(a["url"], a["h1"])}
 {'<section class="hd-in"><div class="tieude"><h2>Bài liên quan</h2></div>%s</section>' % rel if rel else ''}
 </div>'''
     return page(site, a["url"], a["title"], a["desc"], body, sch, crumbs, og_img=src)
