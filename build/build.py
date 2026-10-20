@@ -499,8 +499,10 @@ def build(site):
     shutil.copy(os.path.join(HERE, "site.js"), base)
     if site.get("skin"):
         shutil.copy(os.path.join(HERE, "skin-%s.css" % site["skin"]), base)
-    if os.path.isdir(os.path.join(HERE, "loai")):
-        shutil.copytree(os.path.join(HERE, "loai"), os.path.join(base, "loai"), dirs_exist_ok=True)
+    os.makedirs(os.path.join(base, "loai"), exist_ok=True)
+    for k in noidung.NHOM:
+        if trangchu.anh_loai(k):
+            shutil.copy(trangchu.anh_loai(k), os.path.join(base, "loai", k + ".webp"))
     if os.path.isdir(os.path.join(HERE, "banner", d)):
         shutil.copytree(os.path.join(HERE, "banner", d), os.path.join(base, "banner"))
     os.makedirs(os.path.join(base, "api"))

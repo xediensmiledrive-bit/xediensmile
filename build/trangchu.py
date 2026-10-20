@@ -54,12 +54,20 @@ def _the(k, m, svg):
             % (k, html.escape(m.get("brand") or ""), hinh, html.escape(m.get("brand") or ""), ten, lop, g, anhxe.nut(m, not lop)))
 
 
+def anh_loai(k):
+    """Ảnh ô loại xe: build/loai/<k>.webp, hoặc PXD_ANH/danh-muc/<k>.webp do luồng ảnh dựng trên máy nhà."""
+    for tm in (os.path.join(HERE, "loai"), os.path.join(anhxe.GOC, "danh-muc") if anhxe.GOC else ""):
+        if tm and os.path.isfile(os.path.join(tm, k + ".webp")):
+            return os.path.join(tm, k + ".webp")
+    return None
+
+
 def _loai_xe(site):
     """Hàng loại xe: mỗi ô một ảnh xe thật đã tách nền (build/loai/<khoá>.webp), cùng cỡ, cùng nền.
     Loại nào chưa có ảnh tách nền thì chưa hiện ô (anh không muốn hình vẽ hay hình lỗi, 20/10 19:27)."""
     o = []
     for k, url in LOAI[site["domain"]]:
-        if not os.path.isfile(os.path.join(HERE, "loai", k + ".webp")):
+        if not anh_loai(k):
             continue
         o.append('<a class="lx" href="%s"><span class="lx-anh"><img src="/loai/%s.webp" alt="%s" width="360" height="270" loading="lazy"></span><b>%s</b><small>%s</small></a>'
                  % (url, k, NHOM[k][0], NHOM[k][0], noidung.gia_tu(k)))
