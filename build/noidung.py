@@ -80,12 +80,12 @@ def rows(k, limit=None):
         for m in ms[:limit]:
             spec = " · ".join(x for x in [m.get("brand"), m.get("range"), m.get("speed")] if x)
             g = o_gia(m)
-            out.append('<div class="dong" data-n="%s">%s<div class="ten">%s<small>%s</small></div>%s</div>' % (k, anhxe.tn(m), m["name"], spec or NHOM[k][0], g))
+            out.append('<div class="dong" data-n="%s" data-hang="%s">%s<div class="ten">%s<small>%s</small></div>%s</div>' % (k, anhxe._slug(m.get("brand") or ""), anhxe.tn(m), m["name"], spec or NHOM[k][0], g))
     elif k in NGUNG_BAN:
         # Smile ngừng bán từ 25/9/2026: chỉ hiện giá thị trường (nếu có), không liệt kê hàng chờ giá
         for m in sorted(THI_TRUONG.get(k, []), key=lambda m: m["price"])[:limit]:
-            out.append('<div class="dong" data-n="%s">%s<div class="ten">%s<small>%s · giá thị trường</small></div><span class="gia">%s</span></div>' % (
-                k, anhxe.tn(m), m["name"], m["brand"], vnd(m["price"])))
+            out.append('<div class="dong" data-n="%s">%s<div class="ten">%s<small>%s</small></div><span class="gia">%s</span></div>' % (
+                k, anhxe.tn(m), m["name"], " · ".join(x for x in [m["brand"], "giá thị trường"] if x), vnd(m["price"])))
     else:
         for b in CHO[k][:limit]:
             ten = b if k in ("ba", "so", "wave") else "%s %s" % (NHOM[k][0], b)
@@ -402,8 +402,8 @@ COMVN = {
              "nhan-hero": "#a6f07a", "btn": "#6fd92e", "bong": "rgba(15,17,18,.35)",
              "keu": "#15181a", "chan": "#0f1112", "gia": "#2b8f1e"},
     # xe trước, tin tức sau (anh góp ý 20/10 18:58: trực quan như web bán xe)
-    "menu": [("Xe ga 50cc cho học sinh", "/xe-ga-50cc-cho-hoc-sinh/"), ("Xe số 50cc cho học sinh", "/xe-so-50cc-cho-hoc-sinh/"),
-             ("Xe máy điện cho học sinh", "/xe-may-dien-cho-hoc-sinh/"), ("Xe đạp điện cho học sinh", "/xe-dap-dien-cho-hoc-sinh/"),
+    "menu": [("Xe ga 50cc", "/xe-ga-50cc-cho-hoc-sinh/"), ("Xe số 50cc", "/xe-so-50cc-cho-hoc-sinh/"),
+             ("Xe máy điện", "/xe-may-dien-cho-hoc-sinh/"), ("Xe đạp điện", "/xe-dap-dien-cho-hoc-sinh/"),
              ("Giá xe 50cc", "/gia-xe-50cc/"), ("Tin tức, cẩm nang", "/cam-nang/"), ("Tuổi, bằng lái, biển số", "/cam-nang/?muc=giay-to"),
              ("Pin, sạc, sửa xe", "/cam-nang/?muc=sua-xe"), ("Hỏi đáp", "/hoi-dap/"), ("Giới thiệu", "/gioi-thieu/")],
     "foot": [("Cẩm nang", "/cam-nang/"), ("Hỏi đáp", "/hoi-dap/"), ("Giá xe 50cc", "/gia-xe-50cc/"), ("Giới thiệu", "/gioi-thieu/")],

@@ -155,8 +155,11 @@ def _truot(site, bn):
     if len(o) < 2:
         return '<div class="banner-dau">%s</div>' % "".join(o)
     cham = "".join('<button type="button" aria-label="Banner %d"%s></button>' % (i + 1, ' aria-current="true"' if not i else "") for i in range(len(o)))
-    return ('<div class="banner-dau truot" aria-roledescription="carousel" aria-label="Banner"><div class="tr-ray">%s</div>'
-            '<div class="tr-cham">%s</div></div>' % ("".join(o), cham))
+    # mũi tên nhỏ hai bên để khách tự lướt, vẫn tự chuyển 5 giây (anh chốt 20/10 19:26)
+    mui = ('<button type="button" class="tr-mui tr-lui" aria-label="Banner trước"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>'
+           '<button type="button" class="tr-mui tr-toi" aria-label="Banner sau"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>')
+    return ('<div class="banner-dau truot" aria-roledescription="carousel" aria-label="Banner"><div class="tr-khung"><div class="tr-ray">%s</div>%s</div>'
+            '<div class="tr-cham">%s</div></div>' % ("".join(o), mui, cham))
 
 
 def _gan_banner(site):
@@ -313,10 +316,42 @@ def muse_page(site, a, src):
     return page(site, a["url"], a["title"], a["desc"], body, sch, crumbs, og_img=src)
 
 
+def _menu(site):
+    """Menu: bấm loại xe thì xổ ra các hãng (anh chốt 20/10 19:28). .vn mở trang hãng; .com.vn mở trang loại xe lọc sẵn theo hãng."""
+    vn = site["domain"] == "phoxedien.vn"
+    loai = {u: k for k, (u, _) in (hang.LOAI_VN if vn else hang.LOAI_COMVN).items()}
+    o = []
+    for n, u in site["menu"]:
+        k = loai.get(u)
+        hs = []
+        if k:
+            if vn:
+                hs = [(b, "%s%s/" % (u, hang.slug(b))) for b in hang.hang_cua(k)] if k != "wave" else []
+            else:
+                dem = {}
+                for m in noidung.models_of(k):
+                    b = (m.get("brand") or "").strip()
+                    if b and "dv motor" not in b.lower():
+                        dem[b] = dem.get(b, 0) + 1
+                hs = [(b, "%s?hang=%s" % (u, hang.slug(b))) for b, _ in sorted(dem.items(), key=lambda x: -x[1])]
+        if hs:
+            o.append('<details class="mn"><summary>%s</summary><div class="mn-hang"><a href="%s">Tất cả %s</a>%s</div></details>'
+                     % (n, u, n.lower(), "".join('<a href="%s">%s</a>' % (h, html.escape(b)) for b, h in hs)))
+        else:
+            o.append('<a href="%s">%s</a>' % (u, n))
+    return "".join(o)
+
+
+def _ban(ten):
+    """Số phiên bản theo nội dung tệp, đổi tệp là trình duyệt tải lại (tránh khách thấy CSS cũ như 20/10 19:24)."""
+    import hashlib
+    return hashlib.md5(open(os.path.join(HERE, ten), "rb").read()).hexdigest()[:8]
+
+
 def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,follow", og_img=None):
     d = site["domain"]
     css_vars = ";".join("--%s:%s" % kv for kv in site["vars"].items())
-    menu = "".join('<a href="%s">%s</a>' % (u, n) for n, u in site["menu"])
+    menu = _menu(site)
     sch = "".join(ld(s) for s in schemas)
     if crumbs:
         sch += ld(crumbs_ld(site, crumbs))
@@ -327,7 +362,7 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
                              "url": "https://%s/" % d, "inLanguage": "vi"})
     skin = site.get("skin")
     skin_head = ('<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">'
-                 '<link rel="stylesheet" href="/skin-%s.css?v=7">' % skin) if skin else ""
+                 '<link rel="stylesheet" href="/skin-%s.css?v=%s">' % (skin, _ban("skin-%s.css" % skin))) if skin else ""
     ten = site.get("logo_ten", "PHỐ <i>XE ĐIỆN</i>")
     goi_dau = ('<a class="nut-goi" href="tel:%s" aria-label="Gọi %s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></a>' % (TEL, HOTLINE)) if skin else ""
     if skin:
@@ -360,7 +395,7 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
 {og_img_html(site, og_img or (LOGO_OG if co_logo(site) else None))}
 {icon_head(site)}
 {FONT}
-<link rel="stylesheet" href="/site.css?v=10">
+<link rel="stylesheet" href="/site.css?v={_ban("site.css")}">
 {skin_head}
 <style>:root{{{css_vars}}}</style>
 {sch}
@@ -389,7 +424,7 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
 <form class="chat-o"><input type="text" placeholder="Nhắn câu hỏi hoặc số điện thoại..." aria-label="Câu hỏi" maxlength="300"><button aria-label="Gửi">➤</button></form>
 </div>
 <script>window.PXD={{stores:{json.dumps([x.get('name','')+': '+x.get('address','') for x in site.get('stores') or []], ensure_ascii=False)},tel:"{TEL}",hot:"{HOTLINE}",web:"{site['chat']}",bot:"{site['bot']}"}}</script>
-<script src="/site.js?v=3" defer></script>
+<script src="/site.js?v={_ban("site.js")}" defer></script>
 </body>
 </html>
 '''
@@ -461,6 +496,8 @@ def build(site):
     shutil.copy(os.path.join(HERE, "site.js"), base)
     if site.get("skin"):
         shutil.copy(os.path.join(HERE, "skin-%s.css" % site["skin"]), base)
+    if os.path.isdir(os.path.join(HERE, "loai")):
+        shutil.copytree(os.path.join(HERE, "loai"), os.path.join(base, "loai"), dirs_exist_ok=True)
     if os.path.isdir(os.path.join(HERE, "banner", d)):
         shutil.copytree(os.path.join(HERE, "banner", d), os.path.join(base, "banner"))
     os.makedirs(os.path.join(base, "api"))

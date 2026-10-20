@@ -140,8 +140,8 @@ def luoi(ms, tieu_de="Ảnh xe thật", toi_da=8, gia=None):
         ten = '<b>%s</b>' % html.escape(m["name"])
         if u:
             img, ten = '<a href="%s">%s</a>' % (u, img), '<a class="ten-xe" href="%s">%s</a>' % (u, ten)
-        o.append('<div class="o-xe hd-in">%s<div class="nd">%s<span class="gia%s">%s</span>%s</div></div>'
-                 % (img, ten, "" if (m.get("price") or tt) else " lh", g, nut(m, bool(m.get("price") or tt))))
+        o.append('<div class="o-xe hd-in" data-hang="%s">%s<div class="nd">%s<span class="gia%s">%s</span>%s</div></div>'
+                 % (_slug(m.get("brand") or ""), img, ten, "" if (m.get("price") or tt) else " lh", g, nut(m, bool(m.get("price") or tt))))
     return '<section><div class="tieude"><h2>%s</h2></div><div class="luoi-xe">%s</div><p class="chu-anh">Màu xe thực tế có thể khác ảnh.</p></section>' % (tieu_de, "".join(o))
 
 

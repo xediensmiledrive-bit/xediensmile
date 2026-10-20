@@ -59,7 +59,7 @@ def khoang(ms):
 def dong(m, k):
     spec = " · ".join(x for x in [m.get("brand"), m.get("range"), m.get("speed")] if x)
     g = o_gia(m)
-    return '<div class="dong" data-n="%s">%s<div class="ten">%s<small>%s</small></div>%s</div>' % (k, anhxe.tn(m), m["name"], spec or NHOM[k][0], g)
+    return '<div class="dong" data-n="%s" data-hang="%s">%s<div class="ten">%s<small>%s</small></div>%s</div>' % (k, slug(m.get("brand") or ""), anhxe.tn(m), m["name"], spec or NHOM[k][0], g)
 
 
 def itemlist_ld(domain, url, ms):

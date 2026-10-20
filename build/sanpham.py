@@ -54,11 +54,11 @@ def trang(site, k, m):
     gia, chu_gia, co_gia = _gia(m)
     vn = d == "phoxedien.vn"
     if vn:
-        h1 = "%s: giá tham khảo tháng %s và thông số" % (ten, THANG)
+        h1, phu = ten, "Giá tham khảo tháng %s và thông số" % THANG
         title = "%s giá bao nhiêu? Giá tham khảo tháng %s" % (ten, THANG)
         desc = "%s giá tham khảo %s (cập nhật %s). Xem ảnh thật, thông số, mẫu cùng tầm giá và đặt xe tại Smile Motor." % (ten, gia, NGAY_VN)
     else:
-        h1 = "%s có hợp cho học sinh không? Giá và lưu ý" % ten
+        h1, phu = ten, "Có hợp cho học sinh không? Giá và lưu ý"
         title = "%s cho học sinh: giá %s, có cần bằng lái?" % (ten, gia)
         desc = "%s là %s của %s, giá tham khảo %s. Học sinh bao nhiêu tuổi đi được, cần giấy tờ gì, nuôi xe tốn bao nhiêu." % (ten, loai.lower(), hang or "hãng", gia)
     ts = [(nhan, m.get(key)) for key, nhan in THONG_SO if m.get(key)]
@@ -103,9 +103,9 @@ def trang(site, k, m):
         return f'''<div class="wrap"><div class="duong"><a href="/">Trang chủ</a> › <a href="{goc}">{loai}</a> › <b>{html.escape(ten)}</b></div>
 <div class="sp">
 <div class="sp-anh">{hinh}</div>
-<div class="sp-tt"><span class="hang-xe-nho">{html.escape(hang)}</span><h1>{html.escape(h1)}</h1>
+<div class="sp-tt"><span class="hang-xe-nho">{html.escape(hang)}</span><h1>{html.escape(h1)}<span class="sp-phu">{phu}</span></h1>
 <div class="sp-gia{"" if co_gia else " lh"}">{gia}</div><p class="sp-chu">{chu_gia}</p>
-<div class="hang-nut">{nut}<a class="btn btn-phu" href="tel:{so}">Gọi {site["hot"]}</a><a class="btn btn-phu" href="https://zalo.me/{so}" target="_blank" rel="noopener nofollow">Zalo</a></div>
+<div class="sp-nut">{nut}<a class="btn btn-phu" href="tel:{so}">Gọi {site["hot"]}</a><a class="btn btn-phu" href="https://zalo.me/{so}" target="_blank" rel="noopener nofollow">Zalo</a></div>
 {('<table class="sp-ts">%s</table>' % bang_ts) if bang_ts else ""}</div></div>
 {noi_dung}
 {anhxe.luoi(lq, "Mẫu cùng tầm giá", 4, vnd)}

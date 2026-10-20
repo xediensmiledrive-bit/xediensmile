@@ -2,12 +2,14 @@
 """Trang chủ kiểu web bán xe (anh góp ý 20/10 18:58): hãng xe và thẻ xe có ảnh, giá ngay trên trang chủ;
 cẩm nang, giấy tờ, sửa xe, hỏi đáp gom vào mục Tin tức thay vì dẫn đi vòng vòng."""
 import html
+import os
 
 import anhxe
 import noidung
+HERE = os.path.dirname(os.path.abspath(__file__))
 from noidung import NHOM, THANG, vnd, models_of, tom_gia, keu, faq_html_local, xe_svg, dap_svg
 
-LOAI = {"phoxedien.vn": [("may", "/xe-may-dien/"), ("ga", "/xe-ga-50cc/"), ("so", "/xe-so-50cc/"), ("dap", "/xe-dap-dien/"), ("ba", "/xe-dien-3-banh/")],
+LOAI = {"phoxedien.vn": [("may", "/xe-may-dien/"), ("ga", "/xe-ga-50cc/"), ("so", "/xe-so-50cc/"), ("wave", "/xe-wave-50cc/"), ("dap", "/xe-dap-dien/"), ("ba", "/xe-dien-3-banh/")],
         "phoxedien.com.vn": [("may", "/xe-may-dien-cho-hoc-sinh/"), ("ga", "/xe-ga-50cc-cho-hoc-sinh/"), ("so", "/xe-so-50cc-cho-hoc-sinh/"), ("dap", "/xe-dap-dien-cho-hoc-sinh/")]}
 BAN = ["may", "ga", "so"]  # loại có thẻ xe trên trang chủ
 HIEN = 12                  # số thẻ hiện trước, bấm "Xem thêm" để mở tiếp
@@ -53,29 +55,29 @@ def _the(k, m, svg):
 
 
 def _loai_xe(site):
+    """Hàng loại xe: mỗi ô một ảnh xe thật đã tách nền (build/loai/<khoá>.webp), cùng cỡ, cùng nền.
+    Loại nào chưa có ảnh tách nền thì chưa hiện ô (anh không muốn hình vẽ hay hình lỗi, 20/10 19:27)."""
     o = []
     for k, url in LOAI[site["domain"]]:
-        ms = models_of(k) if k not in noidung.NGUNG_BAN else []
-        a = next((anhxe.anh(m["name"]) for m in ms if anhxe.anh(m["name"])), None)
-        hinh = '<img src="%s" alt="" width="96" height="72" loading="lazy">' % a if a else (dap_svg("#3aa52a", "#f26b1d") if k == "dap" else xe_svg("#3aa52a", "#f26b1d"))
-        o.append('<a class="lx" href="%s"><span class="lx-anh">%s</span><b>%s</b><small>%s</small></a>' % (url, hinh, NHOM[k][0], noidung.gia_tu(k)))
-    return '<nav class="loai-xe" aria-label="Loại xe">%s</nav>' % "".join(o)
+        if not os.path.isfile(os.path.join(HERE, "loai", k + ".webp")):
+            continue
+        o.append('<a class="lx" href="%s"><span class="lx-anh"><img src="/loai/%s.webp" alt="%s" width="360" height="270" loading="lazy"></span><b>%s</b><small>%s</small></a>'
+                 % (url, k, NHOM[k][0], NHOM[k][0], noidung.gia_tu(k)))
+    return '<nav class="loai-xe" aria-label="Loại xe">%s</nav>' % "".join(o) if o else ""
 
 
 def _hang(xe):
+    """Lọc theo hãng: nút chữ gọn, cùng cỡ (ảnh khung thu nhỏ ở đây khó đọc, anh chê 20/10 19:27)."""
     dem = {}
     for k, m in xe:
         b = m.get("brand") or ""
         if b:
-            d = dem.setdefault(b, [0, None])
-            d[0] += 1
-            d[1] = d[1] or anhxe.anh(m["name"])
+            dem[b] = dem.get(b, 0) + 1
     if len(dem) < 2:
         return ""
-    o = ['<button type="button" class="hx on" data-hang=""><span class="hx-anh tat-ca">Tất cả</span><b>Tất cả hãng</b><small>%d mẫu</small></button>' % len(xe)]
-    for b, (n, a) in sorted(dem.items(), key=lambda x: -x[1][0])[:11]:
-        o.append('<button type="button" class="hx" data-hang="%s"><span class="hx-anh">%s</span><b>%s</b><small>%d mẫu</small></button>'
-                 % (html.escape(b), '<img src="%s" alt="" width="96" height="72" loading="lazy">' % a if a else html.escape(b[:2].upper()), html.escape(b), n))
+    o = ['<button type="button" class="hx on" data-hang=""><b>Tất cả</b><small>%d</small></button>' % len(xe)]
+    for b, n in sorted(dem.items(), key=lambda x: -x[1])[:12]:
+        o.append('<button type="button" class="hx" data-hang="%s"><b>%s</b><small>%d</small></button>' % (html.escape(b), html.escape(b), n))
     return '<div class="hang-xe">%s</div>' % "".join(o)
 
 
@@ -102,7 +104,7 @@ def trang_chu(site, h1, mo_ta, bang_gia, tom, chips, faqs):
                '<button type="button" class="btn xem-them">Xem thêm xe</button>'
                '<p class="chu-anh">Giá tham khảo cập nhật %s. Màu xe thực tế có thể khác ảnh.</p></section>'
                % (bang_gia, _hang(xe), tab, HIEN, the, noidung.NGAY_VN))
-    return f'''<div class="wrap">
+    return f'''<div class="wrap rong">
 <div class="mo-dau"><h1>{h1}</h1><p>{mo_ta}</p></div>
 {_loai_xe(site)}
 {ban}

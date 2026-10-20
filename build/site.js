@@ -97,6 +97,9 @@
   function chay(){dung();if(!im&&!document.hidden)hen=setInterval(function(){toi(i+1)},5000)}
   function dung(){clearInterval(hen);hen=null}
   ch.forEach(function(c,k){c.addEventListener('click',function(){toi(k);chay()})});
+  var lui=t.querySelector('.tr-lui'),tien=t.querySelector('.tr-toi');
+  if(lui)lui.addEventListener('click',function(){toi(i-1);chay()});
+  if(tien)tien.addEventListener('click',function(){toi(i+1);chay()});
   var cho;ray.addEventListener('scroll',function(){clearTimeout(cho);cho=setTimeout(function(){i=Math.round(ray.scrollLeft/ray.clientWidth);danh()},60)},{passive:true});
   ray.addEventListener('touchstart',dung,{passive:true});ray.addEventListener('touchend',chay,{passive:true});
   t.addEventListener('mouseenter',dung);t.addEventListener('mouseleave',chay);
@@ -149,4 +152,14 @@
   nhom('.hang-xe [data-hang]','data-hang',function(v){hang=v});
   if(them)them.addEventListener('click',function(){hien+=buoc;ve()});
   ve();
+})();
+(function(){
+  /* ?hang=<slug>: trang loại xe chỉ hiện xe của hãng đó (menu .com.vn bấm vào hãng) */
+  var h=(location.search.match(/[?&]hang=([a-z0-9-]+)/)||[])[1];if(!h)return;
+  var rs=document.querySelectorAll('.dong[data-hang],.o-xe[data-hang]'),co=0,ten='';
+  rs.forEach(function(r){var ok=r.getAttribute('data-hang')===h;r.style.display=ok?'':'none';if(ok){co++;if(!ten){var s=r.querySelector('small');ten=s?s.textContent.split(' · ')[0]:''}}});
+  if(!co){rs.forEach(function(r){r.style.display=''});return}
+  var b=document.querySelector('.the.bang'),n=document.createElement('div');n.className='dang-loc';
+  n.innerHTML='Đang xem xe <b></b> · <a href="'+location.pathname+'">Xem tất cả hãng</a>';n.querySelector('b').textContent=ten||h;
+  if(b)b.parentNode.insertBefore(n,b);
 })();
