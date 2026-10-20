@@ -21,6 +21,7 @@ NHOM = {
     "ba": ("Xe điện 3 bánh", ["3 bánh"]),
     "ga": ("Xe ga 50cc", ["xe ga 50cc"]),
     "so": ("Xe số 50cc", ["xe số 50cc", "wave", "cub"]),
+    "wave": ("Xe wave 50cc", ["wave"]),
 }
 # Hàng mẫu khi chưa có file giá: hãng đang được tìm nhiều (khung từ khoá 20/10)
 CHO = {
@@ -29,6 +30,7 @@ CHO = {
     "ba": ["Xe ba bánh điện", "Xe lăn điện"],
     "ga": ["Victoria", "Detech", "DK Bike", "Osakar", "Nioshima"],
     "so": ["Wave 50cc Detech", "Wave 50cc Victoria", "Cub 50cc", "Kaiser W2 50cc", "Daelim"],
+    "wave": ["Wave 50cc Detech", "Wave 50cc Victoria", "Wave 50cc Daelim"],
 }
 
 
@@ -52,7 +54,7 @@ def rows(k, limit=None):
             out.append('<div class="dong" data-n="%s"><div class="ten">%s<small>%s</small></div>%s</div>' % (k, m["name"], spec or NHOM[k][0], g))
     else:
         for b in CHO[k][:limit]:
-            ten = b if k in ("ba", "so") else "%s %s" % (NHOM[k][0], b)
+            ten = b if k in ("ba", "so", "wave") else "%s %s" % (NHOM[k][0], b)
             out.append('<div class="dong" data-n="%s"><div class="ten">%s<small>Đang cập nhật giá tháng %s</small></div><span class="gia lh">Liên hệ</span></div>' % (k, ten, THANG))
     return "".join(out)
 
@@ -155,7 +157,8 @@ VN = {
              "nhan-hero": "#ffb27d", "btn": "#f26b1d", "bong": "rgba(242,107,29,.35)",
              "keu": "linear-gradient(135deg,#f26b1d,#c94d0b)", "chan": "#2f3a40", "gia": "#d4401a"},
     "menu": [("Bảng giá xe điện", "/bang-gia-xe-dien/"), ("Bảng giá xe 50cc", "/bang-gia-xe-50cc/"), ("Xe máy điện", "/xe-may-dien/"),
-             ("Xe đạp điện", "/xe-dap-dien/"), ("Xe điện 3 bánh", "/xe-dien-3-banh/"), ("So sánh và đánh giá", "/so-sanh/"), ("Giới thiệu", "/gioi-thieu/")],
+             ("Xe đạp điện", "/xe-dap-dien/"), ("Xe ga 50cc", "/xe-ga-50cc/"), ("Xe số 50cc", "/xe-so-50cc/"), ("Xe wave 50cc", "/xe-wave-50cc/"),
+             ("Xe điện 3 bánh", "/xe-dien-3-banh/"), ("So sánh và đánh giá", "/so-sanh/"), ("Giới thiệu", "/gioi-thieu/")],
     "foot": [("Bảng giá xe điện", "/bang-gia-xe-dien/"), ("Bảng giá xe 50cc", "/bang-gia-xe-50cc/"), ("So sánh", "/so-sanh/"), ("Giới thiệu", "/gioi-thieu/")],
     "footer": "Phố Xe Điện (phoxedien.vn) gom bảng giá tham khảo theo tháng và so sánh xe điện, xe 50cc để bạn chọn nhanh, đúng túi tiền.",
     "authors": {
@@ -185,7 +188,8 @@ def vn_home(s):
 <section><div class="tieude"><h2>Xem theo loại xe</h2></div>{the_xe([
         ("Xe máy điện", "Đi học, đi làm trong phố", gia_tu("may"), "/xe-may-dien/", xe_svg("#3aa52a", "#f26b1d")),
         ("Xe đạp điện", "Nhẹ, rẻ, hợp học sinh", gia_tu("dap"), "/xe-dap-dien/", dap_svg("#3aa52a", "#f26b1d")),
-        ("Xe 50cc", "Xe ga, xe số, wave, cub", gia_tu("ga"), "/bang-gia-xe-50cc/", xe_svg("#2f3a40", "#f26b1d")),
+        ("Xe ga 50cc", "Tự động, có cốp, từ 16 tuổi", gia_tu("ga"), "/xe-ga-50cc/", xe_svg("#2f3a40", "#f26b1d")),
+        ("Xe số 50cc", "Wave, cub, rẻ và bền", gia_tu("so"), "/xe-so-50cc/", xe_svg("#2f3a40", "#ffb27d")),
         ("Xe điện 3 bánh", "Cho người lớn tuổi", gia_tu("ba"), "/xe-dien-3-banh/", xe_svg("#3aa52a", "#ffb27d"))])}</section>
 <section>{chon([
         ("Đi học", 'Học sinh từ đủ 16 tuổi đi được xe gắn máy (xe điện đến 4 kW hoặc xe dưới 50cc). Xem <a href="/xe-may-dien/">xe máy điện</a> hoặc <a href="/bang-gia-xe-50cc/">xe 50cc</a>; dưới 16 tuổi chọn <a href="/xe-dap-dien/">xe đạp điện</a>.'),
@@ -239,6 +243,7 @@ def vn_bang_gia_50(s):
 <section style="margin-top:20px">{bang(["ga", "so"], "bg-50")}</section>
 <section class="noi-dung hd-in"><h2>Xe ga hay xe số: tiền chênh nằm ở đâu</h2>
 <p>Xe ga 50cc thường đắt hơn xe số cùng hãng vì có hộp số tự động, cốp và thân vỏ lớn hơn. Xe số, wave, cub rẻ hơn, nhẹ hơn, phụ tùng dễ tìm. So sánh đủ ưu, nhược ở bài <a href="/so-sanh/xe-ga-50cc-hay-xe-so-50cc/">xe ga 50cc hay xe số 50cc</a>.</p>
+<p>Xem riêng từng loại: <a href="/xe-ga-50cc/">xe ga 50cc</a>, <a href="/xe-so-50cc/">xe số 50cc</a>, <a href="/xe-wave-50cc/">xe wave 50cc</a>.</p>
 <p>Khi so giá, nhìn thêm 3 thứ: phanh (phanh đĩa trước hay phanh cơ), chiều cao yên so với người đi, và hãng có bảo hành, có phụ tùng gần nhà không.</p></section>
 <section class="hd-in"><div class="tieude"><h2>Hỏi về giá xe 50cc</h2></div>{faq_html_local(FAQ_BG_50)}</section>
 {keu(VN["cta_title"], VN["cta_text"])}</div>'''
@@ -339,13 +344,15 @@ VN["pages"][0]["schemas"] = []
 # =====================================================================
 COMVN = {
     "domain": "phoxedien.com.vn", "sitename": "Phố Xe Điện: cẩm nang và hỏi đáp xe 50cc, xe điện",
-    "tagline": "Cẩm nang xe 50cc", "theme": "#f5fdee", "skin": "sup", "logo_ten": "Phố Xe Điện",
+    "tagline": "Cẩm nang xe 50cc và xe điện", "theme": "#f5fdee", "skin": "sup", "logo_ten": "Phố Xe Điện",
     "icon": ICON_COMVN, "logo_svg": logo_svg(ICON_COMVN, "CẨM NANG XE 50CC", "#14280f", "#3aa52a"), "favicon": fav(ICON_COMVN),
     "vars": {"c1": "#14280f", "c2": "#3aa52a", "c2d": "#2b8f1e", "chu": "#14280f", "phu": "#4b5a45", "vien": "#dfe9d7",
              "nen": "#f5fdee", "nen2": "#f3fceb", "hero": "linear-gradient(165deg,#f3fceb,#ffffff)",
              "nhan-hero": "#2b8f1e", "btn": "linear-gradient(135deg,#5cc93a,#2b8f1e)", "bong": "rgba(43,143,30,.45)",
              "keu": "#0f2a1a", "chan": "#0f2a1a", "gia": "#c2275f"},
     "menu": [("Xe cho học sinh", "/cam-nang/?muc=hoc-sinh"), ("Tuổi, bằng lái, biển số", "/cam-nang/?muc=giay-to"), ("Pin, sạc, sửa xe", "/cam-nang/?muc=sua-xe"),
+             ("Xe ga 50cc cho học sinh", "/xe-ga-50cc-cho-hoc-sinh/"), ("Xe số 50cc cho học sinh", "/xe-so-50cc-cho-hoc-sinh/"),
+             ("Xe máy điện cho học sinh", "/xe-may-dien-cho-hoc-sinh/"), ("Xe đạp điện cho học sinh", "/xe-dap-dien-cho-hoc-sinh/"),
              ("Tất cả cẩm nang", "/cam-nang/"), ("Hỏi đáp", "/hoi-dap/"), ("Giá xe 50cc", "/gia-xe-50cc/"), ("Giới thiệu", "/gioi-thieu/")],
     "foot": [("Cẩm nang", "/cam-nang/"), ("Hỏi đáp", "/hoi-dap/"), ("Giá xe 50cc", "/gia-xe-50cc/"), ("Giới thiệu", "/gioi-thieu/")],
     "footer": "Phố Xe Điện (phoxedien.com.vn) là cẩm nang và hỏi đáp về xe 50cc, xe điện: chọn xe cho học sinh, tuổi, bằng lái, biển số, pin sạc và bảo dưỡng.",
@@ -412,6 +419,7 @@ def comvn_gia(s):
 <div class="nhanh hd-in"><b>Trước khi xem giá</b><ul><li>Con đủ 16 tuổi: chọn trong xe ga 50cc, xe số 50cc hoặc xe máy điện đến 4 kW.</li><li>Con dưới 16 tuổi: xe đạp điện.</li><li>Ngoài giá xe, tính thêm lệ phí trước bạ, biển số và bảo hiểm.</li></ul></div>
 <section style="margin-top:20px">{bang(["ga", "so", "may", "dap"], "bg-hs")}</section>
 <section class="noi-dung hd-in"><h2>Mẹ nên nhìn gì ngoài giá</h2><ul><li><b>Chân con chạm đất:</b> con ngồi lên, hai chân chống được là an toàn khi dừng đèn đỏ.</li><li><b>Con dắt được xe:</b> xe nặng quá, con không tự dựng chân chống thì dễ ngã khi dắt.</li><li><b>Chi phí nuôi xe:</b> xăng, dầu nhớt với xe 50cc; tiền điện và thay pin với xe điện.</li></ul>
+<p>Xem riêng từng loại: <a href="/xe-ga-50cc-cho-hoc-sinh/">xe ga 50cc</a>, <a href="/xe-so-50cc-cho-hoc-sinh/">xe số 50cc</a>, <a href="/xe-may-dien-cho-hoc-sinh/">xe máy điện</a>, <a href="/xe-dap-dien-cho-hoc-sinh/">xe đạp điện</a> cho học sinh.</p>
 <p>Đọc thêm: <a href="/hoc-sinh/chon-xe-cho-con-hoc-cap-3/">chọn xe cho con học cấp 3</a> và <a href="/giay-to/16-tuoi-di-xe-50cc-can-giay-to-gi/">giấy tờ khi con đi xe 50cc</a>.</p></section>
 {keu(COMVN["cta_title"], COMVN["cta_text"])}</div>'''
 
