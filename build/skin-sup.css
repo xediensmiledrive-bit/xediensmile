@@ -1,0 +1,89 @@
+/* Lớp da phoxedien.com.vn theo guideline supplement-vn: nền mint, chữ Lexend, nút tròn xanh chanh, giá hồng, dock đáy */
+.skin-sup{--mint:#f5fdee;--ink:#14280f;--ink2:#4b5a45;--mute:#7c8a76;--line:#dfe9d7;--g1:#5cc93a;--g2:#3aa52a;--g3:#2b8f1e;--lime:#6fd92e;--limeTx:#10380a;--cream:#f6f08a;--pink:#ec4c86;--pinkTx:#c2275f;--forest:#0f2a1a}
+.skin-sup{font-family:Lexend,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-weight:300;color:var(--ink);background:var(--mint);-webkit-font-smoothing:antialiased}
+.skin-sup b,.skin-sup strong{font-weight:600}
+.skin-sup h1,.skin-sup h2,.skin-sup h3,.skin-sup .bal{font-family:Lexend,system-ui,sans-serif;font-weight:600;letter-spacing:-.3px}
+
+/* Header: mint mờ, chữ thường, nút gọi tròn xanh chanh + nút menu tròn trắng */
+.skin-sup .top{background:rgba(245,253,238,.92);border-bottom:1px solid var(--line)}
+.skin-sup .top.cuon{box-shadow:0 6px 18px rgba(20,40,15,.08)}
+.skin-sup .logo b{font-family:Lexend,sans-serif;font-weight:600;font-size:18px;letter-spacing:-.3px;color:var(--ink)}
+.skin-sup .logo b i{color:var(--ink)}
+.skin-sup .logo small{font-size:12px;font-weight:500;letter-spacing:0;text-transform:none;color:var(--g2);margin-top:2px}
+.skin-sup .dau-phai{display:flex;align-items:center;gap:8px}
+.skin-sup .nut-goi{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--lime);color:var(--limeTx)}
+.skin-sup .nut-goi svg{width:19px;height:19px}
+.skin-sup .nut-menu{border-radius:50%;background:#fff;border:1px solid var(--line)}
+.skin-sup .ngan-menu{background:var(--mint)}
+.skin-sup .ngan-menu a{font-weight:500}
+.skin-sup .ngan-menu a:after{color:var(--g2)}
+
+/* Chip: viên thuốc trắng, chọn thì xanh chanh */
+.skin-sup .chip{background:#fff;border:1px solid var(--line);font-weight:500;color:var(--ink)}
+.skin-sup .chip.on,.skin-sup .chip:hover{background:var(--lime);border-color:var(--lime);color:var(--limeTx)}
+
+/* Hero: thẻ sáng, tiêu đề dán nhãn kem như sticker */
+.skin-sup .hero{background:linear-gradient(165deg,#f3fceb 0%,#fff 70%);color:var(--ink);border:1px solid var(--line);box-shadow:0 18px 40px -26px rgba(43,143,30,.45)}
+.skin-sup .hero .cau.a{background:var(--lime);opacity:.35}
+.skin-sup .hero .cau.b{background:var(--pink);opacity:.12}
+.skin-sup .nhan{background:var(--lime);border:0;color:var(--limeTx);font-weight:500}
+.skin-sup .hero h1{font-weight:700;letter-spacing:-.8px}
+.skin-sup .hero h1 em{color:var(--g3);background:var(--cream);padding:0 8px;border-radius:10px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.skin-sup .hero p{color:var(--ink2);opacity:1}
+.skin-sup .hinh-hero{background:var(--mint);border:1px solid var(--line)}
+.skin-sup .hinh-hero svg *[fill="#fff"],.skin-sup .hinh-hero svg *[fill="#ffffff"]{fill:var(--g2)}
+.skin-sup .hinh-hero:after{background:linear-gradient(100deg,transparent,rgba(255,255,255,.7),transparent)}
+.skin-sup .sticker{background:var(--cream);color:var(--g3);font-family:Lexend,sans-serif;font-weight:700}
+.skin-sup .btn{border-radius:16px;font-weight:600}
+.skin-sup .btn-chinh{background:linear-gradient(135deg,var(--g1),var(--g3));color:#fff;box-shadow:0 8px 18px -8px rgba(43,143,30,.8)}
+.skin-sup .hero .btn-phu{background:#fff;color:var(--ink);border:1px solid var(--line)}
+
+/* Khối: thẻ trắng bo 20px trên nền mint */
+.skin-sup .tieude h2{font-size:19px;color:var(--ink);padding-left:0}
+.skin-sup .tieude h2:before{display:none}
+.skin-sup .tieude a{color:var(--g2);font-weight:500}
+.skin-sup .the,.skin-sup .bang,.skin-sup .the-xe,.skin-sup .bai-nho,.skin-sup .hd details{border-radius:20px;border-color:var(--line);background:#fff}
+.skin-sup .bang .dau{background:var(--mint);color:var(--ink2);font-weight:500}
+.skin-sup .bang .gia,.skin-sup .the-xe .gia{color:var(--pinkTx);font-weight:700}
+.skin-sup .bang .gia.lh{color:var(--g3)}
+.skin-sup .chon{background:#fff;border-color:var(--line);border-radius:20px}
+.skin-sup .chon h2{color:var(--ink)}
+.skin-sup .chon .lua button{border-radius:14px;font-weight:500}
+.skin-sup .chon .lua button.on{border-color:var(--g2);background:linear-gradient(180deg,#f3fceb,#fff);color:var(--g3)}
+.skin-sup .muc{color:var(--g3);font-weight:600}
+.skin-sup .goi-y a,.skin-sup .noi-dung a,.skin-sup .ky a{color:var(--g3)}
+.skin-sup .hd summary:after{color:var(--g2)}
+
+/* Khối kêu gọi: rừng đậm, nút trắng */
+.skin-sup .keu{background:var(--forest)}
+.skin-sup .keu .btn-trang{background:var(--lime);color:var(--limeTx)}
+.skin-sup .keu .btn-phu{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.35)}
+
+/* Bài viết */
+.skin-sup .dau-trang h1,.skin-sup .noi-dung h2{color:var(--ink)}
+.skin-sup .duong b{color:var(--ink)}
+.skin-sup .nhanh{border-color:var(--lime);background:#f3fceb;border-radius:20px}
+.skin-sup .nhanh b{font-family:Lexend,sans-serif;color:var(--g3)}
+.skin-sup .noi-dung th{background:var(--mint);color:var(--ink)}
+.skin-sup .tac .av{background:var(--lime);color:var(--limeTx)}
+.skin-sup .luu-y{border-left-color:var(--lime);color:var(--ink2)}
+
+/* Chân trang */
+.skin-sup footer{background:var(--forest);color:#d6e6d0}
+.skin-sup footer .logo b,.skin-sup footer .logo b i{color:#fff}
+.skin-sup footer .logo small{color:var(--lime)}
+
+/* Dock đáy: Hỏi · Zalo · nút gọi lớn */
+.skin-sup .day.dock{grid-template-columns:58px 58px 1fr;background:#fff;border-top:1px solid var(--line);box-shadow:0 -10px 30px -18px rgba(20,40,15,.4)}
+.skin-sup .dock .hoi,.skin-sup .dock .zalo{min-height:52px;display:grid;place-items:center;align-content:center;gap:2px;border:0;border-radius:16px;background:var(--mint);color:var(--ink2);font:inherit;font-size:11px;font-weight:500;padding:6px 0}
+.skin-sup .dock .hoi svg{width:21px;height:21px;color:var(--g2)}
+.skin-sup .dock .zl{width:22px;height:22px;border-radius:7px;background:#0068ff;color:#fff;font-weight:700;font-size:13px;display:grid;place-items:center}
+.skin-sup .dock .goi{min-height:52px;flex-direction:column;gap:0;border-radius:16px;background:linear-gradient(135deg,var(--g1),var(--g3));color:#fff;font-size:16px;font-weight:600;line-height:1.15;box-shadow:0 8px 18px -8px rgba(43,143,30,.8)}
+.skin-sup .dock .goi small{display:block;font-size:11.5px;font-weight:400;opacity:.92}
+
+/* Khung chat */
+.skin-sup .chat-dau{background:var(--forest)}
+.skin-sup .chat-av{color:var(--g3);font-family:Lexend,sans-serif;font-weight:700}
+.skin-sup .chat-than{background:var(--mint)}
+.skin-sup .tn.toi{background:var(--g2)}
+.skin-sup .chat-goi button,.skin-sup .chat-goi a{border-color:var(--line);color:var(--g3);font-weight:500}

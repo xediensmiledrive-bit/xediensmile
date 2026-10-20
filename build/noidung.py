@@ -97,8 +97,8 @@ def dap_svg(c1="#fff", c2="#ffb27d"):
 
 # ---------- Logo ----------
 ICON_VN = '''<svg viewBox="0 0 64 56" aria-hidden="true"><path d="M8 4h48l6 18H2z" fill="#f26b1d"/><path d="M20 4l-4 18M32 4v18M44 4l4 18" stroke="#fff" stroke-width="4"/>
-<path d="M2 22q7.5 8 15 0q7.5 8 15 0q7.5 8 15 0q7.5 8 15 0" fill="#f26b1d"/><rect x="7" y="30" width="50" height="26" fill="#2e8b4a"/><rect x="25" y="36" width="14" height="20" rx="1.5" fill="#fff"/></svg>'''
-ICON_COMVN = '''<svg viewBox="0 0 64 56" aria-hidden="true"><rect x="29" y="2" width="6" height="54" rx="3" fill="#4a5258"/><path d="M8 8h40l10 9-10 9H8z" fill="#2e8b4a"/>
+<path d="M2 22q7.5 8 15 0q7.5 8 15 0q7.5 8 15 0q7.5 8 15 0" fill="#f26b1d"/><rect x="7" y="30" width="50" height="26" fill="#3aa52a"/><rect x="25" y="36" width="14" height="20" rx="1.5" fill="#fff"/></svg>'''
+ICON_COMVN = '''<svg viewBox="0 0 64 56" aria-hidden="true"><rect x="29" y="2" width="6" height="54" rx="3" fill="#4a5258"/><path d="M8 8h40l10 9-10 9H8z" fill="#3aa52a"/>
 <path d="M56 30H16L6 39l10 9h40z" fill="#9aa5ad"/></svg>'''
 
 
@@ -147,10 +147,11 @@ from baiviet import BAI_VN, BAI_COMVN  # noqa: E402
 # =====================================================================
 VN = {
     "domain": "phoxedien.vn", "sitename": "Phố Xe Điện: bảng giá và so sánh xe điện, xe 50cc",
-    "tagline": "Cẩm nang xe điện", "theme": "#2e8b4a",
-    "icon": ICON_VN, "logo_svg": logo_svg(ICON_VN, "CẨM NANG XE ĐIỆN", "#2e8b4a", "#f26b1d"), "favicon": fav(ICON_VN),
-    "vars": {"c1": "#2e8b4a", "c2": "#f26b1d", "c2d": "#c24d0a", "chu": "#1f2a30", "phu": "#5f6b73", "vien": "#e4ebe6",
-             "nen": "#f3f8f4", "nen2": "#fff6ef", "hero": "linear-gradient(140deg,#2e8b4a 0%,#1f6e38 55%,#2f3a40 100%)",
+    "brand": "Phố Xe Điện Smile", "logo_ten": "PHỐ <i>XE ĐIỆN</i> SMILE",
+    "tagline": "Cẩm nang xe điện", "theme": "#3aa52a",
+    "icon": ICON_VN, "logo_svg": logo_svg(ICON_VN, "CẨM NANG XE ĐIỆN", "#3aa52a", "#f26b1d"), "favicon": fav(ICON_VN),
+    "vars": {"c1": "#3aa52a", "c2": "#f26b1d", "c2d": "#c24d0a", "chu": "#1f2a30", "phu": "#5f6b73", "vien": "#e4ebe6",
+             "nen": "#f5fdee", "nen2": "#fff6ef", "hero": "linear-gradient(140deg,#3aa52a 0%,#2b8f1e 55%,#2f3a40 100%)",
              "nhan-hero": "#ffb27d", "btn": "#f26b1d", "bong": "rgba(242,107,29,.35)",
              "keu": "linear-gradient(135deg,#f26b1d,#c94d0b)", "chan": "#2f3a40", "gia": "#d4401a"},
     "menu": [("Bảng giá xe điện", "/bang-gia-xe-dien/"), ("Bảng giá xe 50cc", "/bang-gia-xe-50cc/"), ("Xe máy điện", "/xe-may-dien/"),
@@ -182,10 +183,10 @@ def vn_home(s):
 <section><div class="tieude"><h2>Bảng giá tham khảo</h2><a href="/bang-gia-xe-dien/">Xem đủ ›</a></div>
 <div class="the bang hd-in"><div class="dong dau"><span>Nhóm xe</span><span>Giá tham khảo</span></div>{tom_gia(["may", "dap", "ba", "ga", "so"])}</div></section>
 <section><div class="tieude"><h2>Xem theo loại xe</h2></div>{the_xe([
-        ("Xe máy điện", "Đi học, đi làm trong phố", gia_tu("may"), "/xe-may-dien/", xe_svg("#2e8b4a", "#f26b1d")),
-        ("Xe đạp điện", "Nhẹ, rẻ, hợp học sinh", gia_tu("dap"), "/xe-dap-dien/", dap_svg("#2e8b4a", "#f26b1d")),
+        ("Xe máy điện", "Đi học, đi làm trong phố", gia_tu("may"), "/xe-may-dien/", xe_svg("#3aa52a", "#f26b1d")),
+        ("Xe đạp điện", "Nhẹ, rẻ, hợp học sinh", gia_tu("dap"), "/xe-dap-dien/", dap_svg("#3aa52a", "#f26b1d")),
         ("Xe 50cc", "Xe ga, xe số, wave, cub", gia_tu("ga"), "/bang-gia-xe-50cc/", xe_svg("#2f3a40", "#f26b1d")),
-        ("Xe điện 3 bánh", "Cho người lớn tuổi", gia_tu("ba"), "/xe-dien-3-banh/", xe_svg("#2e8b4a", "#ffb27d"))])}</section>
+        ("Xe điện 3 bánh", "Cho người lớn tuổi", gia_tu("ba"), "/xe-dien-3-banh/", xe_svg("#3aa52a", "#ffb27d"))])}</section>
 <section>{chon([
         ("Đi học", 'Học sinh từ đủ 16 tuổi đi được xe gắn máy (xe điện đến 4 kW hoặc xe dưới 50cc). Xem <a href="/xe-may-dien/">xe máy điện</a> hoặc <a href="/bang-gia-xe-50cc/">xe 50cc</a>; dưới 16 tuổi chọn <a href="/xe-dap-dien/">xe đạp điện</a>.'),
         ("Đi làm", 'Đi dưới 30 km mỗi ngày: <a href="/xe-may-dien/">xe máy điện</a> tiết kiệm nhất. Đi xa hoặc không có chỗ sạc: cân nhắc <a href="/bang-gia-xe-50cc/">xe 50cc</a>.'),
@@ -335,12 +336,12 @@ VN["pages"][0]["schemas"] = []
 # =====================================================================
 COMVN = {
     "domain": "phoxedien.com.vn", "sitename": "Phố Xe Điện: cẩm nang và hỏi đáp xe 50cc, xe điện",
-    "tagline": "Cẩm nang xe 50cc", "theme": "#4a5258",
-    "icon": ICON_COMVN, "logo_svg": logo_svg(ICON_COMVN, "CẨM NANG XE 50CC", "#4a5258", "#2e8b4a"), "favicon": fav(ICON_COMVN),
-    "vars": {"c1": "#3c4449", "c2": "#2e8b4a", "c2d": "#23763c", "chu": "#1f2629", "phu": "#5f696f", "vien": "#e3e7e9",
-             "nen": "#f2f4f5", "nen2": "#f1f8f3", "hero": "linear-gradient(140deg,#4a5258 0%,#353c41 60%,#23302a 100%)",
-             "nhan-hero": "#7fd49a", "btn": "#2e8b4a", "bong": "rgba(46,139,74,.35)",
-             "keu": "linear-gradient(135deg,#2e8b4a,#1f6e38)", "chan": "#2f363b", "gia": "#23763c"},
+    "tagline": "Cẩm nang xe 50cc", "theme": "#f5fdee", "skin": "sup", "logo_ten": "Phố Xe Điện",
+    "icon": ICON_COMVN, "logo_svg": logo_svg(ICON_COMVN, "CẨM NANG XE 50CC", "#14280f", "#3aa52a"), "favicon": fav(ICON_COMVN),
+    "vars": {"c1": "#14280f", "c2": "#3aa52a", "c2d": "#2b8f1e", "chu": "#14280f", "phu": "#4b5a45", "vien": "#dfe9d7",
+             "nen": "#f5fdee", "nen2": "#f3fceb", "hero": "linear-gradient(165deg,#f3fceb,#ffffff)",
+             "nhan-hero": "#2b8f1e", "btn": "linear-gradient(135deg,#5cc93a,#2b8f1e)", "bong": "rgba(43,143,30,.45)",
+             "keu": "#0f2a1a", "chan": "#0f2a1a", "gia": "#c2275f"},
     "menu": [("Xe cho học sinh", "/cam-nang/?muc=hoc-sinh"), ("Tuổi, bằng lái, biển số", "/cam-nang/?muc=giay-to"), ("Pin, sạc, sửa xe", "/cam-nang/?muc=sua-xe"),
              ("Tất cả cẩm nang", "/cam-nang/"), ("Hỏi đáp", "/hoi-dap/"), ("Giá xe 50cc", "/gia-xe-50cc/"), ("Giới thiệu", "/gioi-thieu/")],
     "foot": [("Cẩm nang", "/cam-nang/"), ("Hỏi đáp", "/hoi-dap/"), ("Giá xe 50cc", "/gia-xe-50cc/"), ("Giới thiệu", "/gioi-thieu/")],
@@ -369,7 +370,7 @@ def comvn_home(s):
     return f'''<div class="hero"><span class="cau a"></span><span class="cau b"></span>
 <div><span class="nhan">Cập nhật tháng {THANG}</span><h1>Xe 50cc cho học sinh: <em>hỏi gì cũng có</em></h1>
 <p>Bao nhiêu tuổi được đi, cần giấy tờ gì, xe ga hay xe số, xe điện có hợp không, nuôi xe hết bao nhiêu. Trả lời ngắn, đúng luật đang có hiệu lực.</p></div>
-<div class="hinh-hero">{xe_svg("#fff", "#7fd49a")}<span class="sticker">Nói thật!</span></div>
+<div class="hinh-hero">{xe_svg("#fff", "#6fd92e")}<span class="sticker">Nói thật!</span></div>
 <div class="hang-nut"><a class="btn btn-chinh nhip" href="/cam-nang/">Đọc cẩm nang</a><button class="btn btn-phu" data-chat>Hỏi nhanh</button></div></div>
 <nav class="chips" aria-label="Danh mục"><a class="chip on" href="/cam-nang/?muc=hoc-sinh">Xe cho học sinh</a><a class="chip" href="/cam-nang/?muc=giay-to">Tuổi và bằng lái</a><a class="chip" href="/cam-nang/?muc=sua-xe">Pin, sạc, sửa xe</a><a class="chip" href="/gia-xe-50cc/">Giá xe 50cc</a><a class="chip" href="/hoi-dap/">Hỏi đáp</a></nav>
 <div class="wrap">
@@ -379,7 +380,7 @@ def comvn_home(s):
         ("Con 14–15 tuổi", 'Chưa đủ 16 tuổi thì chỉ nên đi xe đạp hoặc <b>xe đạp điện</b>. Đọc <a href="/hoc-sinh/chon-xe-cho-con-hoc-cap-3/">cách chọn xe cho con</a>.'),
         ("Con đủ 16", 'Đi được xe gắn máy: xe dưới 50cc hoặc xe máy điện đến 4 kW, không cần bằng lái. Xem <a href="/giay-to/16-tuoi-di-xe-50cc-can-giay-to-gi/">giấy tờ cần có</a>.'),
         ("Xe đang hỏng", 'Xe điện không lên nguồn? Thử <a href="/sua-xe/xe-dien-khong-len-nguon/">4 bước tự kiểm</a> trước khi gọi thợ.')])}</section>
-<section><div class="tieude"><h2>Cẩm nang</h2><a href="/cam-nang/">Tất cả ›</a></div>{list_bai(BAI_COMVN, ico=xe_svg("#fff", "#7fd49a"))}</section>
+<section><div class="tieude"><h2>Cẩm nang</h2><a href="/cam-nang/">Tất cả ›</a></div>{list_bai(BAI_COMVN, ico=xe_svg("#fff", "#6fd92e"))}</section>
 {keu(COMVN["cta_title"], COMVN["cta_text"])}
 <section class="hd-in"><div class="tieude"><h2>Hỏi nhanh đáp gọn</h2><a href="/hoi-dap/">Thêm ›</a></div>{faq_html_local(FAQ_COMVN[:3])}</section>
 </div>'''

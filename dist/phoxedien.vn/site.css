@@ -153,7 +153,7 @@ section{margin-top:34px}
 .cuon-bang table{margin:0;min-width:520px}
 .hai-cot{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 16px}
 .hai-cot div{border-radius:14px;padding:12px 14px;font-size:14.5px}
-.hai-cot .cong{background:#eaf6ee}.hai-cot .tru{background:#fdeeee}
+.hai-cot .cong{background:#e9f9dc}.hai-cot .tru{background:#fdeeee}
 .hai-cot b{display:block;margin-bottom:4px}
 .ky{margin:26px 0 0;padding:16px;border-radius:16px;background:var(--nen);font-size:14.5px}
 .ky a{color:var(--c2d);font-weight:700}

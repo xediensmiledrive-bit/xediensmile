@@ -85,6 +85,23 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
     if path == "/":
         sch += ld(org) + ld({"@context": "https://schema.org", "@type": "WebSite", "name": site["sitename"],
                              "url": "https://%s/" % d, "inLanguage": "vi"})
+    skin = site.get("skin")
+    skin_head = ('<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">'
+                 '<link rel="stylesheet" href="/skin-%s.css?v=1">' % skin) if skin else ""
+    ten = site.get("logo_ten", "PHỐ <i>XE ĐIỆN</i>")
+    goi_dau = ('<a class="nut-goi" href="tel:%s" aria-label="Gọi %s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></a>' % (TEL, HOTLINE)) if skin else ""
+    if skin:
+        day = f'''<div class="day dock">
+<button class="hoi" data-chat><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Hỏi</button>
+<a class="zalo" href="https://zalo.me/{TEL}" target="_blank" rel="noopener nofollow"><span class="zl">Z</span>Zalo</a>
+<a class="goi" href="tel:{TEL}">Gọi tư vấn<small>{HOTLINE} · 8h–21h</small></a>
+</div>'''
+    else:
+        day = f'''<div class="day">
+<a class="goi" href="tel:{TEL}"><i></i>Gọi tư vấn</a>
+<a class="zalo" href="https://zalo.me/{TEL}" target="_blank" rel="noopener nofollow">Zalo</a>
+<button class="xem" data-chat>Chat tư vấn</button>
+</div>'''
     return f'''<!doctype html>
 <html lang="vi">
 <head>
@@ -103,30 +120,27 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 {FONT}
 <link rel="stylesheet" href="/site.css?v=1">
+{skin_head}
 <style>:root{{{css_vars}}}</style>
 {sch}
 </head>
-<body>
+<body{' class="skin-%s"' % skin if skin else ""}>
 <header class="top"><div class="wrap wide">
-<a class="logo" href="/" aria-label="{site['sitename']} - trang chủ">{site['icon']}<span><b>PHỐ <i>XE ĐIỆN</i></b><small>{site['tagline']}</small></span></a>
-<button class="nut-menu" aria-label="Mở menu" aria-expanded="false"><span></span></button>
+<a class="logo" href="/" aria-label="{site['sitename']} - trang chủ">{site['icon']}<span><b>{ten}</b><small>{site['tagline']}</small></span></a>
+<span class="dau-phai">{goi_dau}<button class="nut-menu" aria-label="Mở menu" aria-expanded="false"><span></span></button></span>
 </div></header>
 <nav class="ngan-menu" aria-label="Menu">{menu}<div class="nho">Gọi tư vấn: <a href="tel:{TEL}" style="display:inline;padding:0;border:0;color:inherit">{HOTLINE}</a></div></nav>
 <main>
 {body}
 </main>
 <footer><div class="wrap wide">
-<a class="logo" href="/">{site['icon']}<span><b>PHỐ <i>XE ĐIỆN</i></b><small>{site['tagline']}</small></span></a>
+<a class="logo" href="/">{site['icon']}<span><b>{ten}</b><small>{site['tagline']}</small></span></a>
 <p>{site['footer']}</p>
 <p>Trang cẩm nang do Smile Motor biên soạn. Giá trên trang là giá tham khảo, có ghi ngày cập nhật. Khi mua xe, người bán là Smile Motor. Hotline {HOTLINE}.</p>
 {stores_html(site)}
 <nav>{"".join('<a href="%s">%s</a>' % (u, n) for n, u in site['foot'])}</nav>
 </div></footer>
-<div class="day">
-<a class="goi" href="tel:{TEL}"><i></i>Gọi tư vấn</a>
-<a class="zalo" href="https://zalo.me/{TEL}" target="_blank" rel="noopener nofollow">Zalo</a>
-<button class="xem" data-chat>Chat tư vấn</button>
-</div>
+{day}
 <div class="chat" role="dialog" aria-label="Chat tư vấn" aria-hidden="true">
 <div class="chat-dau"><span class="chat-av">{site['bot'][0]}</span><div><b>{site['bot']}</b><small><i></i>Tư vấn Xe điện Smile · {site['hot']}</small></div><button class="chat-dong" aria-label="Đóng">×</button></div>
 <div class="chat-than" aria-live="polite"></div>
@@ -143,6 +157,8 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
 def write(site, path, content):
     # Mỗi web một hotline riêng (anh chốt 20/10): thay số mặc định trong mẫu bằng số của web
     content = content.replace("0888.266.233", site["hot"]).replace("0888266233", site["hot"].replace(".", ""))
+    if site.get("brand"):  # phoxedien.vn đổi tên thành "Phố Xe Điện Smile" (anh chốt 20/10)
+        content = content.replace("Phố Xe Điện", site["brand"])
     base = os.path.join(OUT, site["domain"])
     f = os.path.join(base, path.strip("/"), "index.html") if path.endswith("/") else os.path.join(base, path.lstrip("/"))
     os.makedirs(os.path.dirname(f), exist_ok=True)
@@ -202,6 +218,8 @@ def build(site):
     os.makedirs(base)
     shutil.copy(os.path.join(HERE, "site.css"), base)
     shutil.copy(os.path.join(HERE, "site.js"), base)
+    if site.get("skin"):
+        shutil.copy(os.path.join(HERE, "skin-%s.css" % site["skin"]), base)
     os.makedirs(os.path.join(base, "api"))
     shutil.copy(os.path.join(HERE, "lien-he.php"), os.path.join(base, "api"))
     open(os.path.join(base, ".htaccess"), "w").write(HTACCESS)
