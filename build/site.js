@@ -90,6 +90,8 @@
   var dd=new Date(),md=('0'+(dd.getMonth()+1)).slice(-2)+'-'+('0'+dd.getDate()).slice(-2),cs=t.querySelectorAll('.tr-cham button');
   [].slice.call(t.querySelectorAll('.tr-o')).forEach(function(o,k){var m=o.getAttribute('data-mua');if(!m)return;m=m.split(',');
     if(!(m[0]<=m[1]?(md>=m[0]&&md<=m[1]):(md>=m[0]||md<=m[1]))){o.remove();if(cs[k])cs[k].remove()}});
+  // slide hãng: ảnh điện thoại có thể là hãng khác ảnh máy tính, link theo ảnh đang hiện
+  if(matchMedia('(max-width:767px)').matches)t.querySelectorAll('.tr-o[data-href-dt]').forEach(function(a){a.href=a.getAttribute('data-href-dt')});
   var ray=t.querySelector('.tr-ray'),o=ray.children,ch=t.querySelectorAll('.tr-cham button'),n=o.length,i=0,hen=null,
       im=matchMedia('(prefers-reduced-motion:reduce)').matches;
   function toi(k){i=(k+n)%n;ray.scrollTo({left:o[i].offsetLeft-ray.offsetLeft,behavior:im?'auto':'smooth'})}

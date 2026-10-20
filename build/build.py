@@ -117,8 +117,47 @@ BANNER = {
                  "/xe-may-dien-cho-hoc-sinh/": ("banner-xe-may-dien.webp", "Xe máy điện cho học sinh, giá tham khảo từ 10.990.000đ")}},
 }
 _MOC_KEU = '<section class="hd-in"><div class="keu">'
-# Banner theo mùa trong slider: số thứ tự -> (từ MM-DD, đến MM-DD); ngoài khoảng này site.js gỡ banner đó ra
-MUA_BANNER = {4: ("10-13", "10-21")}
+# Hero trang chủ (luồng banner 20/10 21:55, anh chốt): mỗi web banner riêng, banner hãng tối đa 2 slide, còn lại là banner mùa.
+# Tệp banner-hero-<ten>-{may-tinh,dien-thoai}.webp trong build/banner/<domain>/. "hang": (hãng ảnh máy tính, hãng ảnh điện thoại),
+# link về trang hãng (.vn) hoặc trang loại lọc ?hang= (.com.vn). "mua": (từ MM-DD, đến MM-DD), ngoài khoảng site.js gỡ slide.
+HERO = {
+    "phoxedien.vn": [
+        {"ten": "hang-1", "hang": ("DK Bike", "Detech")},
+        {"mt": "banner-hero-may-tinh-4.webp", "dt": "banner-hero-dien-thoai-4.webp", "mua": ("10-13", "10-21"),
+         "link": "/xe-cho-nu/chon-xe-dien-cho-nu/", "alt": "Mừng ngày Phụ nữ Việt Nam 20/10: xe đẹp cho nàng, giá tham khảo từ 19.000.000đ"},
+        {"ten": "halloween", "mua": ("10-13", "10-31"), "link": "/bang-gia-xe-dien/",
+         "alt": "Halloween 31/10: xe máy điện từ 10,99 triệu, xe 50cc từ 14,79 triệu"},
+        {"ten": "hang-2", "hang": ("Yaka", "Detech")},
+        {"ten": "11-11", "mua": ("10-13", "11-11"), "link": "/xe-may-dien/",
+         "alt": "11/11: 51 mẫu xe máy điện dưới 15 triệu, như Espero Weezee 12.990.000đ"},
+        {"ten": "20-11", "mua": ("10-13", "11-20"), "link": "/xe-may-dien/",
+         "alt": "Ngày Nhà giáo 20/11: Espero Type 3 Pro giá tham khảo 16.590.000đ"},
+    ],
+    "phoxedien.com.vn": [
+        {"ten": "hang-1", "hang": ("DK Bike", "Detech")},
+        {"mt": "banner-hero-may-tinh-4.webp", "dt": "banner-hero-dien-thoai-4.webp", "mua": ("10-13", "10-21"),
+         "link": "/cam-nang/", "alt": "Mừng ngày Phụ nữ Việt Nam 20/10: cảm ơn mẹ, cảm ơn cô"},
+        {"ten": "halloween", "mua": ("10-13", "10-31"), "link": "/hoc-sinh/", "alt": "Halloween: đi chơi tối, về nhà an toàn"},
+        {"ten": "hang-2", "hang": ("DK Bike", "Detech")},
+        {"ten": "11-11", "mua": ("10-13", "11-11"), "link": "/hoc-sinh/chon-xe-cho-con-hoc-cap-3/",
+         "alt": "Con tự đi học, bố mẹ yên tâm: chọn xe 50cc hay xe điện cho học sinh"},
+        {"ten": "20-11", "mua": ("10-13", "11-20"), "link": "/hoc-sinh/", "alt": "Cảm ơn thầy cô đã dạy con"},
+    ],
+}
+
+
+def _link_hang(site, ten):
+    """Trang của hãng trên web: .vn /<loai>/<hang>/, .com.vn trang loại có hãng đó kèm ?hang=."""
+    k = hang.slug(ten).replace("-", "")
+    if site["domain"] == "phoxedien.vn":
+        ds = [p["url"] for p in site["pages"] if p["url"].count("/") == 3 and p["url"].split("/")[2].replace("-", "") == k]
+        ds.sort(key=lambda u: not u.startswith("/xe-may-dien/"))
+        return ds[0] if ds else None
+    for kk, (url, _) in hang.LOAI_COMVN.items():
+        for b in hang.hang_cua(kk):
+            if hang.slug(b).replace("-", "") == k and "dv motor" not in b.lower():
+                return "%s?hang=%s" % (url, hang.slug(b))
+    return None
 
 
 def _so(site):
@@ -137,31 +176,35 @@ def _co_url(site):
 
 
 def _truot(site, bn):
-    """Hero trang chủ: tối đa 5 banner chạy cuộn (anh chốt 20/10 11:52). Tự nhận tệp banner-hero-may-tinh[-N].webp
-    và banner-hero-dien-thoai[-N].webp có trong build/banner/<domain>/ (N = 2..5); alt slide 3 trở đi lấy từ hero-alt.json."""
+    """Hero trang chủ chạy cuộn theo HERO[domain]; slide thiếu tệp thì bỏ qua."""
     tm = os.path.join(HERE, "banner", site["domain"])
-    them = {}
-    if os.path.isfile(os.path.join(tm, "hero-alt.json")):
-        them = json.load(open(os.path.join(tm, "hero-alt.json"), encoding="utf-8"))
+    co = _co_url(site)
     o = []
-    for i, hau in enumerate(["", "-2", "-3", "-4", "-5"]):
-        if not os.path.isfile(os.path.join(tm, "banner-hero-may-tinh%s.webp" % hau)):
+    for sl in HERO.get(site["domain"], []):
+        mt = sl.get("mt") or "banner-hero-%s-may-tinh.webp" % sl["ten"]
+        dt = sl.get("dt") or "banner-hero-%s-dien-thoai.webp" % sl["ten"]
+        if not os.path.isfile(os.path.join(tm, mt)):
             continue
-        dt = "banner-hero-dien-thoai%s.webp" % hau
         if not os.path.isfile(os.path.join(tm, dt)):
-            dt = "banner-hero-may-tinh%s.webp" % hau
-        alt = them.get(str(i + 1)) or (bn["hero"] if i == 0 else bn["hero2"] if i == 1 else bn["hero"])
-        dau = not o
-        u = (bn.get("link") or [None] * 5)[i]
+            dt = mt
+        u, u_dt = sl.get("link"), None
+        if sl.get("hang"):
+            h1, h2 = sl["hang"]
+            u, u_dt = _link_hang(site, h1), _link_hang(site, h2)
+            u = u or u_dt
+            u_dt = u_dt if u_dt and u_dt != u else None
+            alt = "Xe %s chính hãng tại Smile Motor" % (h1 if h1 == h2 else "%s và %s" % (h1, h2))
+        else:
+            alt = sl["alt"]
         # anh chốt 20/10 19:10: bấm banner là vào bài viết, không gọi điện, không Zalo; trang chưa có thì về trang danh mục chính
-        if not u or u.split("?")[0] not in _co_url(site):
+        if not u or u.split("?")[0] not in co:
             u = bn["mac_dinh"]
-        mua = MUA_BANNER.get(i + 1)
-        mt = "banner-hero-may-tinh%s.webp" % hau
+        mua = sl.get("mua")
         v = lambda t: _ban(os.path.join("banner", site["domain"], t))  # ảnh banner thay cùng tên thì khách vẫn thấy bản mới
-        o.append('<a class="tr-o" href="%s"%s><picture><source media="(max-width:767px)" srcset="/banner/%s?v=%s" width="1080" height="1200">'
+        o.append('<a class="tr-o" href="%s"%s%s><picture><source media="(max-width:767px)" srcset="/banner/%s?v=%s" width="1080" height="1200">'
                  '<img src="/banner/%s?v=%s" width="1920" height="720" alt="%s"%s></picture></a>'
-                 % (u, ' data-mua="%s,%s"' % mua if mua else "", dt, v(dt), mt, v(mt), html.escape(alt), ' fetchpriority="high"' if dau else ' loading="lazy"'))
+                 % (u, ' data-mua="%s,%s"' % mua if mua else "", ' data-href-dt="%s"' % u_dt if u_dt else "",
+                    dt, v(dt), mt, v(mt), html.escape(alt), ' fetchpriority="high"' if not o else ' loading="lazy"'))
     if len(o) < 2:
         return '<div class="banner-dau">%s</div>' % "".join(o)
     cham = "".join('<button type="button" aria-label="Banner %d"%s></button>' % (i + 1, ' aria-current="true"' if not i else "") for i in range(len(o)))
