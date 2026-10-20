@@ -124,7 +124,7 @@ HERO = {
     "phoxedien.vn": [
         {"ten": "hang-1", "hang": ("DK Bike", "Detech")},
         {"mt": "banner-hero-may-tinh-4.webp", "dt": "banner-hero-dien-thoai-4.webp", "mua": ("10-13", "10-21"),
-         "link": "/xe-cho-nu/chon-xe-dien-cho-nu/", "alt": "Mừng ngày Phụ nữ Việt Nam 20/10: xe đẹp cho nàng, giá tham khảo từ 19.000.000đ"},
+         "link": "/xe-cho-nu/chon-xe-dien-cho-nu/", "alt": "Mừng ngày Phụ nữ Việt Nam 20/10: xe đẹp cho nàng, 50VS Diamond Plus giá tham khảo 22.190.000đ"},
         {"ten": "halloween", "mua": ("10-13", "10-31"), "link": "/bang-gia-xe-dien/",
          "alt": "Halloween 31/10: xe máy điện từ 10,99 triệu, xe 50cc từ 14,79 triệu"},
         {"ten": "hang-2", "hang": ("Yaka", "Detech")},
