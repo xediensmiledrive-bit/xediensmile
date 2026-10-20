@@ -217,9 +217,13 @@ VN = {
              "nen": "#f5fdee", "nen2": "#fff6ef", "hero": "linear-gradient(140deg,#3aa52a 0%,#2b8f1e 55%,#2f3a40 100%)",
              "nhan-hero": "#ffb27d", "btn": "#f26b1d", "bong": "rgba(242,107,29,.35)",
              "keu": "linear-gradient(135deg,#f26b1d,#c94d0b)", "chan": "#2f3a40", "gia": "#d4401a"},
-    "menu": [("Bảng giá xe điện", "/bang-gia-xe-dien/"), ("Bảng giá xe 50cc", "/bang-gia-xe-50cc/"), ("Xe máy điện", "/xe-may-dien/"),
-             ("Xe đạp điện", "/xe-dap-dien/"), ("Xe ga 50cc", "/xe-ga-50cc/"), ("Xe số 50cc", "/xe-so-50cc/"), ("Xe wave 50cc", "/xe-wave-50cc/"),
-             ("Xe điện 3 bánh", "/xe-dien-3-banh/"), ("So sánh và đánh giá", "/so-sanh/"), ("Giới thiệu", "/gioi-thieu/")],
+    # thanh menu đầu trang (anh chốt 20/10 23:33): Trang chủ, các loại xe, Tin tức, Liên hệ
+    "nav": [("Trang chủ", "/"), ("Xe đạp điện", "/xe-dap-dien/"), ("Xe máy điện", "/xe-may-dien/"), ("Xe ga 50cc", "/xe-ga-50cc/"),
+            ("Xe số 50cc", "/xe-so-50cc/"), ("Tin tức", "/tin-tuc/"), ("Liên hệ", "/lien-he/")],
+    "menu": [("Trang chủ", "/"), ("Xe đạp điện", "/xe-dap-dien/"), ("Xe máy điện", "/xe-may-dien/"), ("Xe ga 50cc", "/xe-ga-50cc/"),
+             ("Xe số 50cc", "/xe-so-50cc/"), ("Xe wave 50cc", "/xe-wave-50cc/"), ("Xe điện 3 bánh", "/xe-dien-3-banh/"),
+             ("Bảng giá xe điện", "/bang-gia-xe-dien/"), ("Bảng giá xe 50cc", "/bang-gia-xe-50cc/"), ("Tin tức", "/tin-tuc/"),
+             ("So sánh và đánh giá", "/so-sanh/"), ("Liên hệ", "/lien-he/"), ("Giới thiệu", "/gioi-thieu/")],
     "foot": [("Bảng giá xe điện", "/bang-gia-xe-dien/"), ("Bảng giá xe 50cc", "/bang-gia-xe-50cc/"), ("So sánh", "/so-sanh/"), ("Giới thiệu", "/gioi-thieu/")],
     "footer": "Phố Xe Điện (phoxedien.vn) gom bảng giá tham khảo theo tháng và so sánh xe điện, xe 50cc để bạn chọn nhanh, đúng túi tiền.",
     "authors": {
@@ -421,10 +425,12 @@ COMVN = {
              "nhan-hero": "#a6f07a", "btn": "#6fd92e", "bong": "rgba(15,17,18,.35)",
              "keu": "#15181a", "chan": "#0f1112", "gia": "#2b8f1e"},
     # xe trước, tin tức sau (anh góp ý 20/10 18:58: trực quan như web bán xe)
-    "menu": [("Xe ga 50cc", "/xe-ga-50cc-cho-hoc-sinh/"), ("Xe số 50cc", "/xe-so-50cc-cho-hoc-sinh/"),
-             ("Xe máy điện", "/xe-may-dien-cho-hoc-sinh/"), ("Xe đạp điện", "/xe-dap-dien-cho-hoc-sinh/"),
-             ("Giá xe 50cc", "/gia-xe-50cc/"), ("Tin tức, cẩm nang", "/cam-nang/"), ("Tuổi, bằng lái, biển số", "/cam-nang/?muc=giay-to"),
-             ("Pin, sạc, sửa xe", "/cam-nang/?muc=sua-xe"), ("Hỏi đáp", "/hoi-dap/"), ("Giới thiệu", "/gioi-thieu/")],
+    "nav": [("Trang chủ", "/"), ("Xe đạp điện", "/xe-dap-dien-cho-hoc-sinh/"), ("Xe máy điện", "/xe-may-dien-cho-hoc-sinh/"),
+            ("Xe ga 50cc", "/xe-ga-50cc-cho-hoc-sinh/"), ("Xe số 50cc", "/xe-so-50cc-cho-hoc-sinh/"), ("Tin tức", "/tin-tuc/"), ("Liên hệ", "/lien-he/")],
+    "menu": [("Trang chủ", "/"), ("Xe đạp điện", "/xe-dap-dien-cho-hoc-sinh/"), ("Xe máy điện", "/xe-may-dien-cho-hoc-sinh/"),
+             ("Xe ga 50cc", "/xe-ga-50cc-cho-hoc-sinh/"), ("Xe số 50cc", "/xe-so-50cc-cho-hoc-sinh/"), ("Giá xe 50cc", "/gia-xe-50cc/"),
+             ("Tin tức", "/tin-tuc/"), ("Cẩm nang", "/cam-nang/"), ("Tuổi, bằng lái, biển số", "/cam-nang/?muc=giay-to"),
+             ("Pin, sạc, sửa xe", "/cam-nang/?muc=sua-xe"), ("Hỏi đáp", "/hoi-dap/"), ("Liên hệ", "/lien-he/"), ("Giới thiệu", "/gioi-thieu/")],
     "foot": [("Cẩm nang", "/cam-nang/"), ("Hỏi đáp", "/hoi-dap/"), ("Giá xe 50cc", "/gia-xe-50cc/"), ("Giới thiệu", "/gioi-thieu/")],
     "footer": "Phố Xe Điện (phoxedien.com.vn) là cẩm nang và hỏi đáp về xe 50cc, xe điện: chọn xe cho học sinh, tuổi, bằng lái, biển số, pin sạc và bảo dưỡng.",
     "authors": {

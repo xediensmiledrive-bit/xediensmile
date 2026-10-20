@@ -105,6 +105,27 @@ def _tin(site, arts, chips):
             '<div class="luoi-tin">%s</div></section>' % (chips[0][1], c, "".join(o)))
 
 
+# Điểm mạnh Smile (anh nêu 20/10 23:33): hiện ngay dưới banner trang chủ và trên trang xe
+DIEM_MANH = [
+    ("cua-hang", "6 cửa hàng", "TP.HCM, Đồng Tháp, Phan Thiết"),
+    ("kinh-nghiem", "10 năm kinh nghiệm", "Bán và sửa xe điện, xe 50cc"),
+    ("bao-hanh", "Bảo hành phụ tùng 7 năm", "Theo chính sách Xe Điện Smile"),
+    ("gia", "Giá cập nhật hằng tháng", "Có ảnh thật từng mẫu xe"),
+]
+_ICON = {
+    "cua-hang": '<path d="M3 9l1.5-5h15L21 9M3 9h18M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0M5 12v8h14v-8M10 20v-5h4v5"/>',
+    "kinh-nghiem": '<circle cx="12" cy="9" r="6"/><path d="M8.5 14L7 22l5-3 5 3-1.5-8"/>',
+    "bao-hanh": '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>',
+    "gia": '<path d="M20.6 13.4L13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/>',
+}
+
+
+def diem_manh():
+    return '<div class="diem-manh">%s</div>' % "".join(
+        '<div class="dm"><svg viewBox="0 0 24 24" aria-hidden="true">%s</svg><span><b>%s</b><small>%s</small></span></div>' % (_ICON[k], t, p)
+        for k, t, p in DIEM_MANH)
+
+
 def trang_chu(site, h1, mo_ta, bang_gia, tom, chips, faqs):
     xe = _xe()
     svg = xe_svg("#3aa52a", "#f26b1d")
@@ -119,6 +140,7 @@ def trang_chu(site, h1, mo_ta, bang_gia, tom, chips, faqs):
                '<p class="chu-anh">Giá tham khảo cập nhật %s. Màu xe thực tế có thể khác ảnh.</p></section>'
                % (bang_gia, _hang(xe), tab, HIEN, the, noidung.NGAY_VN))
     return f'''<div class="wrap rong">
+{diem_manh()}
 <div class="mo-dau"><h1>{h1}</h1><p>{mo_ta}</p></div>
 {_loai_xe(site)}
 {ban}

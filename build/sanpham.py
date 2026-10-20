@@ -6,6 +6,7 @@ sẽ được ghép vào trang (MUSE[domain][tên chữ thường])."""
 import html
 
 import anhxe
+import trangchu
 import noidung
 from noidung import NHOM, THANG, NGAY_VN, vnd, models_of, keu, faq_html_local, faq_ld_local
 
@@ -15,6 +16,14 @@ GOC_LOAI = {"phoxedien.vn": {"may": "/xe-may-dien/", "ga": "/xe-ga-50cc/", "so":
             "phoxedien.com.vn": {"may": "/xe-may-dien-cho-hoc-sinh/", "ga": "/xe-ga-50cc-cho-hoc-sinh/", "so": "/xe-so-50cc-cho-hoc-sinh/"}}
 THONG_SO = [("brand", "Hãng"), ("type", "Loại xe"), ("range", "Quãng đường mỗi lần sạc"), ("speed", "Tốc độ tối đa"),
             ("motor", "Động cơ"), ("battery", "Pin, ắc quy"), ("weight", "Trọng lượng"), ("colors", "Màu")]
+# Thông số chính hãng máy nhà lấy từ web hãng (anh cho phép 20/10 23:35): PXD_KHO/thong-so-hang.json
+# {"<tên mẫu chữ thường>": {"nguon": "https://web-hang/...", "thong_so": {"Động cơ": "1200W", ...}}}
+import json as _json, os as _os
+_f = _os.path.join(_os.environ.get("PXD_KHO", "").strip(), "thong-so-hang.json") if _os.environ.get("PXD_KHO", "").strip() else ""
+try:
+    TS_HANG = {k.strip().lower(): v for k, v in _json.load(open(_f, encoding="utf-8-sig")).items()} if _f and _os.path.isfile(_f) else {}
+except ValueError:
+    TS_HANG = {}
 LUAT = ('Theo Luật Trật tự, an toàn giao thông đường bộ 2024 (hiệu lực 01/01/2025), xe gắn máy gồm xe dưới 50cc và xe điện '
         'công suất đến 4 kW, tốc độ thiết kế đến 50 km/h; người đủ 16 tuổi được đi và không cần giấy phép lái xe.')
 
@@ -62,7 +71,13 @@ def trang(site, k, m):
         title = "%s cho học sinh: giá %s, có cần bằng lái?" % (ten, gia)
         desc = "%s là %s của %s, giá tham khảo %s. Học sinh bao nhiêu tuổi đi được, cần giấy tờ gì, nuôi xe tốn bao nhiêu." % (ten, loai.lower(), hang or "hãng", gia)
     ts = [(nhan, m.get(key)) for key, nhan in THONG_SO if m.get(key)]
-    bang_ts = "".join('<tr><th>%s</th><td>%s</td></tr>' % (n, html.escape(str(v))) for n, v in ts)
+    th = TS_HANG.get(ten.strip().lower()) or {}
+    co = {n for n, _ in ts}
+    ts += [(n, v) for n, v in (th.get("thong_so") or {}).items() if v and n not in co]
+    bang_ts = "".join('<tr><th>%s</th><td>%s</td></tr>' % (html.escape(n), html.escape(str(v))) for n, v in ts)
+    nguon = th.get("nguon") if str(th.get("nguon", "")).startswith("https://") else ""
+    if nguon and bang_ts:
+        bang_ts += '<tr><td colspan="2" class="ts-nguon">Thông số theo <a href="%s" target="_blank" rel="noopener nofollow">website chính hãng %s</a></td></tr>' % (html.escape(nguon, quote=True), html.escape(hang))
     dien = k == "may"
     if vn:
         gioi = ['%s là mẫu %s của %s.' % (ten, loai.lower(), hang or "hãng")]
@@ -107,6 +122,7 @@ def trang(site, k, m):
 <div class="sp-gia{"" if co_gia else " lh"}">{gia}</div><p class="sp-chu">{chu_gia}</p>
 <div class="sp-nut">{nut}<a class="btn btn-phu" href="tel:{so}">Gọi {site["hot"]}</a><a class="btn btn-phu" href="https://zalo.me/{so}" target="_blank" rel="noopener nofollow">Zalo</a></div>
 {('<table class="sp-ts">%s</table>' % bang_ts) if bang_ts else ""}</div></div>
+{trangchu.diem_manh()}
 {noi_dung}
 {anhxe.luoi(lq, "Mẫu cùng tầm giá", 4, vnd)}
 <section class="hd-in"><div class="tieude"><h2>Hỏi đáp về {html.escape(ten)}</h2></div>{faq_html_local(faqs)}</section>

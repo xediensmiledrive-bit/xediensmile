@@ -19,6 +19,8 @@ import anhxe  # noqa: E402
 import sanpham  # noqa: E402
 import trangchu
 import danhgia
+import chinhsach
+import trangphu
 import bannerhang  # noqa: E402
 
 # Trang loại xe và trang hãng cho 2 web (tối ưu SEO 20/10: cả 2 web đánh xe xăng 50cc lẫn xe điện)
@@ -91,6 +93,8 @@ _gan_luoi(_vn, _LUOI)
 _gan_luoi(_comvn, _LUOI)
 sanpham.gan(_vn, _comvn)   # trang riêng từng xe /xe/<slug>/
 trangchu.gan(_vn, _comvn)  # trang chủ kiểu web bán xe
+chinhsach.gan(_vn, _comvn)  # trang chính sách lấy từ xediensmile.com (PXD_KHO/chinh-sach)
+trangphu.gan(_vn, _comvn, lambda s: stores_html(s), lambda s: (s['hot'].replace('.', ''), s['hot']))  # Tin tức, Liên hệ
 
 # Banner chốt kiểu A (luồng Banner Phố Xe Điện, 20/10): tệp ở build/banner/<domain>/, alt theo HUONG-DAN-GAN.md
 BANNER = {
@@ -124,14 +128,15 @@ HERO = {
     "phoxedien.vn": [
         {"ten": "hang-1", "hang": ("DK Bike", "Detech")},
         {"mt": "banner-hero-may-tinh-4.webp", "dt": "banner-hero-dien-thoai-4.webp", "mua": ("10-13", "10-21"),
-         "link": "/xe-cho-nu/chon-xe-dien-cho-nu/", "alt": "Mừng ngày Phụ nữ Việt Nam 20/10: xe đẹp cho nàng, 50VS Diamond Plus giá tham khảo 22.190.000đ"},
+         "link": "/xe-cho-nu/chon-xe-dien-cho-nu/", "alt": "Mừng ngày Phụ nữ Việt Nam 20/10: xe đẹp cho nàng, 50VS Diamond Plus giá tham khảo 22.190.000đ",
+         "xe": ["50VS Diamond Plus"]},
         {"ten": "halloween", "mua": ("10-13", "10-31"), "link": "/bang-gia-xe-dien/",
          "alt": "Halloween 31/10: xe máy điện từ 10,99 triệu, xe 50cc từ 14,79 triệu"},
         {"ten": "hang-2", "hang": ("Yaka", "Detech")},
         {"ten": "11-11", "mua": ("10-13", "11-11"), "link": "/xe-may-dien/",
-         "alt": "11/11: 51 mẫu xe máy điện dưới 15 triệu, như Espero Weezee 12.990.000đ"},
+         "alt": "11/11: 51 mẫu xe máy điện dưới 15 triệu, như Espero Weezee 12.990.000đ", "xe": ["Espero Weezee"]},
         {"ten": "20-11", "mua": ("10-13", "11-20"), "link": "/xe-may-dien/",
-         "alt": "Ngày Nhà giáo 20/11: Espero Type 3 Pro giá tham khảo 16.590.000đ"},
+         "alt": "Ngày Nhà giáo 20/11: Espero Type 3 Pro giá tham khảo 16.590.000đ", "xe": ["Espero Type 3 Pro"]},
     ],
     "phoxedien.com.vn": [
         {"ten": "hang-1", "hang": ("DK Bike", "Detech")},
@@ -144,6 +149,40 @@ HERO = {
         {"ten": "20-11", "mua": ("10-13", "11-20"), "link": "/hoc-sinh/", "alt": "Cảm ơn thầy cô đã dạy con"},
     ],
 }
+
+
+def _xe_slide(site, sl):
+    """Xe hiện trong ô thông tin khi bấm điểm sáng trên banner: xe nêu tên trong slide, hoặc vài mẫu có ảnh của hãng."""
+    ms = [m for m in noidung.MODELS if m.get("name")]
+    if site["domain"] == "phoxedien.com.vn":
+        ms = [m for m in ms if "dv motor" not in (m.get("brand") or "").lower()]
+    ra = []
+    for t in sl.get("xe", []):
+        t = t.lower()
+        hop = [m for m in ms if t in m["name"].lower() and anhxe.anh(m["name"])]
+        if hop:
+            ra.append(min(hop, key=lambda m: len(m["name"])))
+    if sl.get("hang"):
+        for b in dict.fromkeys(sl["hang"]):
+            k = hang.slug(b).replace("-", "")
+            cua = [m for m in ms if hang.slug(m.get("brand") or "").replace("-", "") == k and anhxe.anh(m["name"])]
+            cua.sort(key=lambda m: (m.get("price") is None, m.get("price") or 0))
+            ra += cua[:2 if sl["hang"][0] != sl["hang"][1] else 3]
+    return ra[:3]
+
+
+def _the_slide(site, sl, ds):
+    o = []
+    for m in ds:
+        u = anhxe.url_xe(m["name"])
+        g = noidung.vnd(m["price"]) if m.get("price") else "Liên hệ"
+        t = html.escape(m["name"], quote=True)
+        o.append('<div class="tp-xe"><img src="%s" alt="%s" width="120" height="120" loading="lazy"><div><b>%s</b><span>%s</span>'
+                 '<div class="tp-nut">%s<button type="button" class="hoi-gia dat-xe" data-chat="Mình muốn %s xe %s">%s</button></div></div></div>'
+                 % (anhxe.anh(m["name"]), t, html.escape(m["name"]), g, ('<a href="%s">Xem xe</a>' % u) if u else "",
+                    "đặt" if m.get("price") else "hỏi giá", t, "Đặt xe" if m.get("price") else "Hỏi giá"))
+    tieu = "Xe %s" % " và ".join(dict.fromkeys(sl["hang"])) if sl.get("hang") else "Xe trong banner"
+    return '<template class="tr-tpl"><b class="tp-tieu">%s</b>%s</template>' % (html.escape(tieu), "".join(o))
 
 
 def _link_hang(site, ten):
@@ -201,17 +240,22 @@ def _truot(site, bn):
             u = bn["mac_dinh"]
         mua = sl.get("mua")
         v = lambda t: _ban(os.path.join("banner", site["domain"], t))  # ảnh banner thay cùng tên thì khách vẫn thấy bản mới
-        o.append('<a class="tr-o" href="%s"%s%s><picture><source media="(max-width:767px)" srcset="/banner/%s?v=%s" width="1080" height="1200">'
-                 '<img src="/banner/%s?v=%s" width="1920" height="720" alt="%s"%s></picture></a>'
-                 % (u, ' data-mua="%s,%s"' % mua if mua else "", ' data-href-dt="%s"' % u_dt if u_dt else "",
-                    dt, v(dt), mt, v(mt), html.escape(alt), ' fetchpriority="high"' if not o else ' loading="lazy"'))
+        ds = _xe_slide(site, sl)
+        # điểm sáng nhấp nháy trên xe: bấm ra ô thông tin xe, giá, nút đặt (anh muốn banner tương tác được, 20/10 23:33)
+        diem = ('<button type="button" class="tr-diem" style="--x:%s;--y:%s;--xm:%s;--ym:%s" aria-label="Xem thông tin xe trong banner"><i></i></button>%s'
+                % (sl.get("x", "70%"), sl.get("y", "56%"), sl.get("xm", "52%"), sl.get("ym", "64%"), _the_slide(site, sl, ds))) if ds else ""
+        o.append('<div class="tr-o"%s><a class="tr-lk" href="%s"%s><picture><source media="(max-width:767px)" srcset="/banner/%s?v=%s" width="1080" height="1200">'
+                 '<img src="/banner/%s?v=%s" width="1920" height="720" alt="%s"%s></picture></a>%s</div>'
+                 % (' data-mua="%s,%s"' % mua if mua else "", u, ' data-href-dt="%s"' % u_dt if u_dt else "",
+                    dt, v(dt), mt, v(mt), html.escape(alt), ' fetchpriority="high"' if not o else ' loading="lazy"', diem))
     if len(o) < 2:
         return '<div class="banner-dau">%s</div>' % "".join(o)
     cham = "".join('<button type="button" aria-label="Banner %d"%s></button>' % (i + 1, ' aria-current="true"' if not i else "") for i in range(len(o)))
     # mũi tên nhỏ hai bên để khách tự lướt, vẫn tự chuyển 5 giây (anh chốt 20/10 19:26)
     mui = ('<button type="button" class="tr-mui tr-lui" aria-label="Banner trước"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>'
            '<button type="button" class="tr-mui tr-toi" aria-label="Banner sau"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>')
-    return ('<div class="banner-dau truot" aria-roledescription="carousel" aria-label="Banner"><div class="tr-khung"><div class="tr-ray">%s</div>%s</div>'
+    return ('<div class="banner-dau truot" aria-roledescription="carousel" aria-label="Banner"><div class="tr-khung"><div class="tr-ray">%s</div>%s'
+            '<div class="tr-pop" hidden><button type="button" class="tp-dong" aria-label="Đóng">×</button><div class="tp-than"></div></div></div>'
             '<div class="tr-cham">%s</div></div>' % ("".join(o), mui, cham))
 
 
@@ -224,11 +268,10 @@ def _gan_banner(site):
         if not callable(f):
             continue
         if p["url"] == "/":
-            dau = _truot(site, bn)
-
-            def g(s, f=f, dau=dau):
+            def g(s, f=f, bn=bn):
+                # dựng lúc render: lúc này mới có bài viết và ảnh khung theo từng web
                 # trang chủ đã có khối tư vấn cuối trang, không thêm dải gọi để khỏi lặp 2 khối tối liền nhau
-                return dau + f(s)
+                return _truot(site, bn) + f(s)
             p["body"] = g
         elif p["url"] in bn["loai"]:
             tep, alt = bn["loai"][p["url"]]
@@ -340,13 +383,23 @@ def faq_html(faqs):
         '<details><summary>%s</summary><p>%s</p></details>' % (q, a) for q, a in faqs) + '</div>'
 
 
+def _ban_do(x):
+    from urllib.parse import quote
+    return "https://maps.google.com/maps?q=%s&z=16&output=embed" % quote("%s, %s" % (x.get("name", ""), x.get("address", "")))
+
+
 def stores_html(site):
+    """Cửa hàng ở chân trang: danh sách bên trái, bản đồ Google bên phải; bấm cửa hàng nào bản đồ chuyển sang đó (anh góp ý 20/10 23:32)."""
     st = site.get("stores") or []
     if not st:
         return ""
-    li = "".join('<li><b>%s</b>%s%s</li>' % (html.escape(x.get("name", "")), html.escape(x.get("address", "")),
-                 (' · <a href="%s" target="_blank" rel="noopener nofollow">Chỉ đường</a>' % x["map"]) if x.get("map") else "") for x in st)
-    return '<div class="cua-hang"><b>Cửa hàng Smile Motor · mở cửa 8h–21h</b><ul>%s</ul></div>' % li
+    li = "".join('<li><button type="button" class="ch-o%s" data-map="%s"><b>%s</b><span>%s</span></button>%s</li>'
+                 % (" on" if not i else "", html.escape(_ban_do(x), quote=True), html.escape(x.get("name", "")), html.escape(x.get("address", "")),
+                    ('<a class="ch-di" href="%s" target="_blank" rel="noopener nofollow">Chỉ đường</a>' % html.escape(x["map"], quote=True)) if x.get("map") else "")
+                 for i, x in enumerate(st))
+    return ('<div class="cua-hang"><h3>Cửa hàng Smile Motor · mở cửa 8h–21h</h3><div class="ch-luoi"><ul>%s</ul>'
+            '<div class="ch-map"><iframe src="%s" title="Bản đồ cửa hàng Smile Motor" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div></div></div>'
+            % (li, html.escape(_ban_do(st[0]), quote=True)))
 
 
 LOGO_OG = "/logo-1200.png"
@@ -370,8 +423,8 @@ def logo_html(site, ten, dau):
         return ('<a class="logo" href="/" aria-label="%s - trang chủ">%s<span><b>%s</b><small>%s</small></span></a>' % (site["sitename"], site["icon"], ten, site["tagline"])
                 if dau else '<a class="logo" href="/">%s<span><b>%s</b><small>%s</small></span></a>' % (site["icon"], ten, site["tagline"]))
     if os.path.isfile(os.path.join(HERE, "logo", site["domain"], "logo-nen-toi.svg")):  # đầu trang, chân trang nền tối (M5 .com.vn)
-        return '<a class="logo logo-anh toi" href="/"><img src="/logo-nen-toi.svg" alt="%s" height="40"></a>' % html.escape(site["sitename"])
-    return '<a class="logo logo-anh%s" href="/"><img src="/logo.svg" alt="%s" height="40"></a>' % ("" if dau else " chan", html.escape(site["sitename"]))
+        return '<a class="logo logo-anh toi" href="/"><img src="/logo-nen-toi.svg" alt="%s" height="52"></a>' % html.escape(site["sitename"])
+    return '<a class="logo logo-anh%s" href="/"><img src="/logo.svg" alt="%s" height="52"></a>' % ("" if dau else " chan", html.escape(site["sitename"]))
 
 
 def og_img_html(site, src):
@@ -411,24 +464,28 @@ def muse_page(site, a, src):
     return page(site, a["url"], a["title"], a["desc"], body, sch, crumbs, og_img=src)
 
 
-def _menu(site):
-    """Menu: bấm loại xe thì xổ ra các hãng (anh chốt 20/10 19:28). .vn mở trang hãng; .com.vn mở trang loại xe lọc sẵn theo hãng."""
+def _hang_menu(site, u):
+    """Các hãng của một loại xe cho menu: .vn mở trang hãng; .com.vn mở trang loại lọc sẵn theo hãng (không DV Motor)."""
     vn = site["domain"] == "phoxedien.vn"
-    loai = {u: k for k, (u, _) in (hang.LOAI_VN if vn else hang.LOAI_COMVN).items()}
+    loai = {uu: k for k, (uu, _) in (hang.LOAI_VN if vn else hang.LOAI_COMVN).items()}
+    k = loai.get(u)
+    if not k:
+        return []
+    if vn:
+        return [(b, "%s%s/" % (u, hang.slug(b))) for b in hang.hang_cua(k)] if k != "wave" else []
+    dem = {}
+    for m in noidung.models_of(k):
+        b = (m.get("brand") or "").strip()
+        if b and "dv motor" not in b.lower():
+            dem[b] = dem.get(b, 0) + 1
+    return [(b, "%s?hang=%s" % (u, hang.slug(b))) for b, _ in sorted(dem.items(), key=lambda x: -x[1])]
+
+
+def _menu(site):
+    """Menu điện thoại: bấm loại xe thì xổ ra các hãng (anh chốt 20/10 19:28)."""
     o = []
     for n, u in site["menu"]:
-        k = loai.get(u)
-        hs = []
-        if k:
-            if vn:
-                hs = [(b, "%s%s/" % (u, hang.slug(b))) for b in hang.hang_cua(k)] if k != "wave" else []
-            else:
-                dem = {}
-                for m in noidung.models_of(k):
-                    b = (m.get("brand") or "").strip()
-                    if b and "dv motor" not in b.lower():
-                        dem[b] = dem.get(b, 0) + 1
-                hs = [(b, "%s?hang=%s" % (u, hang.slug(b))) for b, _ in sorted(dem.items(), key=lambda x: -x[1])]
+        hs = _hang_menu(site, u)
         if hs:
             o.append('<details class="mn"><summary>%s</summary><div class="mn-hang"><a href="%s">Tất cả %s</a>%s</div></details>'
                      % (n, u, n.lower(), "".join('<a href="%s">%s</a>' % (h, html.escape(b)) for b, h in hs)))
@@ -436,6 +493,19 @@ def _menu(site):
             o.append('<a href="%s">%s</a>' % (u, n))
     return "".join(o)
 
+
+def _nav(site, path):
+    """Thanh menu máy tính trong đầu trang; loại xe rê chuột ra danh sách hãng."""
+    o = []
+    for n, u in site.get("nav", []):
+        on = ' aria-current="page"' if (path == u or (u != "/" and path.startswith(u))) else ""
+        hs = _hang_menu(site, u)[:14]
+        if hs:
+            o.append('<div class="nv-o"><a href="%s"%s>%s<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></a><div class="nv-hang">%s</div></div>'
+                     % (u, on, n, "".join('<a href="%s">%s</a>' % (h, html.escape(b)) for b, h in hs)))
+        else:
+            o.append('<div class="nv-o"><a href="%s"%s>%s</a></div>' % (u, on, n))
+    return '<nav class="nav-dau" aria-label="Danh mục chính">%s</nav>' % "".join(o)
 
 
 def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,follow", og_img=None):
@@ -493,18 +563,24 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
 <body{' class="skin-%s"' % skin if skin else ""}>
 <header class="top"><div class="wrap wide">
 {logo_html(site, ten, True)}
-<span class="dau-phai">{goi_dau}<button class="nut-menu" aria-label="Mở menu" aria-expanded="false"><span></span></button></span>
+{_nav(site, path)}
+<span class="dau-phai"><a class="goi-dai" href="tel:{site['hot'].replace('.', '')}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg><span><small>Hotline</small>{site['hot']}</span></a>{goi_dau}<button class="nut-menu" aria-label="Mở menu" aria-expanded="false"><span></span></button></span>
 </div></header>
 <nav class="ngan-menu" aria-label="Menu">{menu}<div class="nho">Gọi tư vấn: <a href="tel:{TEL}" style="display:inline;padding:0;border:0;color:inherit">{HOTLINE}</a></div></nav>
 <main>
 {body}
 </main>
 <footer><div class="wrap wide">
-{logo_html(site, ten, False)}
+<div class="chan-luoi">
+<div class="chan-cot chan-gt">{logo_html(site, ten, False)}
 <p>{site['footer']}</p>
 <p>Giá trên trang là giá tham khảo, cập nhật hằng tháng. Mua xe tại Smile Motor, gọi hoặc Zalo {HOTLINE}.</p>
+{chinhsach.cong_ty_html()}</div>
+<div class="chan-cot"><h3>Danh mục</h3><nav>{"".join('<a href="%s">%s</a>' % (u, n) for n, u in site['foot'])}</nav></div>
+{('<div class="chan-cot"><h3>Chính sách</h3><nav>%s</nav></div>' % "".join('<a href="%s">%s</a>' % (u, n) for n, u in chinhsach.link_chan())) if chinhsach.link_chan() else ""}
+</div>
 {stores_html(site)}
-<nav>{"".join('<a href="%s">%s</a>' % (u, n) for n, u in site['foot'])}</nav>
+<div class="chan-cuoi">© 2026 {html.escape(chinhsach.cong_ty().get("ten") or "Xe Điện Smile")} · {site['domain']}</div>
 </div></footer>
 {day}
 <div class="chat" role="dialog" aria-label="Chat tư vấn" aria-hidden="true">

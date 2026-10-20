@@ -91,7 +91,7 @@
   [].slice.call(t.querySelectorAll('.tr-o')).forEach(function(o,k){var m=o.getAttribute('data-mua');if(!m)return;m=m.split(',');
     if(!(m[0]<=m[1]?(md>=m[0]&&md<=m[1]):(md>=m[0]||md<=m[1]))){o.remove();if(cs[k])cs[k].remove()}});
   // slide hãng: ảnh điện thoại có thể là hãng khác ảnh máy tính, link theo ảnh đang hiện
-  if(matchMedia('(max-width:767px)').matches)t.querySelectorAll('.tr-o[data-href-dt]').forEach(function(a){a.href=a.getAttribute('data-href-dt')});
+  if(matchMedia('(max-width:767px)').matches)t.querySelectorAll('.tr-lk[data-href-dt]').forEach(function(a){a.href=a.getAttribute('data-href-dt')});
   var ray=t.querySelector('.tr-ray'),o=ray.children,ch=t.querySelectorAll('.tr-cham button'),n=o.length,i=0,hen=null,
       im=matchMedia('(prefers-reduced-motion:reduce)').matches;
   function toi(k){i=(k+n)%n;ray.scrollTo({left:o[i].offsetLeft-ray.offsetLeft,behavior:im?'auto':'smooth'})}
@@ -106,6 +106,16 @@
   ray.addEventListener('touchstart',dung,{passive:true});ray.addEventListener('touchend',chay,{passive:true});
   t.addEventListener('mouseenter',dung);t.addEventListener('mouseleave',chay);
   document.addEventListener('visibilitychange',chay);
+  // điểm sáng trên banner: bấm ra ô thông tin xe; mở thì dừng tự chuyển
+  var pop=t.querySelector('.tr-pop'),than=pop&&pop.querySelector('.tp-than'),mo=false;
+  function dong(){if(!pop)return;pop.hidden=true;mo=false;chay()}
+  t.querySelectorAll('.tr-diem').forEach(function(b){b.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();
+    var tp=b.parentNode.querySelector('.tr-tpl');if(!tp||!pop)return;than.innerHTML='';than.appendChild(tp.content.cloneNode(true));
+    pop.hidden=false;mo=true;dung()})});
+  if(pop){pop.querySelector('.tp-dong').addEventListener('click',dong);
+    document.addEventListener('click',function(e){if(mo&&!pop.contains(e.target)&&!e.target.closest('.tr-diem'))dong()});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&mo)dong()});
+    t.addEventListener('mouseleave',function(){if(mo)dung()})}
   chay();
 })();
 (function(){
@@ -194,4 +204,10 @@
     da[u.pathname]=1;var l=document.createElement('link');l.rel='prefetch';l.href=u.pathname;document.head.appendChild(l)}
   document.addEventListener('mouseover',function(e){clearTimeout(tai.t);tai.t=setTimeout(function(){tai(e)},65)},{passive:true});
   document.addEventListener('touchstart',tai,{passive:true});
+})();
+(function(){
+  /* Chân trang: bấm cửa hàng nào thì bản đồ chuyển sang cửa hàng đó */
+  var m=document.querySelector('.ch-map iframe');if(!m)return;
+  document.querySelectorAll('.ch-o').forEach(function(b){b.onclick=function(){
+    document.querySelectorAll('.ch-o.on').forEach(function(x){x.classList.remove('on')});b.classList.add('on');m.src=b.getAttribute('data-map')}});
 })();
