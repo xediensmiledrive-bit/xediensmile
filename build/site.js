@@ -146,7 +146,7 @@
     e.textContent=h[j%h.length];
     e.style.cssText='left:'+(Math.random()*100)+'%;font-size:'+z+'px;opacity:'+(.4+Math.random()*.35)+';animation-duration:'+(7+Math.random()*7)+'s;animation-delay:-'+(Math.random()*12)+'s;--x:'+(Math.random()*120-60)+'px;--r:'+(Math.random()*540-270)+'deg';
     k.appendChild(e)}
-  var b=document.createElement('button');b.type='button';b.className='tat-roi';b.textContent='Tắt hiệu ứng';
+  var b=document.createElement('button');b.type='button';b.className='tat-roi';b.textContent='Tắt hiệu ứng';b.setAttribute('aria-label','Tắt hiệu ứng');b.title='Tắt hiệu ứng';
   b.onclick=function(){k.remove();b.remove();try{localStorage.setItem('tatRoi',new Date().toDateString())}catch(e){}};
   document.body.appendChild(k);document.body.appendChild(b);
 })();
@@ -230,7 +230,7 @@
 })();
 /* Bảng, danh sách dài: chỉ hiện phần đầu, nút "Xem thêm" mở tiếp (anh góp ý 21/10 0:08). Nội dung vẫn nằm sẵn trong trang cho Google đọc. */
 (function(){
-  var NHOM=[['.the.bang','.dong:not(.dau)',10,'mẫu'],['.luoi-xe:not(.ban-xe)','.o-xe',8,'mẫu'],['.luoi-tin','.tin-the',6,'bài'],['section','.bai-nho',6,'bài',true]];
+  var NHOM=[['.the.bang','.dong:not(.dau)',10,'mẫu'],['.luoi-xe:not(.ban-xe)','.o-xe',8,'mẫu'],['.luoi-tin','.tin-the',6,'bài'],['section','.bai-nho',6,'bài',true],['.ch-luoi ul','li',3,'cửa hàng',true]];
   var ds=[];
   NHOM.forEach(function(n){document.querySelectorAll(n[0]).forEach(function(c){
     var con=n[4]?Array.prototype.filter.call(c.children,function(x){return x.matches(n[1])}):c.querySelectorAll(n[1]);
