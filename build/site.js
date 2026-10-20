@@ -86,6 +86,10 @@
 (function(){
   /* Hero chạy cuộn: vuốt tay, chấm chọn, tự chuyển 5 giây; dừng khi chạm, rê chuột, tab ẩn hoặc bật giảm chuyển động */
   var t=document.querySelector('.truot');if(!t)return;
+  // Banner theo mùa (data-mua="MM-DD,MM-DD"): ngoài dịp thì gỡ banner và chấm tương ứng
+  var dd=new Date(),md=('0'+(dd.getMonth()+1)).slice(-2)+'-'+('0'+dd.getDate()).slice(-2),cs=t.querySelectorAll('.tr-cham button');
+  [].slice.call(t.querySelectorAll('.tr-o')).forEach(function(o,k){var m=o.getAttribute('data-mua');if(!m)return;m=m.split(',');
+    if(!(m[0]<=m[1]?(md>=m[0]&&md<=m[1]):(md>=m[0]||md<=m[1]))){o.remove();if(cs[k])cs[k].remove()}});
   var ray=t.querySelector('.tr-ray'),o=ray.children,ch=t.querySelectorAll('.tr-cham button'),n=o.length,i=0,hen=null,
       im=matchMedia('(prefers-reduced-motion:reduce)').matches;
   function toi(k){i=(k+n)%n;ray.scrollTo({left:o[i].offsetLeft-ray.offsetLeft,behavior:im?'auto':'smooth'})}

@@ -90,6 +90,8 @@ BANNER = {
         "hero": "Bảng giá xe máy điện tháng 10/2026, giá tham khảo từ 10,99 triệu, xe 50cc từ 14,79 triệu",
         "dai": "Hỏi giá hôm nay: gọi hoặc Zalo 0889.277.112",
         "hero2": "Xe điện và xe 50cc đủ giá, đủ hãng: 121 mẫu xe máy điện, 31 mẫu xe 50cc, gọi hoặc Zalo 0889.277.112",
+        # link từng banner trong slider (HUONG-DAN-GAN.md); trang chưa có thì banner gọi tel:
+        "link": ["/bang-gia-xe-dien/", "/bang-gia-xe-50cc/", "/so-sanh/", "/xe-cho-nu/", "/xe-may-dien/"],
         "loai": {"/xe-may-dien/": ("banner-xe-may-dien.webp", "Bảng giá xe máy điện: 121 mẫu, giá tham khảo từ 10.990.000đ"),
                  "/bang-gia-xe-dien/": ("banner-xe-may-dien.webp", "Bảng giá xe máy điện: 121 mẫu, giá tham khảo từ 10.990.000đ"),
                  "/xe-ga-50cc/": ("banner-xe-ga-50cc.webp", "Bảng giá xe ga 50cc: 16 mẫu, giá tham khảo từ 14.990.000đ"),
@@ -99,11 +101,14 @@ BANNER = {
         "hero": "Con vào lớp 10 nên đi xe gì? Cẩm nang chọn xe 50cc và xe điện cho phụ huynh",
         "dai": "Chưa chắc chọn xe nào? Gọi hoặc Zalo 0833.666.916",
         "hero2": "Đủ 16 tuổi được đi xe 50cc: cần giấy tờ gì, xe nào hợp với con",
+        "link": ["/hoc-sinh/chon-xe-cho-con-hoc-cap-3/", "/giay-to/16-tuoi-di-xe-50cc-can-giay-to-gi/", "/hoc-sinh/", None, "/sua-xe/xe-dien-khong-len-nguon/"],
         "loai": {"/xe-ga-50cc-cho-hoc-sinh/": ("banner-xe-ga-50cc.webp", "Xe ga 50cc cho học sinh, giá tham khảo từ 14.990.000đ"),
                  "/xe-so-50cc-cho-hoc-sinh/": ("banner-xe-so-50cc.webp", "Xe số 50cc cho học sinh, giá tham khảo từ 14.790.000đ"),
                  "/xe-may-dien-cho-hoc-sinh/": ("banner-xe-may-dien.webp", "Xe máy điện cho học sinh, giá tham khảo từ 10.990.000đ")}},
 }
 _MOC_KEU = '<section class="hd-in"><div class="keu">'
+# Banner theo mùa trong slider: số thứ tự -> (từ MM-DD, đến MM-DD); ngoài khoảng này site.js gỡ banner đó ra
+MUA_BANNER = {4: ("10-13", "10-21")}
 
 
 def _so(site):
@@ -114,6 +119,10 @@ def _dai(site, bo2=False):
     # Bộ 2 chạy xen kẽ (anh chốt 10:59): trang chủ dùng bộ 1, cuối trang danh mục dùng bộ 2
     return ('<a class="banner-dai" href="tel:%s"><img src="/banner/banner-dai-goi%s.webp" width="1080" height="360" alt="%s" loading="lazy"></a>'
             % (_so(site), "-2" if bo2 else "", html.escape(BANNER[site["domain"]]["dai"])))
+
+
+def _co_url(site):
+    return {p["url"] for p in site["pages"]} | {a["url"] for a in site["articles"]} | {a.get("cat_url") for a in site["articles"]}
 
 
 def _truot(site, bn):
@@ -132,9 +141,13 @@ def _truot(site, bn):
             dt = "banner-hero-may-tinh%s.webp" % hau
         alt = them.get(str(i + 1)) or (bn["hero"] if i == 0 else bn["hero2"] if i == 1 else bn["hero"])
         dau = not o
-        o.append('<a class="tr-o" href="tel:%s"><picture><source media="(max-width:767px)" srcset="/banner/%s" width="1080" height="1200">'
+        u = (bn.get("link") or [None] * 5)[i]
+        if u and u not in _co_url(site):
+            u = None
+        mua = MUA_BANNER.get(i + 1)
+        o.append('<a class="tr-o" href="%s"%s><picture><source media="(max-width:767px)" srcset="/banner/%s" width="1080" height="1200">'
                  '<img src="/banner/banner-hero-may-tinh%s.webp" width="1920" height="720" alt="%s"%s></picture></a>'
-                 % (_so(site), dt, hau, html.escape(alt), ' fetchpriority="high"' if dau else ' loading="lazy"'))
+                 % (u or "tel:" + _so(site), ' data-mua="%s,%s"' % mua if mua else "", dt, hau, html.escape(alt), ' fetchpriority="high"' if dau else ' loading="lazy"'))
     if len(o) < 2:
         return '<div class="banner-dau">%s</div>' % "".join(o)
     cham = "".join('<button type="button" aria-label="Banner %d"%s></button>' % (i + 1, ' aria-current="true"' if not i else "") for i in range(len(o)))
