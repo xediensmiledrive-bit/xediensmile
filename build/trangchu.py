@@ -5,6 +5,7 @@ import html
 import os
 
 import anhxe
+import danhgia
 import noidung
 HERE = os.path.dirname(os.path.abspath(__file__))
 from noidung import NHOM, THANG, vnd, models_of, tom_gia, keu, faq_html_local, xe_svg, dap_svg
@@ -121,6 +122,7 @@ def trang_chu(site, h1, mo_ta, bang_gia, tom, chips, faqs):
 <div class="mo-dau"><h1>{h1}</h1><p>{mo_ta}</p></div>
 {_loai_xe(site)}
 {ban}
+{danhgia.html_muc(site)}
 <section><div class="tieude"><h2>Giá tham khảo tháng {THANG}</h2><a href="{bang_gia}">Xem đủ ›</a></div>
 <div class="the bang hd-in"><div class="dong dau"><span>Nhóm xe</span><span>Giá tham khảo</span></div>{tom_gia(tom)}</div></section>
 {_tin(site, site["articles"], chips)}
