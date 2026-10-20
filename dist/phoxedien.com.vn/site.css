@@ -276,3 +276,4 @@ body:not(.skin-sup) .day .xem{background:#fff;color:var(--c2d);border:1.5px soli
 body:not(.skin-sup) .chon .lua button.on{border-color:var(--c2);color:var(--c2d)}
 body:not(.skin-sup) .bai-muse .khoi-chot a{background:#fff;color:var(--c2d)}
 body:not(.skin-sup) .o-xe .hoi-gia{background:var(--c2)}
+.gia.tt{text-align:right}.gia.tt small{display:block;font-size:11px;font-weight:500;color:var(--phu)}

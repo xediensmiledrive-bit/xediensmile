@@ -57,6 +57,9 @@ def models_of(k):
 NGUNG_BAN = {"dap", "ba"}
 # Smile không bán xe đạp điện, 3 bánh; anh cho dùng giá tham khảo thị trường để kéo traffic (20/10). Không ghi là giá Smile.
 THI_TRUONG = {}
+# Mẫu Smile chưa có giá: anh cho lấy giá phoxedien.com làm giá tham khảo thị trường (20/10 11:50). Dòng loai="khop", mau = đúng "name" trong gia-smile.json.
+# Chỉ để hiển thị, ghi rõ "giá thị trường"; không đưa vào Offer (người bán Smile) hay khoảng giá Smile.
+GIA_TT = {}
 _ftt = os.path.join(HERE, "gia-thi-truong.csv")
 if os.path.exists(_ftt):
     import csv
@@ -64,6 +67,8 @@ if os.path.exists(_ftt):
         _k = {"xe-dap-dien": "dap", "xe-ba-banh": "ba"}.get(_r.get("loai"))
         if _k and (_r.get("gia_tham_khao_vnd") or "").strip().isdigit():
             THI_TRUONG.setdefault(_k, []).append({"name": _r["mau"], "brand": _r["hang"], "price": int(_r["gia_tham_khao_vnd"]), "thi_truong": True})
+        elif _r.get("loai") == "khop" and (_r.get("gia_tham_khao_vnd") or "").strip().isdigit():
+            GIA_TT[_r["mau"].strip().lower()] = int(_r["gia_tham_khao_vnd"])
 CHU_TT = "Giá tham khảo thị trường cập nhật %s, tổng hợp từ giá hãng công bố và giá đại lý, có thể khác theo nơi bán. Đây không phải giá bán của Smile Motor." % THANG
 
 
@@ -74,7 +79,7 @@ def rows(k, limit=None):
         ms = sorted(ms, key=lambda m: (m.get("price") is None, m.get("price") or 0))
         for m in ms[:limit]:
             spec = " · ".join(x for x in [m.get("brand"), m.get("range"), m.get("speed")] if x)
-            g = '<span class="gia">%s</span>' % vnd(m["price"]) if m.get("price") else '<span class="gia lh">Liên hệ</span>'
+            g = o_gia(m)
             out.append('<div class="dong" data-n="%s">%s<div class="ten">%s<small>%s</small></div>%s</div>' % (k, anhxe.tn(m), m["name"], spec or NHOM[k][0], g))
     elif k in NGUNG_BAN:
         # Smile ngừng bán từ 25/9/2026: chỉ hiện giá thị trường (nếu có), không liệt kê hàng chờ giá
@@ -86,6 +91,16 @@ def rows(k, limit=None):
             ten = b if k in ("ba", "so", "wave") else "%s %s" % (NHOM[k][0], b)
             out.append('<div class="dong" data-n="%s"><div class="ten">%s<small>Đang cập nhật giá tháng %s</small></div><span class="gia lh">Liên hệ</span></div>' % (k, ten, THANG))
     return "".join(out)
+
+
+def o_gia(m):
+    """Ô giá một mẫu: giá Smile, không có thì giá thị trường (ghi rõ), không có nữa thì Liên hệ."""
+    if m.get("price"):
+        return '<span class="gia">%s</span>' % vnd(m["price"])
+    tt = GIA_TT.get((m.get("name") or "").strip().lower())
+    if tt:
+        return '<span class="gia tt">%s<small>giá thị trường</small></span>' % vnd(tt)
+    return '<span class="gia lh">Liên hệ</span>'
 
 
 def gia_tu(k):

@@ -317,7 +317,7 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
 {og_img_html(site, og_img or (LOGO_OG if co_logo(site) else None))}
 {icon_head(site)}
 {FONT}
-<link rel="stylesheet" href="/site.css?v=7">
+<link rel="stylesheet" href="/site.css?v=8">
 {skin_head}
 <style>:root{{{css_vars}}}</style>
 {sch}

@@ -9,7 +9,7 @@ import unicodedata
 
 import anhxe
 
-from noidung import (THI_TRUONG, NGUNG_BAN, NHOM, THANG, NGAY_VN, VN, COMVN, vnd, models_of, bang, faq_html_local, faq_ld_local,
+from noidung import (o_gia, THI_TRUONG, NGUNG_BAN, NHOM, THANG, NGAY_VN, VN, COMVN, vnd, models_of, bang, faq_html_local, faq_ld_local,
                      keu, xe_svg, dap_svg)
 
 TOI_THIEU = 2
@@ -58,7 +58,7 @@ def khoang(ms):
 
 def dong(m, k):
     spec = " · ".join(x for x in [m.get("brand"), m.get("range"), m.get("speed")] if x)
-    g = '<span class="gia">%s</span>' % vnd(m["price"]) if m.get("price") else '<span class="gia lh">Liên hệ</span>'
+    g = o_gia(m)
     return '<div class="dong" data-n="%s">%s<div class="ten">%s<small>%s</small></div>%s</div>' % (k, anhxe.tn(m), m["name"], spec or NHOM[k][0], g)
 
 
