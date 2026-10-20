@@ -597,7 +597,7 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
 <div class="chan-luoi">
 <div class="chan-cot chan-gt">{logo_html(site, ten, False)}
 <p>{site['footer']}</p>
-<p>Giá trên trang là giá tham khảo, cập nhật hằng tháng. Mua xe tại Smile Motor, gọi hoặc Zalo {HOTLINE}.</p>
+<p>Mở cửa 8h–21h mỗi ngày. Gọi hoặc Zalo <a href="tel:{site['hot'].replace('.', '')}">{site['hot']}</a> để được tư vấn ngay.</p>
 {chinhsach.cong_ty_html()}
 {mxh.hang(site["hot"], "mxh-chan")}
 {mxh.tra_gop("tg-chan")}</div>

@@ -226,7 +226,7 @@ VN = {
              ("Bảng giá xe điện", "/bang-gia-xe-dien/"), ("Bảng giá xe 50cc", "/bang-gia-xe-50cc/"), ("Tin tức", "/tin-tuc/"),
              ("So sánh và đánh giá", "/so-sanh/"), ("Liên hệ", "/lien-he/"), ("Giới thiệu", "/gioi-thieu/")],
     "foot": [("Bảng giá xe điện", "/bang-gia-xe-dien/"), ("Bảng giá xe 50cc", "/bang-gia-xe-50cc/"), ("So sánh", "/so-sanh/"), ("Giới thiệu", "/gioi-thieu/")],
-    "footer": "Phố Xe Điện (phoxedien.vn) gom bảng giá tham khảo theo tháng và so sánh xe điện, xe 50cc để bạn chọn nhanh, đúng túi tiền.",
+    "footer": "Phố Xe Điện thuộc hệ thống Xe Điện Smile: 6 cửa hàng xe điện, xe 50cc chính hãng tại TP.HCM, Đồng Tháp, Phan Thiết. 10 năm bán và sửa xe, bảo hành phụ tùng 7 năm.",
     "authors": {
         "kha-uyen": {"name": "Khả Uyên", "bio": "Uyên phụ trách bảng giá theo tháng, top xe theo ngân sách, giá lăn bánh và trả góp."},
         "minh-trang": {"name": "Minh Trang", "bio": "Trang phụ trách so sánh và đánh giá xe: đặt các mẫu cạnh nhau theo thông số, nói rõ cả điểm mạnh lẫn điểm yếu."},
@@ -435,7 +435,7 @@ COMVN = {
              ("Tin tức", "/tin-tuc/"), ("Cẩm nang", "/cam-nang/"), ("Tuổi, bằng lái, biển số", "/cam-nang/?muc=giay-to"),
              ("Pin, sạc, sửa xe", "/cam-nang/?muc=sua-xe"), ("Hỏi đáp", "/hoi-dap/"), ("Liên hệ", "/lien-he/"), ("Giới thiệu", "/gioi-thieu/")],
     "foot": [("Cẩm nang", "/cam-nang/"), ("Hỏi đáp", "/hoi-dap/"), ("Giá xe 50cc", "/gia-xe-50cc/"), ("Giới thiệu", "/gioi-thieu/")],
-    "footer": "Phố Xe Điện (phoxedien.com.vn) là cẩm nang và hỏi đáp về xe 50cc, xe điện: chọn xe cho học sinh, tuổi, bằng lái, biển số, pin sạc và bảo dưỡng.",
+    "footer": "Phố Xe Điện thuộc hệ thống Xe Điện Smile: 6 cửa hàng xe 50cc, xe điện chính hãng tại TP.HCM, Đồng Tháp, Phan Thiết, đồng hành cùng gia đình chọn xe cho con từ tuổi 16.",
     "authors": {
         "thu-ha": {"name": "Thu Hà", "bio": "Hà viết cho phụ huynh: chọn xe cho học sinh, an toàn khi đi xe và chi phí nuôi xe."},
         "quoc-bao": {"name": "Quốc Bảo", "bio": "Bảo viết về pin, sạc, ắc quy, bảo dưỡng và cách tự kiểm lỗi thường gặp trước khi mang xe ra tiệm."},

@@ -742,14 +742,6 @@ body .lx:nth-child(3n),body .o-xe:nth-child(3n){animation-delay:-2.6s}
 .tg-logo img{height:34px;width:auto;max-width:110px;object-fit:contain;padding:5px 9px;border-radius:10px;background:#fff;border:1px solid var(--vien)}
 footer .tra-gop b{color:#aab4bc}
 /* 21/10 1:00 rà tổng thể cho gọn (anh: tinh gọn, dễ dùng, đồng bộ, như web nước ngoài) */
-/* điểm mạnh: điện thoại thành một dải lướt ngang gọn thay cho lưới 2x2 */
-@media(max-width:899px){
-  .diem-manh{display:flex;overflow-x:auto;scrollbar-width:none;gap:8px;margin:12px -16px 4px;padding:0 16px 2px;scroll-snap-type:x mandatory}
-  .diem-manh::-webkit-scrollbar{display:none}
-  .dm{flex:0 0 auto;max-width:78%;padding:9px 14px 9px 9px;border-radius:999px;scroll-snap-align:start}
-  .dm svg{width:32px;height:32px;padding:7px;border-radius:50%}
-  .dm b{font-size:13.5px;white-space:nowrap}.dm small{font-size:11.5px;white-space:nowrap}
-}
 /* nút tắt hiệu ứng: xuống góc dưới, không đè lên đầu trang */
 .tat-roi{top:auto;bottom:calc(84px + env(safe-area-inset-bottom));right:10px;opacity:.8}
 @media(min-width:1100px){.tat-roi{bottom:20px}}
@@ -762,3 +754,34 @@ main .tieude{margin-bottom:12px}
 .ch-o b{font-size:13.5px}.ch-o span{font-size:12.5px}
 .tat-roi{left:10px;right:auto;width:30px;height:30px;padding:0;font-size:0;display:grid;place-items:center;background:rgba(15,17,18,.45)}
 .tat-roi:before{content:"×";font:700 18px/1 sans-serif;color:#fff}
+
+/* 21/10 1:02: 4 ô điểm mạnh viền xanh lá + cam chạy vòng, icon lấp lánh kim tuyến, logo to và động */
+:root{--vc1:#3aa52a;--vc2:#f26b1d}
+.skin-sup{--vc1:#6fd92e;--vc2:#f26b1d}
+.dm{position:relative;border:2px solid transparent!important;
+  background:linear-gradient(#fff,#fff) padding-box,conic-gradient(from var(--goc),var(--vc1) 0deg,var(--vc1) 60deg,#fff0 110deg,#fff0 180deg,var(--vc2) 180deg,var(--vc2) 240deg,#fff0 290deg,#fff0 360deg) border-box,linear-gradient(var(--vien),var(--vien)) border-box!important;
+  animation:vien-chay 3.2s linear infinite}
+.dm:nth-child(2){animation-delay:-.8s}.dm:nth-child(3){animation-delay:-1.6s}.dm:nth-child(4){animation-delay:-2.4s}
+.dm svg{position:relative;overflow:visible;background:linear-gradient(135deg,var(--nen),#fff)!important;box-shadow:0 0 0 2px rgba(255,255,255,.9),0 6px 16px -6px var(--vc2);animation:dm-nay 2.6s ease-in-out infinite}
+.dm .dm-ic{position:relative;flex:none;display:grid;border-radius:12px;overflow:hidden}
+.dm .dm-ic:after{content:"";position:absolute;top:-30%;left:-80%;width:50%;height:160%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.95),transparent);transform:skewX(-20deg);animation:dm-loe 2.8s ease-in-out infinite}
+.dm .dm-ic i{position:absolute;width:6px;height:6px;pointer-events:none;background:radial-gradient(circle,#fff 0 30%,#ffd34d 31% 55%,transparent 56%);clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);animation:dm-sao 1.8s ease-in-out infinite}
+.dm .dm-ic i:nth-of-type(1){top:2px;right:3px}.dm .dm-ic i:nth-of-type(2){bottom:4px;left:3px;animation-delay:-.6s;width:5px;height:5px}.dm .dm-ic i:nth-of-type(3){top:45%;right:-1px;animation-delay:-1.2s;width:4px;height:4px}
+@keyframes dm-loe{0%,55%{left:-80%}100%{left:140%}}
+@keyframes dm-sao{0%,100%{transform:scale(.2) rotate(0);opacity:0}50%{transform:scale(1.3) rotate(90deg);opacity:1}}
+@keyframes dm-nay{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+.skin-sup .dm{background:linear-gradient(#fff,#fff) padding-box,conic-gradient(from var(--goc),var(--vc1) 0deg,var(--vc1) 60deg,#fff0 110deg,#fff0 180deg,var(--vc2) 180deg,var(--vc2) 240deg,#fff0 290deg,#fff0 360deg) border-box,linear-gradient(#e3e6e8,#e3e6e8) border-box!important}
+/* logo to hơn, có vệt sáng lướt qua và nhịp nhẹ */
+.logo-anh{position:relative;overflow:hidden;border-radius:10px}
+.logo-anh img{animation:logo-nhip 4s ease-in-out infinite;transform-origin:left center}
+.logo-anh:after{content:"";position:absolute;top:-20%;left:-60%;width:35%;height:140%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.85),transparent);transform:skewX(-20deg);animation:dm-loe 3.6s ease-in-out infinite;pointer-events:none}
+.skin-sup .logo-anh.toi:after{background:linear-gradient(100deg,transparent,rgba(166,240,122,.55),transparent)}
+footer .logo-anh:after{display:none}footer .logo-anh img{animation:none}
+@keyframes logo-nhip{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+@media(max-width:1099px){.top .wrap{height:80px}.logo-anh img,.skin-sup .logo-anh.toi img{height:66px}}
+@media(max-width:380px){.logo-anh img,.skin-sup .logo-anh.toi img{height:56px}}
+@media(min-width:1100px){.logo-anh img,.skin-sup .logo-anh.toi img{height:70px}.top .wrap{height:90px}}
+.ngan-menu{inset:80px 0 auto 0}
+@media(min-width:1100px){.ngan-menu{inset:90px 0 auto 0}}
+@media(prefers-reduced-motion:reduce){.dm,.dm svg,.dm .dm-ic:after,.dm .dm-ic i,.logo-anh img,.logo-anh:after{animation:none}}
+.skin-sup .dm svg{background:#0f1112!important;stroke:#a6f07a}

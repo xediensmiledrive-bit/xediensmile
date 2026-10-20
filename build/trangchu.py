@@ -123,7 +123,7 @@ _ICON = {
 
 def diem_manh():
     return '<div class="diem-manh">%s</div>' % "".join(
-        '<div class="dm"><svg viewBox="0 0 24 24" aria-hidden="true">%s</svg><span><b>%s</b><small>%s</small></span></div>' % (_ICON[k], t, p)
+        '<div class="dm"><span class="dm-ic"><svg viewBox="0 0 24 24" aria-hidden="true">%s</svg><i></i><i></i><i></i></span><span><b>%s</b><small>%s</small></span></div>' % (_ICON[k], t, p)
         for k, t, p in DIEM_MANH)
 
 
