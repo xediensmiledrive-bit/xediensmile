@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# LUẬT CỨNG anh chốt 20/10 11:19: nút bấm .vn đa phần màu cam (#f26b1d), .com.vn xanh lá non sáng (#6fd92e). Không đổi lẫn.
 """Nội dung 2 web Phố Xe Điện. Giá đọc từ gia-smile.json nếu có; chưa có thì ghi "Liên hệ"."""
 import json, os
 

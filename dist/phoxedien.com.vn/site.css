@@ -270,3 +270,9 @@ footer .cua-hang{margin-top:14px}footer .cua-hang ul{list-style:none;margin-top:
 @media(min-width:900px){.logo-anh img{height:46px}}
 .o-xe img[src*="/khung/"]{aspect-ratio:1;padding:0;object-fit:cover}
 .tn-xe[src*="/khung/"]{object-fit:cover}
+/* LUẬT CỨNG (anh chốt 20/10, 11:19): nút bấm phoxedien.vn đa phần màu CAM; phoxedien.com.vn màu XANH LÁ NON SÁNG (#6fd92e, trong skin-sup.css). Không đổi lẫn. */
+body:not(.skin-sup) .chip.on,body:not(.skin-sup) .chip:hover{background:var(--c2);border-color:var(--c2);color:#fff}
+body:not(.skin-sup) .day .xem{background:#fff;color:var(--c2d);border:1.5px solid var(--c2)}
+body:not(.skin-sup) .chon .lua button.on{border-color:var(--c2);color:var(--c2d)}
+body:not(.skin-sup) .bai-muse .khoi-chot a{background:#fff;color:var(--c2d)}
+body:not(.skin-sup) .o-xe .hoi-gia{background:var(--c2)}
