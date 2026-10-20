@@ -150,7 +150,10 @@ def _trang_loai(site, k, url, ten, gioi, faqs, tac, av, khung_tim):
     sch = [faq_ld_local(faqs)] + ([itemlist_ld(site["domain"], url, ms[:50])] if ms else [])
     title = ("%s: giá tham khảo tháng %s, so sánh các hãng" if site is VN else "%s: chọn xe và giá tháng %s") % (ten, THANG)
     desc = "%s tháng %s: %s. Cách chọn, hỏi đáp về tuổi, bằng lái, biển số." % (ten, THANG, khoang(ms))
-    return {"url": url, "title": title, "desc": desc, "body": body, "schemas": sch, "crumbs": [("Trang chủ", "/"), (ten, url)]}
+    p = {"url": url, "title": title, "desc": desc, "body": body, "schemas": sch, "crumbs": [("Trang chủ", "/"), (ten, url)]}
+    if not ms:
+        p["robots"] = "noindex,follow"  # chưa có mẫu nào trong bảng giá: ẩn khỏi Google tới khi có giá
+    return p
 
 
 def trang_hang(k, b, ms):

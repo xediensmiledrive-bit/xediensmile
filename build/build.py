@@ -24,6 +24,10 @@ for _p in _vn["pages"]:
     if getattr(_f, "faqs", None):
         _k = {"/xe-may-dien/": "may", "/xe-dap-dien/": "dap"}.get(_p["url"])
         _p["schemas"] = [noidung.faq_ld_local(_f.faqs)] + (hang.schema_trang_loai(_k) if _k else [])
+for _p in _vn["pages"]:
+    _k = {"/xe-may-dien/": "may", "/xe-dap-dien/": "dap", "/xe-dien-3-banh/": "ba"}.get(_p["url"])
+    if _k and not noidung.models_of(_k):
+        _p["robots"] = "noindex,follow"  # chưa có mẫu trong bảng giá
 _vn["pages"][-1:-1] = hang.trang_vn()
 _comvn["pages"][-1:-1] = hang.trang_comvn()
 
