@@ -26,8 +26,8 @@ LOAI_VN = {"may": ("/xe-may-dien/", "Xe máy điện"), "dap": ("/xe-dap-dien/",
 # Trang loại xe mới cần dựng thêm trên .vn (máy điện, đạp điện, 3 bánh đã có sẵn trong noidung.py)
 MOI_VN = ["ga", "so", "wave"]
 # Trang loại xe trên phoxedien.com.vn, góc học sinh
-LOAI_COMVN = {"ga": ("/xe-ga-50cc-cho-hoc-sinh/", "Xe ga 50cc cho học sinh"), "so": ("/xe-so-50cc-cho-hoc-sinh/", "Xe số 50cc cho học sinh"),
-              "may": ("/xe-may-dien-cho-hoc-sinh/", "Xe máy điện cho học sinh"), "dap": ("/xe-dap-dien-cho-hoc-sinh/", "Xe đạp điện cho học sinh")}
+LOAI_COMVN = {"ga": ("/xe-ga-50cc-cho-hoc-sinh/", "Xe ga 50cc cho con"), "so": ("/xe-so-50cc-cho-hoc-sinh/", "Xe số 50cc cho con"),
+              "may": ("/xe-may-dien-cho-hoc-sinh/", "Xe máy điện cho con"), "dap": ("/xe-dap-dien-cho-hoc-sinh/", "Xe đạp điện cho con")}
 
 
 def slug(s):

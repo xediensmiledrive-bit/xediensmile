@@ -132,9 +132,9 @@ BAI_COMVN = [
 {
 "url": "/hoc-sinh/chon-xe-cho-con-hoc-cap-3/", "author": "thu-ha", "read": 7, "emoji": "🎒", "funnel": "Đầu phễu", "muc": "hoc-sinh",
 "cat_name": "Xe cho học sinh", "cat_url": "/cam-nang/?muc=hoc-sinh", "crumb": "Chọn xe cho con học cấp 3",
-"title": "Con vào lớp 10 nên đi xe gì? Cách chọn xe cho học sinh cấp 3 (2026)",
+"title": "Con vào lớp 10 nên đi xe gì? Cách chọn xe cho con tuổi cấp 3 (2026)",
 "desc": "Mẹ nên mua xe gì cho con lớp 10: xe 50cc hay xe điện, tuổi được đi, giấy tờ, chọn xe an toàn và chi phí nuôi xe mỗi tháng.",
-"h1": "Con vào lớp 10 nên đi xe gì? Cách chọn xe cho học sinh cấp 3",
+"h1": "Con vào lớp 10 nên đi xe gì? Cách chọn xe cho con tuổi cấp 3",
 "quick": ["Con đủ 16 tuổi: đi được xe dưới 50cc hoặc xe máy điện đến 4 kW, không cần bằng lái.",
           "Con chưa đủ 16 tuổi: xe đạp hoặc xe đạp điện.",
           "Chọn xe con chống được hai chân, tự dắt được, có phanh tốt; mua mũ bảo hiểm đạt chuẩn."],
@@ -219,7 +219,7 @@ BAI_COMVN = [
 {
 "url": "/hoc-sinh/xe-dien-hay-xe-xang-chi-phi/", "author": "thu-ha", "read": 5, "emoji": "💰", "funnel": "Giữa phễu", "muc": "hoc-sinh",
 "cat_name": "Xe cho học sinh", "cat_url": "/cam-nang/?muc=hoc-sinh", "crumb": "Xe điện hay xe xăng: chi phí",
-"title": "Xe điện hay xe xăng 50cc: bóc tách chi phí nuôi xe cho học sinh",
+"title": "Xe điện hay xe xăng 50cc: chi phí nuôi xe mỗi tháng cho con",
 "desc": "So chi phí xe điện và xe xăng 50cc cho học sinh: tiền mua, tiền xăng điện, bảo dưỡng, thay pin. Cách tự tính cho gia đình mình.",
 "h1": "Xe điện hay xe xăng 50cc: bóc tách chi phí nuôi xe",
 "quick": ["Tiền sạc điện mỗi km thường thấp hơn tiền xăng.",

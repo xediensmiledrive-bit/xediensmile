@@ -459,11 +459,11 @@ FAQ_COMVN = [
 
 def comvn_home(s):
     return f'''<div class="hero"><span class="cau a"></span><span class="cau b"></span>
-<div><span class="nhan">Cập nhật tháng {THANG}</span><h1>Xe 50cc cho học sinh: <em>hỏi gì cũng có</em></h1>
+<div><span class="nhan">Cập nhật tháng {THANG}</span><h1>Xe 50cc cho con: <em>hỏi gì cũng có</em></h1>
 <p>Bao nhiêu tuổi được đi, cần giấy tờ gì, xe ga hay xe số, xe điện có hợp không, nuôi xe hết bao nhiêu. Trả lời ngắn, đúng luật đang có hiệu lực.</p></div>
 <div class="hinh-hero">{xe_svg("#fff", "#6fd92e")}<span class="sticker">Nói thật!</span></div>
 <div class="hang-nut"><a class="btn btn-chinh nhip" href="/cam-nang/">Đọc cẩm nang</a><button class="btn btn-phu" data-chat>Hỏi nhanh</button></div></div>
-<nav class="chips" aria-label="Danh mục"><a class="chip on" href="/cam-nang/?muc=hoc-sinh">Xe cho học sinh</a><a class="chip" href="/cam-nang/?muc=giay-to">Tuổi và bằng lái</a><a class="chip" href="/cam-nang/?muc=sua-xe">Pin, sạc, sửa xe</a><a class="chip" href="/gia-xe-50cc/">Giá xe 50cc</a><a class="chip" href="/hoi-dap/">Hỏi đáp</a></nav>
+<nav class="chips" aria-label="Danh mục"><a class="chip on" href="/cam-nang/?muc=hoc-sinh">Chọn xe cho con</a><a class="chip" href="/cam-nang/?muc=giay-to">Tuổi và bằng lái</a><a class="chip" href="/cam-nang/?muc=sua-xe">Pin, sạc, sửa xe</a><a class="chip" href="/gia-xe-50cc/">Giá xe 50cc</a><a class="chip" href="/hoi-dap/">Hỏi đáp</a></nav>
 <div class="wrap">
 <section><div class="tieude"><h2>Giá</h2><a href="/gia-xe-50cc/">Xem đủ ›</a></div>
 <div class="the bang hd-in"><div class="dong dau"><span>Nhóm xe</span><span>Giá</span></div>{tom_gia(["ga", "so", "may", "dap"])}</div></section>
@@ -478,7 +478,7 @@ def comvn_home(s):
 
 
 def comvn_camnang(s):
-    cats = [("hoc-sinh", "Xe cho học sinh"), ("giay-to", "Tuổi, bằng lái, biển số"), ("sua-xe", "Pin, sạc, sửa xe")]
+    cats = [("hoc-sinh", "Chọn xe cho con"), ("giay-to", "Tuổi, bằng lái, biển số"), ("sua-xe", "Pin, sạc, sửa xe")]
     items = "".join(f'<a class="bai-nho hd-in" data-n="{a["muc"]}" href="{a["url"]}">{o_bai(a)}<div><div class="muc">{a["cat_name"]}</div><h3>{a["h1"]}</h3><div class="meta">{a["read"]} phút đọc</div></div></a>' for a in BAI_COMVN)
     return f'''<div class="wrap"><div class="duong"><a href="/">Trang chủ</a> › <b>Cẩm nang</b></div>
 <div class="dau-trang"><h1>Cẩm nang xe 50cc, xe điện</h1></div>
@@ -496,7 +496,7 @@ def comvn_hoidap(s):
 
 def comvn_gia(s):
     return f'''<div class="wrap"><div class="duong"><a href="/">Trang chủ</a> › <b>Giá xe 50cc</b></div>
-<div class="dau-trang"><h1>Giá xe 50cc và xe điện cho học sinh tháng {THANG}</h1><div class="tac"><span class="av">H</span><span><a href="/tac-gia/thu-ha/">Thu Hà</a> · cập nhật {NGAY_VN}</span></div></div>
+<div class="dau-trang"><h1>Giá xe 50cc và xe điện cho con tháng {THANG}</h1><div class="tac"><span class="av">H</span><span><a href="/tac-gia/thu-ha/">Thu Hà</a> · cập nhật {NGAY_VN}</span></div></div>
 <div class="nhanh hd-in"><b>Trước khi xem giá</b><ul><li>Con đủ 16 tuổi: chọn trong xe ga 50cc, xe số 50cc hoặc xe máy điện đến 4 kW.</li><li>Con dưới 16 tuổi: xe đạp điện.</li><li>Ngoài giá xe, tính thêm lệ phí trước bạ, biển số và bảo hiểm.</li></ul></div>
 <section style="margin-top:20px">{bang(["ga", "so", "may", "dap"], "bg-hs")}</section>
 <section class="noi-dung hd-in"><h2>Mẹ nên nhìn gì ngoài giá</h2><ul><li><b>Chân con chạm đất:</b> con ngồi lên, hai chân chống được là an toàn khi dừng đèn đỏ.</li><li><b>Con dắt được xe:</b> xe nặng quá, con không tự dựng chân chống thì dễ ngã khi dắt.</li><li><b>Chi phí nuôi xe:</b> xăng, dầu nhớt với xe 50cc; tiền điện và thay pin với xe điện.</li></ul>
@@ -506,10 +506,10 @@ def comvn_gia(s):
 
 
 COMVN["pages"] = [
-    {"url": "/", "title": "Phố Xe Điện: cẩm nang xe 50cc, xe điện cho học sinh", "desc": "Hỏi đáp xe 50cc và xe điện: tuổi được đi, bằng lái, biển số, chọn xe cho học sinh, pin sạc, bảo dưỡng. Giá cập nhật tháng %s." % THANG, "body": comvn_home},
+    {"url": "/", "title": "Phố Xe Điện: cẩm nang xe 50cc, xe điện cho con", "desc": "Hỏi đáp xe 50cc và xe điện: tuổi được đi, bằng lái, biển số, chọn xe cho học sinh, pin sạc, bảo dưỡng. Giá cập nhật tháng %s." % THANG, "body": comvn_home},
     {"url": "/cam-nang/", "title": "Cẩm nang xe 50cc, xe điện | Phố Xe Điện", "desc": "Cẩm nang chọn xe cho học sinh, luật và giấy tờ, pin sạc và sửa xe.", "body": comvn_camnang, "crumbs": [("Trang chủ", "/"), ("Cẩm nang", "/cam-nang/")]},
-    {"url": "/hoi-dap/", "title": "Hỏi đáp xe 50cc và xe điện cho học sinh | Phố Xe Điện", "desc": "Trả lời ngắn các câu hỏi về tuổi đi xe 50cc, bằng lái, biển số, xe điện không lên nguồn.", "body": comvn_hoidap, "schemas": [faq_ld_local(FAQ_COMVN)] if False else [], "crumbs": [("Trang chủ", "/"), ("Hỏi đáp", "/hoi-dap/")]},
-    {"url": "/gia-xe-50cc/", "title": "Giá xe 50cc cho học sinh tháng %s: xe ga, xe số, xe điện" % THANG, "desc": "Giá xe 50cc và xe điện cho học sinh tháng %s, kèm những điều mẹ nên xem ngoài giá." % THANG, "body": comvn_gia, "crumbs": [("Trang chủ", "/"), ("Giá xe 50cc", "/gia-xe-50cc/")]},
+    {"url": "/hoi-dap/", "title": "Hỏi đáp xe 50cc và xe điện | Phố Xe Điện", "desc": "Trả lời ngắn các câu hỏi về tuổi đi xe 50cc, bằng lái, biển số, xe điện không lên nguồn.", "body": comvn_hoidap, "schemas": [faq_ld_local(FAQ_COMVN)] if False else [], "crumbs": [("Trang chủ", "/"), ("Hỏi đáp", "/hoi-dap/")]},
+    {"url": "/gia-xe-50cc/", "title": "Giá xe 50cc tháng %s: xe ga, xe số, xe điện cho con" % THANG, "desc": "Giá xe 50cc và xe điện cho học sinh tháng %s, kèm những điều mẹ nên xem ngoài giá." % THANG, "body": comvn_gia, "crumbs": [("Trang chủ", "/"), ("Giá xe 50cc", "/gia-xe-50cc/")]},
     {"url": "/gioi-thieu/", "title": "Giới thiệu Phố Xe Điện (phoxedien.com.vn)", "desc": "Phố Xe Điện là trang cẩm nang và hỏi đáp xe 50cc, xe điện do Smile Motor biên soạn.", "body": gioi_thieu(COMVN, "Phố Xe Điện (phoxedien.com.vn) là cẩm nang và hỏi đáp về xe 50cc, xe điện cho học sinh và gia đình: tuổi được đi, giấy tờ, chọn xe an toàn, pin sạc và bảo dưỡng."), "crumbs": [("Trang chủ", "/"), ("Giới thiệu", "/gioi-thieu/")]},
     {"url": "/404.html", "title": "Không tìm thấy trang | Phố Xe Điện", "desc": "Trang không tồn tại.", "body": notfound, "robots": "noindex,follow"},
 ]

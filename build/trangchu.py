@@ -190,7 +190,7 @@ def gan(vn, comvn):
         "phoxedien.com.vn": dict(h1="Xe ga, xe số 50cc và xe máy điện",
                                  mo_ta="Xe hợp tuổi từ 16, không cần bằng lái. Ảnh thật, giá cập nhật hằng tháng.",
                                  bang_gia="/gia-xe-50cc/", tom=["ga", "so", "may", "dap"],
-                                 chips=[("Cẩm nang", "/cam-nang/"), ("Xe cho học sinh", "/cam-nang/?muc=hoc-sinh"), ("Tuổi và bằng lái", "/cam-nang/?muc=giay-to"),
+                                 chips=[("Cẩm nang", "/cam-nang/"), ("Chọn xe cho con", "/cam-nang/?muc=hoc-sinh"), ("Tuổi và bằng lái", "/cam-nang/?muc=giay-to"),
                                         ("Pin, sạc, sửa xe", "/cam-nang/?muc=sua-xe"), ("Hỏi đáp", "/hoi-dap/")],
                                  faqs=FAQ_COMVN),
     }

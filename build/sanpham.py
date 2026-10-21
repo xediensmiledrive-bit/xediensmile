@@ -67,10 +67,11 @@ def trang(site, k, m):
     if vn:
         h1, phu = ten, "Giá tháng %s và thông số" % THANG
         title = "%s giá bao nhiêu? Giá tháng %s" % (ten, THANG)
-        desc = "%s giá %s (cập nhật %s). Xem ảnh thật, thông số, mẫu cùng tầm giá và đặt xe tại Smile Motor." % (ten, gia, NGAY_VN)
+        desc = ("%s giá %s (cập nhật %s). " % (ten, gia, NGAY_VN) if co_gia else "") + "Xem ảnh thật, thông số, mẫu cùng tầm giá và đặt xe tại Smile Motor."
     else:
-        h1, phu = ten, "Có hợp cho học sinh không? Giá và lưu ý"
-        title = "%s cho học sinh: giá %s, có cần bằng lái?" % (ten, gia)
+        # .com.vn bỏ chữ "cho học sinh" ở tiêu đề; chưa có giá thì không ghi "giá Liên hệ" (anh chốt 21/10)
+        h1, phu = ten, "Có hợp cho con đi học không? Giá và lưu ý"
+        title = ("%s: giá %s, có cần bằng lái?" % (ten, gia)) if co_gia else "%s: tuổi nào đi được, có cần bằng lái?" % ten
         desc = "%s là %s của %s, giá %s. Học sinh bao nhiêu tuổi đi được, cần giấy tờ gì, nuôi xe tốn bao nhiêu." % (ten, loai.lower(), hang or "hãng", gia)
     ts = [(nhan, m.get(key)) for key, nhan in THONG_SO if m.get(key)]
     th = TS_HANG.get(ten.strip().lower()) or {}
