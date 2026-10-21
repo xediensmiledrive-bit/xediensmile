@@ -60,6 +60,18 @@ def _sach(s, site):
     return s
 
 
+# Câu chữ kiểu ghi chú nội bộ, không phải nói với khách (anh nhắc 21/10 13:22: tiêu đề "ghi hai mức giá" là sai giọng).
+# Bài nào dính thì in cảnh báo khi dựng để sửa lại trước khi đẩy.
+NOI_BO = {"nguồn": r"(?<!lên )(?<!mất )\bnguồn\b(?! (điện|sạc|pin|cấp))", "trang ghi": r"trang (khác |còn lại |này )?ghi",
+          "trang còn lại": r"trang còn lại", "hai mức giá": r"hai mức giá", "không ghi ở trang": r"không ghi ở trang",
+          "bài này không bàn": r"bài này không bàn", "chưa xác minh": r"chưa xác minh", "theo dữ liệu": r"theo dữ liệu", "giá gạch": r"giá gạch"}
+
+
+def giong_noi_bo(*chu):
+    t = re.sub(r"<[^>]+>", " ", " ".join(c or "" for c in chu)).lower()
+    return [k for k, r in NOI_BO.items() if re.search(r, t)]
+
+
 def _slug_tac(site, ten):
     for k, v in site["authors"].items():
         if v["name"].strip().lower() == (ten or "").strip().lower():
@@ -98,6 +110,9 @@ def doc_bai(site):
         if os.path.isfile(os.path.join(tm, tep)) and tep.lower().endswith(".webp"):
             anh = os.path.join(tm, tep)
         h1 = m.get("tieu_de") or slug
+        loi = giong_noi_bo(h1, m.get("tieu_de_seo"), m.get("mo_ta_seo"), m.get("tra_loi_nhanh"), bai)
+        if loi:
+            print("  ⚠ giọng nội bộ", site["domain"], ten, ", ".join(loi))
         ra.append({
             "muse": True, "muc": "", "funnel": PHEU.get(m.get("tang"), "Đầu phễu"), "url": url, "slug": slug, "author": _slug_tac(site, m.get("tac_gia")),
             "read": m.get("phut_doc") or 5, "emoji": EMOJI.get(m.get("tang"), "📘"),
