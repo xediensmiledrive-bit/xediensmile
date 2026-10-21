@@ -132,8 +132,8 @@ def tn(m):
     return '<img class="tn-xe" src="%s" alt="%s" width="56" height="42" loading="lazy">' % (a, html.escape(m["name"])) if a else '<span class="tn-xe trong" aria-hidden="true"></span>'
 
 
-def luoi(ms, tieu_de="Ảnh xe thật", toi_da=8, gia=None):
-    """Lưới thẻ xe có ảnh thật. gia: hàm định dạng giá (truyền vnd từ noidung)."""
+def luoi(ms, tieu_de="Ảnh xe thật", toi_da=8, gia=None, lop=""):
+    """Lưới thẻ xe có ảnh thật. gia: hàm định dạng giá (truyền vnd từ noidung). lop="dau": lưới 2 hàng đầu trang loại xe."""
     co = [m for m in ms if anh(m.get("name"))][:toi_da]
     if not co:
         return ""
@@ -142,13 +142,19 @@ def luoi(ms, tieu_de="Ảnh xe thật", toi_da=8, gia=None):
         import noidung
         tt = None if m.get("price") else noidung.GIA_TT.get((m.get("name") or "").strip().lower())
         g = (gia(m["price"]) if gia and m.get("price") else (gia(tt) + " (giá thị trường)") if gia and tt else "Liên hệ")
+        if m.get("thi_truong") and gia:
+            g = gia(m["price"]) + "<small> giá thị trường</small>"
         u = url_xe(m["name"])
         img = '<img src="%s" alt="%s" width="300" height="225" loading="lazy">' % (anh(m["name"]), html.escape(m["name"]))
         ten = '<b>%s</b>' % html.escape(m["name"])
         if u:
             img, ten = '<a href="%s">%s</a>' % (u, img), '<a class="ten-xe" href="%s">%s</a>' % (u, ten)
         o.append('<div class="o-xe hd-in" data-hang="%s">%s<div class="nd">%s<span class="gia%s">%s</span>%s</div></div>'
-                 % (_slug(m.get("brand") or ""), img, ten, "" if (m.get("price") or tt) else " lh", g, nut(m, bool(m.get("price") or tt))))
+                 % (_slug(m.get("brand") or ""), img, ten, "" if (m.get("price") or tt) else " lh", g,
+                    ('<button class="hoi-gia" data-chat="Cho mình hỏi về xe %s">Hỏi tư vấn</button>' % html.escape(m["name"], quote=True)) if m.get("thi_truong") else nut(m, bool(m.get("price") or tt))))
+    if lop == "dau":
+        return ('<section class="luoi-dau"><div class="tieude"><h2>%s</h2><span class="ld-vuot">Vuốt xem thêm ›</span></div><div class="luoi-xe dau">%s</div>'
+                '<p class="chu-anh">Màu xe thực tế có thể khác ảnh. Bảng giá đủ các mẫu ở bên dưới.</p></section>' % (tieu_de, "".join(o)))
     return '<section><div class="tieude"><h2>%s</h2></div><div class="luoi-xe">%s</div><p class="chu-anh">Màu xe thực tế có thể khác ảnh.</p></section>' % (tieu_de, "".join(o))
 
 

@@ -230,7 +230,7 @@
 })();
 /* Bảng, danh sách dài: chỉ hiện phần đầu, nút "Xem thêm" mở tiếp (anh góp ý 21/10 0:08). Nội dung vẫn nằm sẵn trong trang cho Google đọc. */
 (function(){
-  var NHOM=[['.the.bang','.dong:not(.dau)',10,'mẫu'],['.luoi-xe:not(.ban-xe)','.o-xe',8,'mẫu'],['.luoi-tin','.tin-the',6,'bài'],['section','.bai-nho',6,'bài',true],['.ch-luoi ul','li',3,'cửa hàng',true]];
+  var NHOM=[['.the.bang','.dong:not(.dau)',10,'mẫu'],['.luoi-xe:not(.ban-xe):not(.dau)','.o-xe',8,'mẫu'],['.luoi-tin','.tin-the',6,'bài'],['section','.bai-nho',6,'bài',true],['.ch-luoi ul','li',3,'cửa hàng',true]];
   var ds=[];
   NHOM.forEach(function(n){document.querySelectorAll(n[0]).forEach(function(c){
     var con=n[4]?Array.prototype.filter.call(c.children,function(x){return x.matches(n[1])}):c.querySelectorAll(n[1]);

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Dựng 2 web tĩnh Phố Xe Điện: phoxedien.vn và phoxedien.com.vn."""
-import json, os, shutil, sys, html
+import json, os, re, shutil, sys, html
 
 OUT = sys.argv[1]
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -57,7 +57,9 @@ _LUOI = {"/bang-gia-xe-dien/": (["may", "dap", "ba"], "Ảnh xe điện thật")
          "/bang-gia-xe-50cc/": (["ga", "so"], "Ảnh xe 50cc thật"), "/gia-xe-50cc/": (["ga", "so"], "Ảnh xe 50cc thật"),
          "/xe-may-dien/": (["may"], "Ảnh xe máy điện thật"), "/xe-ga-50cc/": (["ga"], "Ảnh xe ga 50cc thật"), "/xe-so-50cc/": (["so"], "Ảnh xe số 50cc thật"),
          "/xe-ga-50cc-cho-hoc-sinh/": (["ga"], "Mẫu xe ga 50cc, ảnh thật"), "/xe-so-50cc-cho-hoc-sinh/": (["so"], "Mẫu xe số 50cc, ảnh thật"),
-         "/xe-may-dien-cho-hoc-sinh/": (["may"], "Mẫu xe máy điện, ảnh thật")}
+         "/xe-may-dien-cho-hoc-sinh/": (["may"], "Mẫu xe máy điện, ảnh thật"),
+         "/xe-dap-dien/": (["dap"], "Mẫu xe đạp điện, ảnh thật"), "/xe-wave-50cc/": (["wave"], "Mẫu xe wave 50cc, ảnh thật"),
+         "/xe-dien-3-banh/": (["ba"], "Mẫu xe điện 3 bánh, ảnh thật")}
 
 
 def _co_luoi(f, keys, tde):
@@ -66,6 +68,9 @@ def _co_luoi(f, keys, tde):
         ms = []
         for k in keys:
             ms += [m for m in noidung.models_of(k) if m not in ms and anhxe.anh(m.get("name"))]
+            if k in noidung.NGUNG_BAN and not noidung.models_of(k):
+                # xe Smile không bán (xe đạp điện, 3 bánh): mẫu giá thị trường có ảnh, ghi rõ giá thị trường
+                ms += [m for m in noidung.THI_TRUONG.get(k, []) if anhxe.anh(m.get("name"))]
         # xen kẽ hãng để lưới không chỉ toàn một hãng
         theo = {}
         for m in ms:
@@ -75,10 +80,16 @@ def _co_luoi(f, keys, tde):
             for v in list(theo.values()):
                 if v:
                     xen.append(v.pop(0))
-        l = anhxe.luoi(xen, tde, 8, noidung.vnd)
+        # 2 hàng x 6 xe ngay dưới phần giới thiệu, khách nhìn mẫu trước khi đọc bảng giá dài (anh góp ý 21/10 11:00)
+        l = anhxe.luoi(xen, tde, 12, noidung.vnd, lop="dau")
         if not l:
             return b
-        moc = '<section class="hd-in"><div class="keu">'
+        m_chot = re.search(r'<section class="chot hd-in">.*?</section>', b, re.S)
+        if m_chot:
+            return b[:m_chot.end()] + l + b[m_chot.end():]
+        moc = '<section><div class="the bang'
+        if moc not in b:
+            moc = '<section class="hd-in"><div class="keu">'
         return b.replace(moc, l + moc, 1) if moc in b else b + l
     return g
 
@@ -134,7 +145,7 @@ HERO = {
         # luồng banner 20/10 23:56: mỗi slide một mẫu xe, bấm vào là trang xe đó, chưa có trang xe thì về trang hãng
         {"ten": "hang-1", "xe_chinh": ("Velia E", "Detech"), "alt": "Espero: Velia E giá tham khảo 23.500.000đ"},
         {"ten": "20-10", "mua": ("10-13", "10-21"), "xe_chinh": ("Takashi Vibera", "DV Motor"), "alt": "Ngày Phụ nữ Việt Nam 20/10: DVMotor Takashi Vibera"},
-        {"ten": "halloween", "mua": ("10-13", "10-31"), "xe_chinh": ("Takashi Pro", "DV Motor"), "alt": "Halloween: DVMotor Takashi Pro"},
+        {"ten": "halloween", "mua": ("10-13", "10-31"), "xe_chinh": ("Takashi Pro 2026 (Bản AQ)", "DV Motor"), "alt": "Halloween: DVMotor Takashi Pro"},
         {"ten": "hang-2", "xe_chinh": ("Type 3", "Detech"), "alt": "Espero: Type 3"},
         {"ten": "11-11", "mua": ("10-13", "11-11"), "xe_chinh": ("Billy", "Detech"), "alt": "11/11: Detech Billy giá tham khảo 19.000.000đ"},
         {"ten": "20-11", "mua": ("10-13", "11-20"), "xe_chinh": ("Type 3 Pro", "Detech"), "alt": "Ngày Nhà giáo 20/11: Espero Type 3 Pro giá tham khảo 16.590.000đ"},
@@ -143,7 +154,7 @@ HERO = {
         # luồng banner 21/10 10:47 (anh duyệt "Anh duyệt 2 bộ hero mới"): 5 tấm, mỗi tấm một xe, bấm mở trang xe
         {"ten": "hang-1", "xe_chinh": ("Cup 83", "Detech"), "alt": "Espero Cup 83 Retro X, xe số 50cc, giá tham khảo 18.500.000đ"},
         {"ten": "halloween", "mua": ("10-13", "10-31"), "xe_chinh": ("50C3He", "Detech"), "alt": "Halloween: Espero 50C3He giá tham khảo 14.790.000đ"},
-        {"ten": "hang-2", "xe_chinh": ("Diamond Plus", "Detech"), "alt": "50VS Diamond Plus, xe ga 50cc, giá tham khảo 22.190.000đ"},
+        {"ten": "hang-2", "xe_chinh": ("50VS Diamond Plus", "Detech"), "alt": "50VS Diamond Plus, xe ga 50cc, giá tham khảo 22.190.000đ"},
         {"ten": "11-11", "mua": ("10-13", "11-11"), "xe_chinh": ("Weezee Plus 3", "Detech"), "alt": "11/11: Espero Weezee Plus 3, xe máy điện"},
         {"ten": "20-11", "mua": ("10-13", "11-20"), "xe_chinh": ("50C2a-2", "Detech"), "alt": "Ngày Nhà giáo 20/11: Espero 50C2a-2 giá tham khảo 15.000.000đ"},
     ],
