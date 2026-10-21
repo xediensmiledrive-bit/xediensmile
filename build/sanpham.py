@@ -110,7 +110,7 @@ def trang(site, k, m):
                         "seller": {"@type": "Organization", "name": "Smile Motor"}}
 
     tg = ""
-    if vn and m.get("price") and url:
+    if m.get("price") and url:  # 21/10 10:24: .com.vn cũng có trả góp
         import tragop
         tg = ('<div class="sp-tg" data-sp-tg data-gia="%d" data-loai="%s"><span class="sp-tg-chu" data-sp-tg-chu>Xem số góp mỗi tháng theo 6 công ty tài chính</span>'
               '<a class="btn btn-phu sp-tg-nut" href="/tra-gop/?xe=%s">Tính trả góp xe này ›</a></div>'

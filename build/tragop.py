@@ -72,6 +72,8 @@ def gan(vn):
     for k, m in sanpham.ds_xe():
         if not m.get("price"):
             continue  # chỉ mẫu có giá Smile trên web; mẫu "Liên hệ" không tính được
+        if vn["domain"] == "phoxedien.com.vn" and "dv motor" in (m.get("brand") or "").lower():
+            continue  # luật cứng: không thêm nội dung DV Motor trên .com.vn
         xe.append({"n": m["name"].strip(), "g": int(m["price"]), "l": _loai(m), "d": k, "b": (m.get("brand") or "").strip(),
                    "u": anhxe.url_xe(m["name"]) or "", "a": anhxe.anh(m["name"]) or ""})
     anhxe.WEB = ""

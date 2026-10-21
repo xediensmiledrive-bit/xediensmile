@@ -429,9 +429,9 @@ COMVN = {
              "nhan-hero": "#a6f07a", "btn": "#6fd92e", "bong": "rgba(15,17,18,.35)",
              "keu": "#15181a", "chan": "#0f1112", "gia": "#2b8f1e"},
     # xe trước, tin tức sau (anh góp ý 20/10 18:58: trực quan như web bán xe)
-    "nav": [("Trang chủ", "/"), ("Xe đạp điện", "/xe-dap-dien-cho-hoc-sinh/"), ("Xe máy điện", "/xe-may-dien-cho-hoc-sinh/"),
+    "nav": [("Trả góp", "/tra-gop/"), ("Xe đạp điện", "/xe-dap-dien-cho-hoc-sinh/"), ("Xe máy điện", "/xe-may-dien-cho-hoc-sinh/"),
             ("Xe ga 50cc", "/xe-ga-50cc-cho-hoc-sinh/"), ("Xe số 50cc", "/xe-so-50cc-cho-hoc-sinh/"), ("Tin tức", "/tin-tuc/"), ("Liên hệ", "/lien-he/")],
-    "menu": [("Trang chủ", "/"), ("Xe đạp điện", "/xe-dap-dien-cho-hoc-sinh/"), ("Xe máy điện", "/xe-may-dien-cho-hoc-sinh/"),
+    "menu": [("Trả góp", "/tra-gop/"), ("Xe đạp điện", "/xe-dap-dien-cho-hoc-sinh/"), ("Xe máy điện", "/xe-may-dien-cho-hoc-sinh/"),
              ("Xe ga 50cc", "/xe-ga-50cc-cho-hoc-sinh/"), ("Xe số 50cc", "/xe-so-50cc-cho-hoc-sinh/"), ("Giá xe 50cc", "/gia-xe-50cc/"),
              ("Tin tức", "/tin-tuc/"), ("Cẩm nang", "/cam-nang/"), ("Tuổi, bằng lái, biển số", "/cam-nang/?muc=giay-to"),
              ("Pin, sạc, sửa xe", "/cam-nang/?muc=sua-xe"), ("Hỏi đáp", "/hoi-dap/"), ("Liên hệ", "/lien-he/"), ("Giới thiệu", "/gioi-thieu/")],

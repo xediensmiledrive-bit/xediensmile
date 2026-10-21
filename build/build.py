@@ -98,7 +98,8 @@ trangchu.gan(_vn, _comvn)  # trang chủ kiểu web bán xe
 chinhsach.gan(_vn, _comvn)  # trang chính sách lấy từ xediensmile.com (PXD_KHO/chinh-sach)
 trangphu.gan(_vn, _comvn, lambda s: stores_html(s), lambda s: (s['hot'].replace('.', ''), s['hot']))  # Tin tức, Liên hệ
 import tragop  # noqa: E402
-tragop.gan(_vn)  # trang Trả góp /tra-gop/ chỉ phoxedien.vn (21/10), số như máy tính xediensmile.com
+tragop.gan(_vn)  # trang Trả góp /tra-gop/ (21/10), số như máy tính xediensmile.com
+tragop.gan(_comvn)  # 21/10 10:24 anh chốt: .com.vn cũng đổi nút Trang chủ thành Trả góp
 
 # Banner chốt kiểu A (luồng Banner Phố Xe Điện, 20/10): tệp ở build/banner/<domain>/, alt theo HUONG-DAN-GAN.md
 BANNER = {
@@ -707,9 +708,8 @@ def build(site):
     bannerhang.chep(d, base)
     if os.path.isdir(os.path.join(HERE, "banner", d)):
         shutil.copytree(os.path.join(HERE, "banner", d), os.path.join(base, "banner"))
-    if d == "phoxedien.vn":
-        import tragop
-        tragop.chep(base)
+    import tragop
+    tragop.chep(base)
     os.makedirs(os.path.join(base, "api"))
     shutil.copy(os.path.join(HERE, "lien-he.php"), os.path.join(base, "api"))
     open(os.path.join(base, ".htaccess"), "w").write(HTACCESS)
