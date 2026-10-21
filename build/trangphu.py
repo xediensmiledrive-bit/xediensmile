@@ -25,7 +25,7 @@ def tin_tuc(site):
                 '<div class="mo-dau"><h1>Tin tức xe điện, xe 50cc</h1><p>%d bài: bảng giá, so sánh, kinh nghiệm chọn xe và chăm xe, cập nhật thường xuyên.</p></div>'
                 '%s<section class="tin"><div class="luoi-tin">%s</div></section></div>'
                 % (len(arts), ('<nav class="chips" style="padding:0 0 14px">%s</nav>' % chips) if chips else "", "".join(_the_bai(a) for a in arts)))
-    return {"url": "/tin-tuc/", "title": "Tin tức xe điện, xe 50cc",
+    return {"url": "/tin-tuc/", "title": "Tin tức xe điện, xe 50cc mới nhất | Phố Xe Điện",
             "desc": "Tin tức, bảng giá, so sánh và kinh nghiệm chọn xe điện, xe 50cc từ %s, cập nhật thường xuyên." % site["sitename"],
             "body": body, "crumbs": [("Trang chủ", "/"), ("Tin tức", "/tin-tuc/")]}
 

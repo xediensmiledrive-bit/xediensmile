@@ -67,7 +67,7 @@ def trang(site, k, m):
     if vn:
         h1, phu = ten, "Giá tháng %s và thông số" % THANG
         title = "%s giá bao nhiêu? Giá tháng %s" % (ten, THANG)
-        desc = ("%s giá %s (cập nhật %s). " % (ten, gia, NGAY_VN) if co_gia else "") + "Xem ảnh thật, thông số, mẫu cùng tầm giá và đặt xe tại Smile."
+        desc = ("%s giá %s (cập nhật %s). " % (ten, gia, NGAY_VN) if co_gia else "%s: hỏi giá hôm nay qua Chat hoặc hotline. " % ten) + "Xem ảnh thật, thông số, mẫu cùng tầm giá và đặt xe tại Smile."
     else:
         # .com.vn bỏ chữ "cho học sinh" ở tiêu đề; chưa có giá thì không ghi "giá Liên hệ" (anh chốt 21/10)
         h1, phu = ten, "Có hợp cho con đi học không? Giá và lưu ý"

@@ -79,7 +79,7 @@ def gan(vn):
     anhxe.WEB = ""
     xe.sort(key=lambda x: (x["b"], x["g"]))
     _XE[vn["domain"]] = xe
-    vn["pages"].insert(-1, {"url": URL, "title": "Tính trả góp xe máy điện, xe 50cc: góp mỗi tháng bao nhiêu | Phố Xe Điện",
+    vn["pages"].insert(-1, {"url": URL, "title": "Trả góp xe máy điện, xe 50cc: góp mỗi tháng bao nhiêu",
                             "desc": "Chọn mẫu xe đang bán, mức trả trước và kỳ hạn để xem số góp mỗi tháng theo FE Credit, HD Saison, Home Credit, Mirae Asset, AEON, Shinhan.",
                             "body": body, "crumbs": [("Trang chủ", "/"), ("Trả góp", URL)]})
 
