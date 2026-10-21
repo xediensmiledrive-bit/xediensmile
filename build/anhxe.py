@@ -91,6 +91,37 @@ def nut(m, co_gia):
     return '<button class="hoi-gia" data-chat="Cho mình hỏi giá %s">Hỏi giá</button>' % t
 
 
+VUA = 600  # thẻ xe trong lưới rộng tối đa 300px
+NHO = 144  # ảnh đầu dòng bảng giá hiện 52–72px: bản 144px đủ nét màn hình x2, nhẹ hơn khung 1000px nhiều lần
+
+
+def _anh_nho(tm, base):
+    """Dựng bản nhỏ của ảnh khung: /anh-xe/nho/ cho ô đầu dòng bảng giá (trang chủ có hàng trăm ô), /anh-xe/vua/ cho thẻ xe trong lưới."""
+    try:
+        from PIL import Image
+    except Exception:
+        return
+    for thu, co in (("nho", NHO), ("vua", VUA)):
+        os.makedirs(os.path.join(base, "anh-xe", thu), exist_ok=True)
+        for fn in os.listdir(tm):
+            if fn.lower().endswith(".webp"):
+                try:
+                    im = Image.open(os.path.join(tm, fn))
+                    im.thumbnail((co, co))
+                    im.save(os.path.join(base, "anh-xe", thu, fn), "WEBP", quality=80, method=6)
+                except Exception:  # ảnh lỗi thì chép nguyên, không để ô trống
+                    shutil.copy(os.path.join(tm, fn), os.path.join(base, "anh-xe", thu, fn))
+
+
+
+def _co_pil():
+    try:
+        import PIL  # noqa: F401
+        return True
+    except Exception:
+        return False
+
+
 def chep(base):
     """Chép ảnh vào web: đổi sang WebP rộng tối đa 900px nếu có Pillow, không thì chép nguyên (vẫn phục vụ được)."""
     n = 0
@@ -101,6 +132,7 @@ def chep(base):
             if fn.lower().endswith(".webp"):
                 shutil.copy(os.path.join(tm, fn), os.path.join(base, "anh-xe", "khung", fn))
                 n += 1
+        _anh_nho(tm, base)
     if not _CHEP:
         return n
     try:
@@ -125,9 +157,18 @@ def chep(base):
     return n
 
 
+def co(a, thu):
+    """Đổi ảnh khung 1000px sang bản đã thu nhỏ ("vua" 600px, "nho" 144px) khi máy dựng có Pillow."""
+    if a and "/anh-xe/khung/" in a and _co_pil():
+        return a.replace("/anh-xe/khung/", "/anh-xe/%s/" % thu)
+    return a
+
+
 def tn(m):
     """Ảnh nhỏ đặt đầu dòng trong bảng giá."""
     a = anh(m.get("name"))
+    if a and "/anh-xe/khung/" in a and _co_pil():
+        a = a.replace("/anh-xe/khung/", "/anh-xe/nho/")
     # ô trống cùng cỡ khi chưa có ảnh để tên xe các dòng thẳng hàng
     return '<img class="tn-xe" src="%s" alt="%s" width="56" height="42" loading="lazy">' % (a, html.escape(m["name"])) if a else '<span class="tn-xe trong" aria-hidden="true"></span>'
 
@@ -145,7 +186,10 @@ def luoi(ms, tieu_de="Ảnh xe thật", toi_da=8, gia=None, lop=""):
         if m.get("thi_truong") and gia:
             g = gia(m["price"]) + "<small> giá thị trường</small>"
         u = url_xe(m["name"])
-        img = '<img src="%s" alt="%s" width="300" height="225" loading="lazy">' % (anh(m["name"]), html.escape(m["name"]))
+        a = anh(m["name"])
+        if "/anh-xe/khung/" in a and _co_pil():
+            a = a.replace("/anh-xe/khung/", "/anh-xe/vua/")
+        img = '<img src="%s" alt="%s" width="300" height="225" loading="lazy">' % (a, html.escape(m["name"]))
         ten = '<b>%s</b>' % html.escape(m["name"])
         if u:
             img, ten = '<a href="%s">%s</a>' % (u, img), '<a class="ten-xe" href="%s">%s</a>' % (u, ten)

@@ -269,8 +269,8 @@ footer .cua-hang{margin-top:14px}footer .cua-hang ul{list-style:none;margin-top:
 .logo-anh img{display:block;height:44px;width:auto}
 .logo-anh.chan{display:inline-block;background:#fff;border-radius:14px;padding:8px 12px}
 @media(min-width:900px){.logo-anh img{height:46px}}
-.o-xe img[src*="/khung/"]{aspect-ratio:1;padding:0;object-fit:cover}
-.tn-xe[src*="/khung/"]{object-fit:cover}
+.o-xe img[src*="/khung/"],.o-xe img[src*="/vua/"]{aspect-ratio:1;padding:0;object-fit:cover}
+.tn-xe[src*="/khung/"],.tn-xe[src*="/nho/"]{object-fit:cover}
 /* LUẬT CỨNG (anh chốt 20/10, 11:19): nút bấm phoxedien.vn đa phần màu CAM; phoxedien.com.vn màu XANH LÁ NON SÁNG (#6fd92e, trong skin-sup.css). Không đổi lẫn. */
 body:not(.skin-sup) .chip.on,body:not(.skin-sup) .chip:hover{background:var(--c2);border-color:var(--c2);color:#fff}
 body:not(.skin-sup) .day .xem{background:#fff;color:var(--c2d);border:1.5px solid var(--c2)}
@@ -517,8 +517,8 @@ body:not(.skin-sup) .o-xe .hoi-gia{background:var(--c2)}
 .bh-so{position:absolute;left:10px;bottom:8px;font-size:12px;font-weight:700;color:#fff;background:rgba(0,0,0,.45);padding:2px 8px;border-radius:10px}
 @media(hover:hover){.bh-mui{opacity:0}.banner-hang:hover .bh-mui{opacity:.9}}
 /* Ảnh khung vuông trong bảng giá: hiện đủ, không cắt đầu xe (luật anh 20/10: xe cùng cỡ, cùng khung, không mất đầu) */
-.tn-xe[src*="/khung/"]{width:52px;height:52px;object-fit:contain;padding:0}
-@media(min-width:1024px){.tn-xe[src*="/khung/"]{width:72px;height:72px}}
+.tn-xe[src*="/khung/"],.tn-xe[src*="/nho/"]{width:52px;height:52px;object-fit:contain;padding:0}
+@media(min-width:1024px){.tn-xe[src*="/khung/"],.tn-xe[src*="/nho/"]{width:72px;height:72px}}
 .tn-xe.trong{width:52px;height:52px}
 @media(min-width:1024px){.tn-xe.trong{width:72px;height:72px}}
 .dg-khach img{object-fit:contain;background:#fff}

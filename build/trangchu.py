@@ -47,7 +47,7 @@ def _xe():
 
 
 def _the(k, m, svg):
-    a = anhxe.anh(m["name"])
+    a = anhxe.co(anhxe.anh(m["name"]), "vua")
     g, lop = _gia(m)
     hinh = ('<img src="%s" alt="%s" width="300" height="225" loading="lazy">' % (a, html.escape(m["name"]))) if a else '<div class="khong-anh">%s</div>' % svg
     ten = '<b>%s</b>' % html.escape(m["name"])

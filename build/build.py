@@ -202,7 +202,7 @@ def _the_slide(site, sl, ds):
         t = html.escape(m["name"], quote=True)
         o.append('<div class="tp-xe"><img src="%s" alt="%s" width="120" height="120" loading="lazy"><div><b>%s</b><span>%s</span>'
                  '<div class="tp-nut">%s<button type="button" class="hoi-gia dat-xe" data-chat="Mình muốn %s xe %s">%s</button></div></div></div>'
-                 % (anhxe.anh(m["name"]), t, html.escape(m["name"]), g, ('<a href="%s">Xem xe</a>' % u) if u else "",
+                 % (anhxe.co(anhxe.anh(m["name"]), "nho"), t, html.escape(m["name"]), g, ('<a href="%s">Xem xe</a>' % u) if u else "",
                     "đặt" if m.get("price") else "hỏi giá", t, "Đặt xe" if m.get("price") else "Hỏi giá"))
     tieu = "Xe %s" % " và ".join(dict.fromkeys(sl["hang"])) if sl.get("hang") else ("Xe trong banner")
     return '<template class="tr-tpl"><b class="tp-tieu">%s</b>%s</template>' % (html.escape(tieu), "".join(o))
