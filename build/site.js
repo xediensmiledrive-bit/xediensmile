@@ -258,3 +258,12 @@ document.addEventListener('click',function(e){var b=e.target.closest('.doc-tiep'
   function cho(dt){if(window.PXDTraGop)chay(dt);else setTimeout(function(){cho(dt)},150);}
   fetch('/tra-gop-dt.json').then(function(r){return r.ok?r.json():null}).then(function(dt){if(dt)cho(dt)}).catch(function(){});
 })();
+
+/* Hỏi đáp kiểu chat trên trang chủ (Kiểu A, 21/10 10:36): hiện cặp đầu, câu khác thành nút; bấm thì câu hỏi bay lên, trả lời hiện như đang gõ */
+(function(){var k=document.querySelector('[data-hc]');if(!k)return;var nut=document.querySelector('[data-hc-nut]'),cap=[].slice.call(k.querySelectorAll('.hc-cap'));
+  if(cap.length<2)return;k.classList.add('hc-js');
+  function hien(c,go){c.classList.add('hien');if(!go)return;var d=c.querySelector('.hc-dap');d.classList.add('dang-go');setTimeout(function(){d.classList.remove('dang-go')},900)}
+  hien(cap[0]);
+  cap.slice(1).forEach(function(c){var b=document.createElement('button');b.type='button';b.textContent=c.querySelector('.hc-hoi').textContent;
+    b.onclick=function(){b.remove();k.appendChild(c);hien(c,true);setTimeout(function(){c.scrollIntoView({behavior:'smooth',block:'nearest'})},50)};nut.appendChild(b)});
+})();

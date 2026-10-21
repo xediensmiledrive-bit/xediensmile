@@ -94,18 +94,40 @@ def _hang(xe):
     return '<div class="hang-xe">%s</div>' % "".join(o)
 
 
+def _bia(a, rong, cao):
+    # chưa có ảnh bìa: ô chữ theo chuyên mục, không dùng emoji
+    if a.get("anh"):
+        return '<img src="/anh/%s.webp" alt="%s" width="%d" height="%d" loading="lazy">' % (a["slug"], html.escape(a.get("anh_alt") or a["h1"], quote=True), rong, cao)
+    return '<span class="tin-o">%s</span>' % html.escape(a["cat_name"])
+
+
 def _tin(site, arts, chips):
-    """Chủ đề xe trôi chậm từ phải qua trái (anh chốt 21/10 1:17); bản lặp ẩn với trình đọc màn hình."""
-    o = []
-    for a in arts[:12]:
-        # chưa có ảnh bìa: ô chữ theo chuyên mục, không dùng emoji
-        bia = ('<img src="/anh/%s.webp" alt="%s" width="400" height="225" loading="lazy">' % (a["slug"], html.escape(a.get("anh_alt") or a["h1"])) if a.get("anh")
-               else '<span class="tin-o">%s</span>' % html.escape(a["cat_name"]))
-        o.append('<a class="tin-the" href="%s"><span class="tin-bia">%s</span><span class="nd"><small>%s</small><b>%s</b></span></a>' % (a["url"], bia, a["cat_name"], html.escape(a["h1"])))
+    """Kiểu A (anh chọn 21/10 10:36): một bài nổi bật ảnh to, ba bài nhỏ kèm ảnh vuông."""
+    if not arts:
+        return ""
+    ds = sorted(arts[:12], key=lambda a: 0 if a.get("anh") else 1)  # bài có ảnh bìa lên làm bài nổi bật
+    to, nho = ds[0], ds[1:4]
+    vn = site["domain"] == "phoxedien.vn"
+    tieu = 'Tin tức <em>xe điện</em>' if vn else 'Cẩm nang <em>cho bố mẹ</em>'
     c = "".join('<a class="chip" href="%s">%s</a>' % (u, n) for n, u in chips)
-    lap = "".join(o).replace('<a class="tin-the"', '<a tabindex="-1" class="tin-the"')
-    return ('<section class="tin"><div class="tieude"><h2>Tin tức</h2><a href="%s">Tất cả ›</a></div><nav class="chips" style="padding:0 0 12px">%s</nav>'
-            '<div class="tin-dai"><div class="tin-chay">%s<div class="tin-lap" aria-hidden="true">%s</div></div></div></section>' % (chips[0][1], c, "".join(o), lap))
+    o = ('<a class="tn-to" href="%s"><span class="tn-anh">%s</span><span class="tn-nd"><span class="tn-nhan">%s</span><b>%s</b></span></a>'
+         % (to["url"], _bia(to, 800, 450), html.escape(to["cat_name"]), html.escape(to["h1"])))
+    o += "".join('<a class="tn-dong" href="%s"><span class="tn-vuong">%s</span><span><small>%s</small><b>%s</b></span></a>'
+                 % (a["url"], _bia(a, 160, 160), html.escape(a["cat_name"]), html.escape(a["h1"])) for a in nho)
+    return ('<section class="tin tin-a"><div class="tieude"><h2>%s</h2><a href="%s">Tất cả ›</a></div><nav class="chips" style="padding:0 0 12px">%s</nav>'
+            '<div class="tn-luoi">%s</div></section>' % (tieu, chips[0][1], c, o))
+
+
+def hoi_chat(site, faqs):
+    """Hỏi đáp kiểu chat với tư vấn viên (Kiểu A, 21/10 10:36). Mọi câu hỏi và trả lời nằm sẵn trong trang (Google đọc được);
+    JS chỉ hiện cặp đầu, các câu còn lại thành nút, bấm vào thì trả lời hiện như đang gõ."""
+    bot = site["bot"]
+    vn = site["domain"] == "phoxedien.vn"
+    cap = "".join('<div class="hc-cap"><p class="hc-hoi">%s</p><div class="hc-dap"><span class="hc-av">%s</span><p><small>%s · tư vấn Smile</small>%s</p></div></div>'
+                  % (q, bot[0], bot, a) for q, a in faqs)
+    return ('<section class="hoi-chat hd-in"><div class="tieude"><h2>%s hay hỏi <em>Smile</em></h2></div>'
+            '<div class="hc-khung" data-hc>%s</div><div class="hc-nut" data-hc-nut></div>'
+            '<button type="button" class="hc-hoi-them" data-chat>Hỏi %s ›</button></section>' % ("Khách" if vn else "Bố mẹ", cap, bot))
 
 
 # Điểm mạnh Smile (anh nêu 20/10 23:33): hiện ngay dưới banner trang chủ và trên trang xe
@@ -152,7 +174,7 @@ def trang_chu(site, h1, mo_ta, bang_gia, tom, chips, faqs):
 {tiktok.html_muc(site)}
 {_tin(site, site["articles"], chips)}
 {keu(site["cta_title"], site["cta_text"])}
-<section class="hd-in"><div class="tieude"><h2>Hỏi nhanh đáp gọn</h2></div>{faq_html_local(faqs)}</section>
+{hoi_chat(site, faqs)}
 </div>'''
 
 
@@ -170,7 +192,7 @@ def gan(vn, comvn):
                                  bang_gia="/gia-xe-50cc/", tom=["ga", "so", "may", "dap"],
                                  chips=[("Cẩm nang", "/cam-nang/"), ("Xe cho học sinh", "/cam-nang/?muc=hoc-sinh"), ("Tuổi và bằng lái", "/cam-nang/?muc=giay-to"),
                                         ("Pin, sạc, sửa xe", "/cam-nang/?muc=sua-xe"), ("Hỏi đáp", "/hoi-dap/")],
-                                 faqs=FAQ_COMVN[:3]),
+                                 faqs=FAQ_COMVN),
     }
     for site in (vn, comvn):
         ch = cau_hinh[site["domain"]]

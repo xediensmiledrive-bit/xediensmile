@@ -909,3 +909,45 @@ footer .cua-hang h3{margin-bottom:12px}
 .tgp-ct{margin-top:8px;padding-top:8px;border-top:1px dashed var(--vien)}
 .tgp-ct[hidden]{display:none}
 .tgp-dong.mo .tgp-gop{grid-column:auto}
+
+/* 21/10 10:36 Kiểu A: tin nổi bật ảnh to + bài nhỏ; hỏi đáp kiểu chat */
+.tieude h2 em{font-style:normal;color:var(--c2)}
+.skin-sup .tieude h2 em{color:#6fd92e}
+.tn-luoi{display:grid;gap:10px}
+.tn-to{display:block;border-radius:20px;overflow:hidden;background:var(--chan);color:#fff;box-shadow:0 14px 30px -18px rgba(0,0,0,.5)}
+.tn-anh{display:block;aspect-ratio:16/9;background:#fff;overflow:hidden}
+.tn-anh img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.tn-to:hover .tn-anh img{transform:scale(1.04)}
+.tn-anh .tin-o{font-size:18px}
+.tn-nd{display:block;padding:14px 16px 16px}
+.tn-nhan{display:inline-block;font-size:11.5px;font-weight:800;padding:4px 10px;border-radius:999px;background:var(--c2);color:#fff;text-transform:uppercase;letter-spacing:.3px}
+.skin-sup .tn-nhan{background:#6fd92e;color:#0f1112}
+.tn-nd b{display:block;font-size:18px;line-height:1.32;margin-top:8px}
+.tn-dong{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--vien);border-radius:16px;padding:10px;color:inherit}
+.tn-vuong{flex:none;width:76px;height:76px;border-radius:12px;overflow:hidden;background:var(--nen);display:grid;place-items:center}
+.tn-vuong img{width:100%;height:100%;object-fit:cover}
+.tn-vuong .tin-o{font-size:10px;padding:4px}
+.tn-dong small{display:block;font-size:11px;font-weight:800;color:var(--c2d);text-transform:uppercase}
+.skin-sup .tn-dong small{color:#2f8f12}
+.tn-dong b{display:block;font-size:14.5px;line-height:1.35;margin-top:2px}
+@media(min-width:900px){.tn-luoi{grid-template-columns:1.25fr 1fr;grid-template-rows:repeat(3,auto)}.tn-to{grid-row:1/span 3}.tn-nd b{font-size:22px}}
+.hoi-chat .hc-khung{display:flex;flex-direction:column;gap:12px}
+.hc-cap{display:flex;flex-direction:column;gap:10px}
+.hc-js .hc-cap{display:none}.hc-js .hc-cap.hien{display:flex;animation:hc-vao .35s ease-out}
+@keyframes hc-vao{from{opacity:0;transform:translateY(10px)}}
+.hc-hoi{align-self:flex-end;max-width:82%;margin:0;background:var(--chan);color:#fff;padding:11px 15px;border-radius:18px 18px 4px 18px;font-size:15px;font-weight:600;line-height:1.4}
+.skin-sup .hc-hoi{background:#0f1112}
+.hc-dap{display:flex;gap:8px;align-items:flex-end;max-width:92%}
+.hc-av{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:800;color:#fff;background:var(--c2)}
+.skin-sup .hc-av{background:#6fd92e;color:#0f1112}
+.hc-dap p{margin:0;background:#fff;border:1px solid var(--vien);padding:11px 15px;border-radius:18px 18px 18px 4px;font-size:15px;line-height:1.5;color:var(--chu);box-shadow:0 6px 16px -10px rgba(0,0,0,.25)}
+.hc-dap p small{display:block;font-size:11.5px;color:var(--phu);margin-bottom:3px}
+.hc-dap.dang-go p{font-size:0;padding:14px 18px}.hc-dap.dang-go p small{display:none}
+.hc-dap.dang-go p:after{content:"";display:inline-block;width:34px;height:8px;background:radial-gradient(circle,var(--phu) 3px,transparent 3.5px) 0 0/12px 8px repeat-x;animation:hc-go .9s steps(3) infinite}
+@keyframes hc-go{50%{opacity:.35}}
+.hc-nut{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.hc-nut button,.hc-hoi-them{font:inherit;font-size:14px;font-weight:700;padding:9px 14px;border-radius:999px;border:1.5px solid var(--c2);background:#fff;color:var(--chu);cursor:pointer;text-align:left}
+.skin-sup .hc-nut button,.skin-sup .hc-hoi-them{border-color:#6fd92e}
+.hc-hoi-them{margin-top:10px;background:var(--nen);color:var(--c2d)}
+.skin-sup .hc-hoi-them{color:#2f8f12}
+@media(prefers-reduced-motion:reduce){.hc-js .hc-cap.hien{animation:none}}
