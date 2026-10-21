@@ -62,8 +62,11 @@
     "tra_truoc_max": 50,
     "vay_min": 10000000,
     "ky_han": [
+     6,
+     9,
      12,
-     18
+     18,
+     24
     ],
     "lai": [
      {
@@ -74,6 +77,15 @@
       "lai": 0.99,
       "don_vi": "thang",
       "chu": "Lãi 0,99%/tháng (21,3%/năm)"
+     },
+     {
+      "ky_tu": 24,
+      "ky_den": 24,
+      "tt_tu": 0,
+      "tt_den": 101,
+      "lai": 1.39,
+      "don_vi": "thang",
+      "chu": "Lãi 1,39%/tháng (29,5%/năm)"
      }
     ],
     "bao_hiem": {
@@ -83,6 +95,10 @@
      "chu": ""
     }
    }
+  ],
+  "ky_han_chua_co": [
+   6,
+   9
   ]
  },
  {
