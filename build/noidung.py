@@ -100,7 +100,7 @@ def rows(k, limit=None):
     else:
         for b in CHO[k][:limit]:
             ten = b if k in ("ba", "so", "wave") else "%s %s" % (NHOM[k][0], b)
-            out.append('<div class="dong" data-n="%s"><div class="ten">%s<small>Đang cập nhật giá tháng %s</small></div><span class="gia lh">Liên hệ</span></div>' % (k, ten, THANG))
+            out.append('<div class="dong" data-n="%s"><div class="ten">%s<small>Hỏi giá hôm nay qua Chat hoặc hotline</small></div><span class="gia lh">Liên hệ</span></div>' % (k, ten))
     return "".join(out)
 
 

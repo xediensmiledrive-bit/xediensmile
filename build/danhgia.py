@@ -26,7 +26,8 @@ def _doc():
         d = json.load(open(f, encoding="utf-8-sig"))
     except ValueError:
         return None
-    ds = [r for r in d.get("reviews", []) if (r.get("noi_dung") or "").strip() and int(r.get("sao") or 0) >= 4]
+    ds = [r for r in d.get("reviews", []) if (r.get("noi_dung") or "").strip() and int(r.get("sao") or 0) >= 4
+          and "tham khảo" not in r["noi_dung"].lower()]  # luật 2.6: không hiện chữ "tham khảo", bỏ cả đánh giá chứ không sửa lời khách
     cn = [c for c in d.get("chi_nhanh", []) if c.get("so_danh_gia")]
     tong = {}
     if cn:

@@ -470,8 +470,8 @@ def logo_html(site, ten, dau):
     if dau and site["domain"] in ("phoxedien.com.vn", "phoxedien.vn"):  # đầu trang: logo có hiệu ứng sạc đầy pin, chạy 1 lần
         toi = site["domain"] == "phoxedien.com.vn"
         return ('<a class="logo logo-anh dong%s" href="/"><img class="ld-chay" src="/logo-dong.svg" alt="%s" height="52">'
-                '<img class="ld-tinh" src="/%s" alt="" height="52"></a>') % (
-            " toi" if toi else "", html.escape(site["sitename"]), "logo-nen-toi.svg" if toi else "logo.svg")
+                '<img class="ld-tinh" src="/%s" alt="%s" height="52"></a>') % (
+            " toi" if toi else "", html.escape(site["sitename"]), "logo-nen-toi.svg" if toi else "logo.svg", html.escape(site["sitename"]))
     if os.path.isfile(os.path.join(HERE, "logo", site["domain"], "logo-nen-toi.svg")):  # đầu trang, chân trang nền tối (M5 .com.vn)
         return '<a class="logo logo-anh toi" href="/"><img src="/logo-nen-toi.svg" alt="%s" height="52"></a>' % html.escape(site["sitename"])
     return '<a class="logo logo-anh%s" href="/"><img src="/logo.svg" alt="%s" height="52"></a>' % ("" if dau else " chan", html.escape(site["sitename"]))
@@ -569,6 +569,8 @@ def _nav_nho(site, path):
 
 def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,follow", og_img=None):
     d = site["domain"]
+    if len(title) > 70 and " | " in title:  # tiêu đề quá 70 ký tự bị Google cắt: bỏ đuôi tên web trước
+        title = title.rsplit(" | ", 1)[0]
     css_vars = ";".join("--%s:%s" % kv for kv in site["vars"].items())
     menu = _menu(site)
     sch = "".join(ld(s) for s in schemas)
@@ -660,9 +662,54 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
 '''
 
 
+def _anh_tai_cham(s):
+    """Ảnh chưa ghi loading thì tải chậm (trừ ảnh ưu tiên và logo đầu trang), cho trang nhẹ trên điện thoại."""
+    def mot(m):
+        t = m.group(0)
+        if "loading=" in t or "fetchpriority" in t or "ld-" in t:
+            return t
+        return t[:-1].rstrip("/").rstrip() + ' loading="lazy" decoding="async">'
+    return re.sub(r"<img\b[^>]*>", mot, s)
+
+
+def _go_link_hong(base):
+    """Link nội bộ trỏ tới trang không có (bài chưa lên, trang đã gỡ) thì bỏ thẻ a, giữ chữ: không để khách gặp 404."""
+    co = set()
+    for g, _, ts in os.walk(base):
+        for t in ts:
+            r = "/" + os.path.relpath(os.path.join(g, t), base).replace(os.sep, "/")
+            co.add(r)
+            if t == "index.html":
+                co.add(r[:-len("index.html")])
+    def ton_tai(h):
+        p = h.split("#")[0].split("?")[0]
+        if not p or not p.startswith("/") or p.startswith("//"):
+            return True
+        if p.startswith(("/api/", "/cdn-cgi/")) or p in co or (p.rstrip("/") + "/") in co:
+            return True
+        return False
+    so = 0
+    for r in [x for x in co if x.endswith(".html")]:
+        f = os.path.join(base, r.lstrip("/"))
+        s = open(f, encoding="utf-8").read()
+        def mot(m):
+            nonlocal so
+            if ton_tai(m.group(2)):
+                return m.group(0)
+            so += 1
+            return m.group(4)
+        moi = re.sub(r'<a\b([^>]*?)\bhref="([^"]*)"([^>]*)>(.*?)</a>', mot, s, flags=re.S)
+        if moi != s:
+            open(f, "w", encoding="utf-8").write(moi)
+    return so
+
+
 def write(site, path, content):
     # Mỗi web một hotline riêng (anh chốt 20/10): thay số mặc định trong mẫu bằng số của web
     content = content.replace("0888.266.233", site["hot"]).replace("0888266233", site["hot"].replace(".", ""))
+    content = content.replace("DV Motor", "DVMOTOR").replace("DVMotor", "DVMOTOR")  # luật 2.7: tên hãng viết hoa hết
+    if path.endswith("/") or path.endswith(".html"):
+        content = _anh_tai_cham(content)
     if site.get("brand"):  # phoxedien.vn đổi tên thành "Phố Xe Điện Smile" (anh chốt 20/10)
         content = content.replace("Phố Xe Điện", site["brand"])
     base = os.path.join(OUT, site["domain"])
@@ -782,6 +829,7 @@ def build(site):
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(
         "<url><loc>https://%s%s</loc><lastmod>%s</lastmod></url>\n" % (d, u, lastmod.get(u, NGAY)) for u in urls) + "</urlset>\n"
     open(os.path.join(base, "sitemap.xml"), "w").write(sm)
+    print("  gỡ", _go_link_hong(base), "link hỏng")
     open(os.path.join(base, "robots.txt"), "w").write("User-agent: *\nAllow: /\n\nSitemap: https://%s/sitemap.xml\n" % d)
     print(d, len(urls), "trang,", len(bai_muse), "bài Muse")
 

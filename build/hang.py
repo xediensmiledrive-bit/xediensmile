@@ -186,7 +186,7 @@ def trang_hang(k, b, ms):
         ("%s %s giá bao nhiêu?" % (ten_loai, b),
          "Theo bảng giá cập nhật %s, %s %s có giá %s. Giá chưa gồm lệ phí trước bạ, biển số và bảo hiểm; giá trong tháng có thể đổi theo khuyến mãi." % (NGAY_VN, ten_loai.lower(), b, kg)),
         ("Mẫu %s %s nào rẻ nhất?" % (ten_loai.lower(), b),
-         ("%s, giá %s." % (re_nhat["name"], vnd(re_nhat["price"]))) if re_nhat else "Các mẫu đang cập nhật giá, bạn chat hoặc gọi để có giá hôm nay."),
+         ("%s, giá %s." % (re_nhat["name"], vnd(re_nhat["price"]))) if re_nhat else "Bạn chat hoặc gọi để có giá hôm nay của từng mẫu."),
         ("Mua %s %s ở đâu?" % (ten_loai.lower(), b),
          "Smile có 6 cửa hàng (TP.HCM, Đồng Tháp, Phan Thiết), mở cửa 8h–21h. Bạn chat trên trang hoặc gọi, nhắn Zalo 0888.266.233 để hỏi mẫu còn hàng và quà tặng."),
     ]

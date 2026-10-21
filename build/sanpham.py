@@ -47,7 +47,7 @@ def _gia(m):
     tt = noidung.GIA_TT.get(m["name"].strip().lower())
     if tt:
         return vnd(tt), "Giá thị trường tháng %s, có thể khác tuỳ nơi bán." % THANG, True
-    return "Liên hệ", "Giá đang cập nhật. Gọi hoặc nhắn để có giá hôm nay.", False
+    return "Liên hệ", "Gọi hoặc nhắn để có giá hôm nay.", False
 
 
 def _lien_quan(k, m, n=4):
@@ -124,7 +124,7 @@ def trang(site, k, m):
         a = anhxe.anh(ten)
         if a:
             sp["image"] = "https://%s%s" % (d, a)
-        hinh = ('<img src="%s" alt="%s" width="900" height="900" fetchpriority="high">' % (a, html.escape(ten))) if a else '<div class="khong-anh sp-cho"><b>%s</b><span>Ảnh xe thật đang cập nhật</span></div>' % html.escape(hang or ten)
+        hinh = ('<img src="%s" alt="%s" width="900" height="900" fetchpriority="high">' % (a, html.escape(ten))) if a else '<div class="khong-anh sp-cho"><b>%s</b><span>Xem xe thật tại cửa hàng</span></div>' % html.escape(hang or ten)
         return f'''<div class="wrap"><div class="duong"><a href="/">Trang chủ</a> › <a href="{goc}">{loai}</a> › <b>{html.escape(ten)}</b></div>
 <div class="sp">
 <div class="sp-anh">{hinh}</div>
