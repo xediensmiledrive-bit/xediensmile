@@ -95,5 +95,5 @@ def gan(vn, comvn):
                         '<div class="dau-trang"><h1>%s</h1></div><div class="noi-dung chinh-sach">%s</div>%s</div>'
                         % (html.escape(t), html.escape(t), noi, cong_ty_html()))
             site["pages"].insert(-1, {"url": url, "title": "%s | %s" % (t, "Xe Điện Smile"),
-                                      "desc": ("%s của Xe Điện Smile áp dụng khi mua xe tại các cửa hàng Smile Motor: điều kiện, thời hạn và cách liên hệ." % t)[:160],
+                                      "desc": ("%s của Xe Điện Smile áp dụng khi mua xe tại các cửa hàng Smile: điều kiện, thời hạn và cách liên hệ." % t)[:160],
                                       "body": body, "crumbs": [("Trang chủ", "/"), (t, url)]})

@@ -49,7 +49,7 @@ def lien_he(site, stores_html, tel, hotline):
 {('<section><div class="tieude"><h2>Chính sách</h2></div><nav class="chips" style="padding:0;flex-wrap:wrap">%s</nav></section>' % "".join('<a class="chip" href="%s">%s</a>' % (u, n) for n, u in cs)) if cs else ""}
 </div>'''
     return {"url": "/lien-he/", "title": "Liên hệ: hotline %s, 6 cửa hàng Smile" % hotline,
-            "desc": "Gọi hoặc Zalo %s để hỏi giá, màu còn hàng và đặt xe. Địa chỉ và bản đồ 6 cửa hàng Smile Motor, mở cửa 8h–21h." % hotline,
+            "desc": "Gọi hoặc Zalo %s để hỏi giá, màu còn hàng và đặt xe. Địa chỉ và bản đồ 6 cửa hàng Smile, mở cửa 8h–21h." % hotline,
             "body": body, "crumbs": [("Trang chủ", "/"), ("Liên hệ", "/lien-he/")]}
 
 

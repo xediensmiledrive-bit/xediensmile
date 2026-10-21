@@ -73,7 +73,7 @@ def _hop_so(keys):
             '<label>Số điện thoại<input name="sdt" type="tel" inputmode="numeric" autocomplete="tel" maxlength="14" required placeholder="09xx xxx xxx"></label>'
             '<button class="btn btn-chinh" type="submit">Nhờ Smile gọi tư vấn</button>'
             '<p class="tgp-lead-kq" data-tv-kq aria-live="polite"></p>'
-            '<p class="tgp-lead-rieng">Thông tin chỉ dùng để nhân viên Smile Motor gọi tư vấn cho bạn, không chia sẻ cho bên khác.</p></form>') % (html.escape(noidung.NHOM[keys[0]][0], quote=True), ten)
+            '<p class="tgp-lead-rieng">Thông tin chỉ dùng để nhân viên Smile gọi tư vấn cho bạn, không chia sẻ cho bên khác.</p></form>') % (html.escape(noidung.NHOM[keys[0]][0], quote=True), ten)
 
 
 def _co_luoi(f, keys, tde):
@@ -269,7 +269,7 @@ def _truot(site, bn):
             u, u_dt = _link_hang(site, h1), _link_hang(site, h2)
             u = u or u_dt
             u_dt = u_dt if u_dt and u_dt != u else None
-            alt = "Xe %s chính hãng tại Smile Motor" % (h1 if h1 == h2 else "%s và %s" % (h1, h2))
+            alt = "Xe %s chính hãng tại Smile" % (h1 if h1 == h2 else "%s và %s" % (h1, h2))
         else:
             alt = sl["alt"]
         # anh chốt 20/10 19:10: bấm banner là vào bài viết, không gọi điện, không Zalo; trang chưa có thì về trang danh mục chính
@@ -434,8 +434,8 @@ def stores_html(site):
                  % (" on" if not i else "", html.escape(_ban_do(x), quote=True), html.escape(x.get("name", "")), html.escape(x.get("address", "")),
                     ('<a class="ch-di" href="%s" target="_blank" rel="noopener nofollow">Chỉ đường</a>' % html.escape(x["map"], quote=True)) if x.get("map") else "")
                  for i, x in enumerate(st))
-    return ('<div class="cua-hang"><h3>Cửa hàng Smile Motor · mở cửa 8h–21h</h3><div class="ch-luoi"><ul>%s</ul>'
-            '<div class="ch-map"><iframe src="%s" title="Bản đồ cửa hàng Smile Motor" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div></div></div>'
+    return ('<div class="cua-hang"><h3>Cửa hàng Smile · mở cửa 8h–21h</h3><div class="ch-luoi"><ul>%s</ul>'
+            '<div class="ch-map"><iframe src="%s" title="Bản đồ cửa hàng Smile" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div></div></div>'
             % (li, html.escape(_ban_do(st[0]), quote=True)))
 
 

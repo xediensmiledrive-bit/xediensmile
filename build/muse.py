@@ -58,6 +58,9 @@ def _sach(s, site):
     s = re.sub(r'href="#chatbot"', 'href="#chat" data-chat', s)
     # cấm chữ "tham khảo" trên web (anh chốt 21/10 13:32): bỏ ở các cụm giá hay gặp, còn sót thì giong_noi_bo báo
     s = re.sub(r"([Gg]iá)( xe)? tham khảo", r"\1\2", s)
+    # mỗi web đứng riêng, không dẫn khách sang Smile Motor (luật 2.14, 21/10 15:33)
+    s = s.replace("Smile Motor", "Smile")
+    s = re.sub(r'(?is)<a\b[^>]*href="https?://(?:www\.)?(?:smilemotor\.vn|xediensmile\.com|xediensmile\.vn|dvmotors?\.com\.vn|dvmotorvn\.com)[^"]*"[^>]*>(.*?)</a>', r"\1", s)
     s = re.sub(r'<article class="bai"', '<article class="bai bai-muse"', s, count=1)
     return s
 

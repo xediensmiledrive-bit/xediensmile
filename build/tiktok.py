@@ -58,7 +58,8 @@ def html_muc(site):
     web = _https(d.get("web"))
     nut = "".join([
         ('<a class="tt-nut" href="%s" target="_blank" rel="noopener nofollow">%s Kênh TikTok %s</a>' % (html.escape(kenh, quote=True), LOGO, html.escape(d.get("tai_khoan") or ""))) if kenh else "",
-        ('<a class="tt-nut tt-web" href="%s" target="_blank" rel="noopener">Web %s ›</a>' % (html.escape(web, quote=True), html.escape(d.get("web_ten") or "Smile Motor"))) if web else ""])
+        # bỏ nút "Web Smile Motor": không dẫn khách sang web khác (luật 2.14, anh chốt 21/10 15:33)
+        ""])
     return ('<section class="tiktok"><div class="tieude"><h2>Phim ngắn Xe Điện Smile trên TikTok</h2></div>'
             '<div class="tt-dai"><div class="tt-chay">%s<div class="tt-lap" aria-hidden="true">%s</div></div></div><div class="tt-nuts">%s</div></section>'
             % ("".join(o), "".join(o).replace('data-tt=', 'tabindex="-1" data-tt='), nut))

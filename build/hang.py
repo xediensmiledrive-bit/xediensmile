@@ -115,7 +115,7 @@ FAQ_VN = {
            ("Giá xe số 50cc đã gồm biển số chưa?", "Chưa. Giá trong bảng là giá xe; lệ phí trước bạ, biển số và bảo hiểm tính riêng.")],
     "wave": [("Wave 50cc có cần bằng lái không?", "Không, nếu dung tích dưới 50 cm³. Người đi phải từ đủ 16 tuổi."),
              ("Wave 50cc và wave 110 khác gì?", "Wave 110 có dung tích trên 50 cm³ nên là mô tô, người đi phải có bằng lái hạng A1. Wave 50cc là xe gắn máy, không cần bằng."),
-             ("Mua wave 50cc ở đâu?", "Smile Motor có 6 cửa hàng, mở cửa 8h–21h. Bạn chat trên trang hoặc gọi, nhắn Zalo 0888.266.233.")],
+             ("Mua wave 50cc ở đâu?", "Smile có 6 cửa hàng, mở cửa 8h–21h. Bạn chat trên trang hoặc gọi, nhắn Zalo 0888.266.233.")],
 }
 GIOI_THIEU_COMVN = {
     "ga": '''<p>Con đủ 16 tuổi, đi học dưới 10 km, nhà không có chỗ sạc: xe ga 50cc là lựa chọn nhiều phụ huynh nghiêng về. Xe tự động nên con không phải sang số, có cốp để áo mưa và cặp.</p>
@@ -178,7 +178,7 @@ def trang_hang(k, b, ms):
     re_nhat = co_gia[0] if co_gia else None
     kg = khoang(ms)
     h1 = "%s %s: bảng giá tháng %s" % (ten_loai, b, THANG)
-    tom = ['%d mẫu %s %s đang có giá tại Smile Motor.' % (len(ms), ten_loai.lower(), b), "Khoảng giá: %s." % kg]
+    tom = ['%d mẫu %s %s đang có giá tại Smile.' % (len(ms), ten_loai.lower(), b), "Khoảng giá: %s." % kg]
     if re_nhat:
         tom.append("Mẫu giá thấp nhất: %s (%s)." % (re_nhat["name"], vnd(re_nhat["price"])))
     dien = k in ("may", "dap")
@@ -188,7 +188,7 @@ def trang_hang(k, b, ms):
         ("Mẫu %s %s nào rẻ nhất?" % (ten_loai.lower(), b),
          ("%s, giá %s." % (re_nhat["name"], vnd(re_nhat["price"]))) if re_nhat else "Các mẫu đang cập nhật giá, bạn chat hoặc gọi để có giá hôm nay."),
         ("Mua %s %s ở đâu?" % (ten_loai.lower(), b),
-         "Smile Motor có 6 cửa hàng (TP.HCM, Đồng Tháp, Phan Thiết), mở cửa 8h–21h. Bạn chat trên trang hoặc gọi, nhắn Zalo 0888.266.233 để hỏi mẫu còn hàng và quà tặng."),
+         "Smile có 6 cửa hàng (TP.HCM, Đồng Tháp, Phan Thiết), mở cửa 8h–21h. Bạn chat trên trang hoặc gọi, nhắn Zalo 0888.266.233 để hỏi mẫu còn hàng và quà tặng."),
     ]
     khac = [x for x in hang_cua(k) if x != b][:8]
     lien = "".join('<a class="chip" href="%s%s/">%s %s</a>' % (goc, slug(x), ten_loai, x) for x in khac)
@@ -203,7 +203,7 @@ def trang_hang(k, b, ms):
 {chot.hang(b, ten_loai, slug(b))}
 <div class="nhanh hd-in"><b>Tóm tắt nhanh</b><ul>{"".join("<li>%s</li>" % t for t in tom)}</ul></div>
 <section style="margin-top:20px"><div class="the bang hd-in"><div class="dong dau"><span>Mẫu {ten_loai.lower()} {b}</span><span>Giá</span></div>{"".join(dong(m, k) for m in ms)}
-<div class="chu-thich">Giá cập nhật {NGAY_VN}, giá bán tại Smile Motor, chưa gồm lệ phí trước bạ, biển số và bảo hiểm.</div></div></section>
+<div class="chu-thich">Giá cập nhật {NGAY_VN}, giá bán tại Smile, chưa gồm lệ phí trước bạ, biển số và bảo hiểm.</div></div></section>
 {anhxe.luoi(ms, "Ảnh %s %s" % (ten_loai.lower(), b), 12, vnd)}
 <section class="noi-dung hd-in"><h2>Chọn {ten_loai.lower()} {b} sao cho đúng</h2>
 <p>Các mẫu {b} trong bảng xếp từ giá thấp đến cao. {so_sanh}</p>

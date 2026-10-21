@@ -43,7 +43,7 @@ def ds_xe():
 
 def _gia(m):
     if m.get("price"):
-        return vnd(m["price"]), "Giá tại Smile Motor, cập nhật %s, chưa gồm lệ phí trước bạ, biển số và bảo hiểm." % NGAY_VN, True
+        return vnd(m["price"]), "Giá tại Smile, cập nhật %s, chưa gồm lệ phí trước bạ, biển số và bảo hiểm." % NGAY_VN, True
     tt = noidung.GIA_TT.get(m["name"].strip().lower())
     if tt:
         return vnd(tt), "Giá thị trường tháng %s, có thể khác tuỳ nơi bán." % THANG, True
@@ -67,7 +67,7 @@ def trang(site, k, m):
     if vn:
         h1, phu = ten, "Giá tháng %s và thông số" % THANG
         title = "%s giá bao nhiêu? Giá tháng %s" % (ten, THANG)
-        desc = ("%s giá %s (cập nhật %s). " % (ten, gia, NGAY_VN) if co_gia else "") + "Xem ảnh thật, thông số, mẫu cùng tầm giá và đặt xe tại Smile Motor."
+        desc = ("%s giá %s (cập nhật %s). " % (ten, gia, NGAY_VN) if co_gia else "") + "Xem ảnh thật, thông số, mẫu cùng tầm giá và đặt xe tại Smile."
     else:
         # .com.vn bỏ chữ "cho học sinh" ở tiêu đề; chưa có giá thì không ghi "giá Liên hệ" (anh chốt 21/10)
         h1, phu = ten, "Có hợp cho con đi học không? Giá và lưu ý"
@@ -94,7 +94,7 @@ def trang(site, k, m):
         gioi.append('Trước khi mua, cho con ngồi thử xem chống chân chạm đất được không và tay với tới phanh thoải mái.')
     faqs = [("%s giá bao nhiêu?" % ten, "%s: %s. %s" % (ten, gia, chu_gia)),
             ("Đi %s có cần bằng lái không?" % ten, LUAT),
-            ("Mua %s ở đâu?" % ten, "Smile Motor có 6 cửa hàng (TP.HCM, Đồng Tháp, Phan Thiết), mở cửa 8h–21h. Gọi hoặc Zalo %s để hỏi màu còn hàng và quà tặng." % site["hot"])]
+            ("Mua %s ở đâu?" % ten, "Smile có 6 cửa hàng (TP.HCM, Đồng Tháp, Phan Thiết), mở cửa 8h–21h. Gọi hoặc Zalo %s để hỏi màu còn hàng và quà tặng." % site["hot"])]
     so = site["hot"].replace(".", "")
     t = html.escape(ten, quote=True)
     nut = ('<button class="btn btn-chinh" data-chat="Mình muốn đặt xe %s">Đặt xe</button>' % t if co_gia

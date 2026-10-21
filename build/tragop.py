@@ -50,7 +50,7 @@ f.addEventListener('submit',function(e){e.preventDefault();var kq=$('[data-tgp-k
  b.disabled=true;kq.className='tgp-lead-kq';kq.textContent='Đang gửi...';
  var hong=function(){b.disabled=false;kq.className='tgp-lead-kq loi';kq.textContent='Chưa gửi được. Bạn gọi hoặc nhắn Zalo __HOT__, nhân viên nghe máy ngay ạ.'};
  fetch('/api/lien-he.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(x)}).then(function(r){if(!r.ok)return hong();
-  f.classList.add('xong');kq.className='tgp-lead-kq ok';kq.textContent='Đã nhận thông tin. Nhân viên Smile Motor sẽ gọi '+sdt.replace(/(\d{4})(\d{3})(\d{3})/,'$1.$2.$3')+' trong giờ làm việc 8h–21h.'}).catch(hong)});
+  f.classList.add('xong');kq.className='tgp-lead-kq ok';kq.textContent='Đã nhận thông tin. Nhân viên Smile sẽ gọi '+sdt.replace(/(\d{4})(\d{3})(\d{3})/,'$1.$2.$3')+' trong giờ làm việc 8h–21h.'}).catch(hong)});
 })();"""
 
 
@@ -110,7 +110,7 @@ def body(site):
     cs = (' <a href="/chinh-sach/tra-gop/">Xem chính sách trả góp ›</a>'
           if any(u == "/chinh-sach/tra-gop/" for _, u in chinhsach.link_chan()) else "")
     return f'''<div class="wrap rong tgp"><div class="duong"><a href="/">Trang chủ</a> › <b>Trả góp</b></div>
-<div class="mo-dau"><h1>Tính trả góp xe điện, xe 50cc</h1><p>Chọn mẫu xe, mức trả trước và số tháng góp: bảng dưới hiện số góp mỗi tháng của từng công ty tài chính. Giá xe là giá tại Smile Motor, chưa gồm lệ phí trước bạ, biển số.</p></div>
+<div class="mo-dau"><h1>Tính trả góp xe điện, xe 50cc</h1><p>Chọn mẫu xe, mức trả trước và số tháng góp: bảng dưới hiện số góp mỗi tháng của từng công ty tài chính. Giá xe là giá tại Smile, chưa gồm lệ phí trước bạ, biển số.</p></div>
 <form class="tgp-form" data-tgp onsubmit="return false">
 <div class="tgp-o"><span class="tgp-nhan">1. Dòng xe</span><div class="tgp-chips" role="group" data-nhom="dong">{"".join('<button type="button" class="tgp-chip" data-v="%s" aria-pressed="%s">%s <small>%d</small></button>' % (k, "true" if k == dong_md else "false", t, dem[k]) for k, t in DONG if dem[k])}</div></div>
 <div class="tgp-o"><label class="tgp-nhan" for="tgp-xe">2. Mẫu xe</label><select id="tgp-xe" data-tgp-xe></select>
@@ -122,16 +122,16 @@ def body(site):
 <script type="application/json" data-tgp-dl>{data}</script>
 </form>
 <form class="tgp-lead" data-tgp-lead novalidate>
-<b class="tgp-lead-dau">Để lại số, Smile Motor gọi tư vấn hồ sơ trả góp</b>
+<b class="tgp-lead-dau">Để lại số, Smile gọi tư vấn hồ sơ trả góp</b>
 <p class="tgp-lead-tom" data-tgp-tom></p>
 <label>Họ tên<input name="ten" autocomplete="name" maxlength="60" placeholder="Ví dụ: Nguyễn Văn An"></label>
 <label>Số điện thoại<input name="sdt" type="tel" inputmode="numeric" autocomplete="tel" maxlength="14" required placeholder="09xx xxx xxx"></label>
 <label>Cần hỏi thêm <small>(không bắt buộc)</small><textarea name="ghi_chu" maxlength="300" rows="2" placeholder="Màu xe, giấy tờ đang có, giờ tiện nghe máy..."></textarea></label>
 <button type="submit" class="btn btn-chinh">Gửi thông tin</button>
 <p class="tgp-lead-kq" data-tgp-kq aria-live="polite"></p>
-<p class="tgp-lead-rieng">Thông tin chỉ dùng để nhân viên Smile Motor gọi tư vấn trả góp cho bạn, không chia sẻ cho bên khác.</p>
+<p class="tgp-lead-rieng">Thông tin chỉ dùng để nhân viên Smile gọi tư vấn trả góp cho bạn, không chia sẻ cho bên khác.</p>
 </form>
-{_bai_doc(site)}<div class="tgp-keu"><b>Muốn làm hồ sơ hoặc hỏi số chính xác?</b><p>Gọi hoặc nhắn Zalo {site["hot"]}, nhân viên Smile Motor tính đúng theo giấy tờ của bạn và báo xe còn màu nào.</p>
+{_bai_doc(site)}<div class="tgp-keu"><b>Muốn làm hồ sơ hoặc hỏi số chính xác?</b><p>Gọi hoặc nhắn Zalo {site["hot"]}, nhân viên Smile tính đúng theo giấy tờ của bạn và báo xe còn màu nào.</p>
 <a class="btn btn-chinh" href="tel:{so}">Gọi {site["hot"]}</a> <a class="btn tgp-zalo" href="https://zalo.me/{so}" target="_blank" rel="noopener nofollow">Nhắn Zalo</a>
 <p class="tgp-giay">Mang giấy tờ ra cửa hàng, nhân viên làm hồ sơ ngay tại chỗ; hồ sơ duyệt xong là nhận xe.{cs}</p></div>
 </div>

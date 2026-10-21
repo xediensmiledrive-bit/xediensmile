@@ -237,7 +237,7 @@ VN = {
     "chat": "phoxedien.vn", "hot": "0889.277.112", "bot": "Hoàng Vy",
 }
 VN["cta_title"] = "Cần giá chính xác hôm nay?"
-VN["cta_text"] = "Gọi hoặc nhắn Zalo 0888.266.233, nhân viên Smile Motor báo giá hôm nay, quà tặng và màu còn hàng."
+VN["cta_text"] = "Gọi hoặc nhắn Zalo 0888.266.233, nhân viên Smile báo giá hôm nay, quà tặng và màu còn hàng."
 ART_VN = {a["url"]: a for a in BAI_VN}
 
 
@@ -269,9 +269,9 @@ def vn_home(s):
 
 
 FAQ_VN_HOME = [
-    ("Giá trên Phố Xe Điện có phải giá bán thật không?", "Đây là giá bán tại Smile Motor, cập nhật hằng tháng. Giá có thể đổi theo chương trình khuyến mãi, nên trước khi mua bạn bấm Chat hoặc gọi 0888.266.233 để biết giá hôm nay."),
+    ("Giá trên Phố Xe Điện có phải giá bán thật không?", "Đúng, đây là giá bán thật, cập nhật hằng tháng. Giá có thể đổi theo chương trình khuyến mãi, nên trước khi mua bạn bấm Chat hoặc gọi 0888.266.233 để biết giá hôm nay."),
     ("Giá lăn bánh khác giá niêm yết thế nào?", 'Giá lăn bánh là giá xe cộng lệ phí trước bạ, lệ phí đăng ký biển số và bảo hiểm trách nhiệm dân sự bắt buộc. Xem cách tính trong bài <a href="/bang-gia/gia-lan-banh-xe-may-dien-xe-50cc/">giá lăn bánh</a>.'),
-    ("Mua xe ở đâu sau khi xem giá?", "Smile Motor có 6 cửa hàng ở TP.HCM, Đồng Tháp và Phan Thiết, mở cửa 8h–21h. Gọi hoặc nhắn Zalo 0888.266.233 để hỏi mẫu còn hàng và đặt xe."),
+    ("Mua xe ở đâu sau khi xem giá?", "Smile có 6 cửa hàng ở TP.HCM, Đồng Tháp và Phan Thiết, mở cửa 8h–21h. Gọi hoặc nhắn Zalo 0888.266.233 để hỏi mẫu còn hàng và đặt xe."),
 ]
 faq_vn_home_html = ""
 
@@ -295,7 +295,7 @@ def vn_bang_gia_dien(s):
 FAQ_BG_DIEN = [
     ("Bảng giá xe điện cập nhật khi nào?", "Phố Xe Điện cập nhật bảng giá mỗi tháng và ghi ngày ở đầu trang. Giá giữa tháng có thể đổi theo khuyến mãi, nên bạn nên hỏi lại qua Chat hoặc hotline 0888.266.233 trước khi mua."),
     ("Xe máy điện có phải đăng ký biển số không?", "Có. Xe máy điện thuộc loại xe gắn máy hoặc xe mô tô điện, đều phải đăng ký và gắn biển số. Xe đạp điện thì không phải đăng ký."),
-    ("Mua trả góp xe điện được không?", "Được với nhiều mẫu. Điều kiện và số tiền trả trước tuỳ chương trình của Smile Motor từng tháng; bạn chat hoặc gọi để được tính cụ thể theo mẫu xe."),
+    ("Mua trả góp xe điện được không?", "Được với nhiều mẫu. Điều kiện và số tiền trả trước tuỳ chương trình từng tháng; bạn chat hoặc gọi để được tính cụ thể theo mẫu xe."),
 ]
 
 
@@ -390,7 +390,7 @@ def gioi_thieu(site, extra):
         return f'''<div class="wrap"><div class="duong"><a href="/">Trang chủ</a> › <b>Giới thiệu</b></div>
 <div class="dau-trang"><h1>Giới thiệu Phố Xe Điện</h1></div><div class="noi-dung">
 <p>{extra}</p>
-<p>Giá trên trang là giá bán tại Smile Motor, cập nhật hằng tháng. Mua xe tại 6 cửa hàng Smile Motor, gọi hoặc Zalo 0888.266.233.</p>
+<p>Giá trên trang là giá bán tại Smile, cập nhật hằng tháng. Mua xe tại 6 cửa hàng Smile, gọi hoặc Zalo 0888.266.233.</p>
 <h2>Cách chúng tôi viết</h2><ul><li>Giá có ghi ngày cập nhật, mẫu chưa có giá ghi "Liên hệ".</li><li>Luật và quy định trích từ văn bản đang có hiệu lực, có ghi số hiệu.</li><li>Mỗi bài có tên người viết.</li></ul>
 <h2>Người viết</h2><ul>{"".join('<li><a href="/tac-gia/%s/">%s</a>: %s</li>' % (k, v["name"], v["bio"]) for k, v in site["authors"].items())}</ul></div></div>'''
     return f
@@ -409,7 +409,7 @@ VN["pages"] = [
     {"url": "/xe-dap-dien/", "title": "Xe đạp điện: giá tháng %s và cách chọn cho học sinh" % THANG, "desc": "Giá xe đạp điện các hãng tháng %s, cách chọn xe cho học sinh dưới 16 tuổi." % THANG, "body": VN_DAP, "crumbs": [("Trang chủ", "/"), ("Xe đạp điện", "/xe-dap-dien/")]},
     {"url": "/xe-dien-3-banh/", "title": "Xe điện 3 bánh cho người lớn tuổi: giá tháng %s và cách chọn" % THANG, "desc": "Giá xe ba bánh điện, xe lăn điện và những điều cần xem khi mua cho ông bà.", "body": VN_BA, "crumbs": [("Trang chủ", "/"), ("Xe điện 3 bánh", "/xe-dien-3-banh/")]},
     {"url": "/so-sanh/", "title": "So sánh và đánh giá xe điện, xe 50cc | Phố Xe Điện", "desc": "So sánh pin, loại xe, chi phí và giá lăn bánh xe điện, xe 50cc.", "body": vn_so_sanh, "crumbs": [("Trang chủ", "/"), ("So sánh", "/so-sanh/")]},
-    {"url": "/gioi-thieu/", "title": "Giới thiệu Phố Xe Điện (phoxedien.vn)", "desc": "Phố Xe Điện là trang bảng giá và so sánh xe điện, xe 50cc do Smile Motor biên soạn.", "body": None},
+    {"url": "/gioi-thieu/", "title": "Giới thiệu Phố Xe Điện (phoxedien.vn)", "desc": "Phố Xe Điện là trang bảng giá và so sánh xe điện, xe 50cc do Smile biên soạn.", "body": None},
     {"url": "/404.html", "title": "Không tìm thấy trang | Phố Xe Điện", "desc": "Trang không tồn tại.", "body": notfound, "robots": "noindex,follow"},
 ]
 VN["pages"][7]["body"] = gioi_thieu(VN, "Phố Xe Điện (phoxedien.vn) là trang bảng giá và so sánh xe điện, xe 50cc. Mỗi tháng chúng tôi cập nhật giá, đặt các mẫu xe cạnh nhau theo thông số và chi phí, để bạn chọn nhanh và đúng túi tiền.")
@@ -446,14 +446,14 @@ COMVN = {
     "chat": "phoxedien.com.vn", "hot": "0833.666.916", "bot": "Ngọc Anh",
 }
 COMVN["cta_title"] = "Cần tư vấn chọn xe cho con?"
-COMVN["cta_text"] = "Gọi hoặc nhắn Zalo 0888.266.233, nhân viên Smile Motor tư vấn giá, giấy tờ và mẫu xe hợp với con."
+COMVN["cta_text"] = "Gọi hoặc nhắn Zalo 0888.266.233, nhân viên Smile tư vấn giá, giấy tờ và mẫu xe hợp với con."
 
 FAQ_COMVN = [
     ("Học sinh bao nhiêu tuổi được đi xe 50cc?", "Từ đủ 16 tuổi, theo Luật Trật tự, an toàn giao thông đường bộ 2024 (hiệu lực 01/01/2025). Xe gắn máy gồm xe dưới 50cc và xe điện đến 4 kW, tốc độ thiết kế đến 50 km/h."),
     ("Đi xe 50cc có cần bằng lái không?", "Không. Xe gắn máy không thuộc hạng giấy phép lái xe nào. Người đi vẫn phải mang đăng ký xe, bảo hiểm bắt buộc và giấy tờ tuỳ thân."),
     ("Xe điện hay xe 50cc rẻ hơn khi đi hằng ngày?", "Tiền sạc điện mỗi km thường thấp hơn tiền xăng. Bù lại xe điện có chi phí thay pin sau vài năm. Xem bài chọn xe cho con để tính đủ hai khoản."),
     ("Xe điện không lên nguồn có phải hỏng pin không?", 'Chưa chắc. Nhiều lần chỉ do khoá, cầu chì, giắc nối hoặc công tắc phanh. Xem <a href="/sua-xe/xe-dien-khong-len-nguon/">4 chỗ tự kiểm</a> trước khi gọi thợ.'),
-    ("Muốn mua xe thì liên hệ ai?", "Smile Motor có 6 cửa hàng ở TP.HCM, Đồng Tháp và Phan Thiết, mở cửa 8h–21h. Gọi hoặc nhắn Zalo 0888.266.233 để được tư vấn và đặt xe."),
+    ("Muốn mua xe thì liên hệ ai?", "Smile có 6 cửa hàng ở TP.HCM, Đồng Tháp và Phan Thiết, mở cửa 8h–21h. Gọi hoặc nhắn Zalo 0888.266.233 để được tư vấn và đặt xe."),
 ]
 
 
@@ -510,7 +510,7 @@ COMVN["pages"] = [
     {"url": "/cam-nang/", "title": "Cẩm nang xe 50cc, xe điện | Phố Xe Điện", "desc": "Cẩm nang chọn xe cho học sinh, luật và giấy tờ, pin sạc và sửa xe.", "body": comvn_camnang, "crumbs": [("Trang chủ", "/"), ("Cẩm nang", "/cam-nang/")]},
     {"url": "/hoi-dap/", "title": "Hỏi đáp xe 50cc và xe điện | Phố Xe Điện", "desc": "Trả lời ngắn các câu hỏi về tuổi đi xe 50cc, bằng lái, biển số, xe điện không lên nguồn.", "body": comvn_hoidap, "schemas": [faq_ld_local(FAQ_COMVN)] if False else [], "crumbs": [("Trang chủ", "/"), ("Hỏi đáp", "/hoi-dap/")]},
     {"url": "/gia-xe-50cc/", "title": "Giá xe 50cc tháng %s: xe ga, xe số, xe điện cho con" % THANG, "desc": "Giá xe 50cc và xe điện cho học sinh tháng %s, kèm những điều mẹ nên xem ngoài giá." % THANG, "body": comvn_gia, "crumbs": [("Trang chủ", "/"), ("Giá xe 50cc", "/gia-xe-50cc/")]},
-    {"url": "/gioi-thieu/", "title": "Giới thiệu Phố Xe Điện (phoxedien.com.vn)", "desc": "Phố Xe Điện là trang cẩm nang và hỏi đáp xe 50cc, xe điện do Smile Motor biên soạn.", "body": gioi_thieu(COMVN, "Phố Xe Điện (phoxedien.com.vn) là cẩm nang và hỏi đáp về xe 50cc, xe điện cho học sinh và gia đình: tuổi được đi, giấy tờ, chọn xe an toàn, pin sạc và bảo dưỡng."), "crumbs": [("Trang chủ", "/"), ("Giới thiệu", "/gioi-thieu/")]},
+    {"url": "/gioi-thieu/", "title": "Giới thiệu Phố Xe Điện (phoxedien.com.vn)", "desc": "Phố Xe Điện là trang cẩm nang và hỏi đáp xe 50cc, xe điện do Smile biên soạn.", "body": gioi_thieu(COMVN, "Phố Xe Điện (phoxedien.com.vn) là cẩm nang và hỏi đáp về xe 50cc, xe điện cho học sinh và gia đình: tuổi được đi, giấy tờ, chọn xe an toàn, pin sạc và bảo dưỡng."), "crumbs": [("Trang chủ", "/"), ("Giới thiệu", "/gioi-thieu/")]},
     {"url": "/404.html", "title": "Không tìm thấy trang | Phố Xe Điện", "desc": "Trang không tồn tại.", "body": notfound, "robots": "noindex,follow"},
 ]
 

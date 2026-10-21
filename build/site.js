@@ -54,7 +54,7 @@
     bien_so:{t:['Xe máy điện và xe 50cc đều phải đăng ký biển số ạ, làm ở công an xã, phường nơi mình cư trú. Mua ở Smile thì bên em hỗ trợ hướng dẫn hồ sơ. Xe đạp điện thì không cần biển số.'],c:[['Hỏi giá lăn bánh','gia']]},
     so_sanh:{t:['Xe ga: không sang số, có cốp, hợp bạn nữ, nặng hơn chút. Xe số, wave, cub: rẻ, nhẹ, bền, sửa đâu cũng được.','Bé nhỏ người thì nên ngồi thử xem chống chân được không trước khi chọn ạ.'],c:[['Hỏi giá xe ga','gia'],['Hỏi giá xe số','gia']]},
     pin:{t:['Pin lithium nhẹ, bền hơn nhưng đắt hơn ắc quy chì. Xe đang không lên nguồn thì bạn thử kiểm khoá chống trộm, cầu chì, giắc pin và tay phanh trước nha.','Vẫn không được thì gọi '+HOT+', thợ bên em hướng dẫn tiếp.']},
-    dc:{t:DC?['Smile Motor có các cửa hàng:'].concat(DC):['Smile Motor có nhiều cửa hàng ạ. Bạn ở quận, huyện nào để em chỉ cửa hàng gần nhất?'],ask:1},
+    dc:{t:DC?['Smile có các cửa hàng:'].concat(DC):['Smile có nhiều cửa hàng ạ. Bạn ở quận, huyện nào để em chỉ cửa hàng gần nhất?'],ask:1},
     nguoi:{t:['Em là trợ lý tự động của Xe điện Smile ạ, trả lời nhanh các câu hay gặp. Cần nói chuyện với nhân viên thật thì bạn gọi hoặc Zalo '+HOT+' nha.']},
     fallback:{t:['Câu này em chưa chắc, để nhân viên bên em trả lời cho chính xác ạ.'],ask:1}
   };
@@ -221,7 +221,7 @@
       if(!f&&document.querySelectorAll('.tt-o iframe').length<4){
         f=document.createElement('iframe');
         f.src='https://www.tiktok.com/player/v1/'+a.getAttribute('data-tt')+'?autoplay=1&muted=1&loop=1&controls=0&progress_bar=0&play_button=0&volume_control=0&fullscreen_button=0&timestamp=0&music_info=0&description=0&rel=0&native_context_menu=0&closed_caption=0';
-        f.allow='autoplay; encrypted-media; fullscreen';f.loading='lazy';f.title='Clip TikTok Smile Motor';
+        f.allow='autoplay; encrypted-media; fullscreen';f.loading='lazy';f.title='Clip TikTok Smile';
         a.appendChild(f);
       }
     }else if(f){f.remove();}
@@ -275,5 +275,5 @@ document.addEventListener('click',function(e){var b=e.target.closest('.doc-tiep'
   b.disabled=true;kq.className='tgp-lead-kq';kq.textContent='Đang gửi...';
   var hong=function(){b.disabled=false;kq.className='tgp-lead-kq loi';kq.textContent='Chưa gửi được. Bạn gọi hoặc nhắn Zalo '+(P.hot||'')+', nhân viên nghe máy ngay ạ.'};
   fetch('/api/lien-he.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sdt:sdt,ten:f.ten.value,xe:'Quan tâm '+(f.getAttribute('data-xe')||''),loai:'tu-van',web:P.web,trang:location.pathname,luc:new Date().toISOString()})})
-  .then(function(r){if(!r.ok)throw 0;f.classList.add('xong');kq.className='tgp-lead-kq ok';kq.textContent='Đã nhận thông tin. Nhân viên Smile Motor sẽ gọi '+sdt.replace(/(\d{4})(\d{3})(\d{3})/,'$1.$2.$3')+' trong giờ làm việc 8h–21h.'}).catch(hong)});
+  .then(function(r){if(!r.ok)throw 0;f.classList.add('xong');kq.className='tgp-lead-kq ok';kq.textContent='Đã nhận thông tin. Nhân viên Smile sẽ gọi '+sdt.replace(/(\d{4})(\d{3})(\d{3})/,'$1.$2.$3')+' trong giờ làm việc 8h–21h.'}).catch(hong)});
 });})();
