@@ -6,6 +6,7 @@ Logo trả góp: máy nhà tải logo chính thức về PXD_KHO/logo-doi-tac/, 
 import html
 import json
 import os
+import re
 import shutil
 
 GOC = os.environ.get("PXD_KHO", "").strip()
@@ -76,12 +77,32 @@ def doi_tac():
     return ra
 
 
+# Bài trả góp theo từng công ty tài chính ở /tra-gop/<slug công ty>/ (anh chốt 21/10 15:08: bấm logo là ra bài).
+# build.py điền BAI bằng các url bài đang có của web; logo chưa có bài thì để ảnh như cũ.
+BAI = set()
+
+
+def _slug_dt(ten):
+    for x in _json(os.path.join("logo-doi-tac", "doi-tac.json")) or []:
+        if x.get("ten") == ten and x.get("slug"):
+            return x["slug"]
+    return re.sub(r"[^a-z0-9]+", "-", ten.lower()).strip("-")
+
+
+def url_bai_dt(ten):
+    return "/tra-gop/%s/" % _slug_dt(ten)
+
+
 def tra_gop(lop=""):
     ds = doi_tac()
     if not ds:
         return ""
-    return ('<div class="tra-gop %s"><b>Trả góp qua</b><div class="tg-logo">%s</div></div>'
-            % (lop, "".join('<img src="/doi-tac/%s" alt="%s" title="Trả góp qua %s" height="32" loading="lazy">' % (html.escape(t, quote=True), html.escape(n, quote=True), html.escape(n, quote=True)) for n, t in ds)))
+    o = []
+    for n, t in ds:
+        img = '<img src="/doi-tac/%s" alt="%s" title="Trả góp qua %s" height="32" loading="lazy">' % (html.escape(t, quote=True), html.escape(n, quote=True), html.escape(n, quote=True))
+        u = url_bai_dt(n)
+        o.append('<a href="%s" title="Trả góp qua %s: cần biết gì">%s</a>' % (u, html.escape(n, quote=True), img) if u in BAI else img)
+    return '<div class="tra-gop %s"><b>Trả góp qua</b><div class="tg-logo">%s</div></div>' % (lop, "".join(o))
 
 
 def chep(base):

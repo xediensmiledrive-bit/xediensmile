@@ -10,8 +10,8 @@ THU_MUC = {"phoxedien.vn": "phoxedien-vn", "phoxedien.com.vn": "phoxedien-com-vn
 
 # Chuyên mục khi meta.json không ghi sẵn "url"/"chuyen_muc"
 MUC_VN = {"so-sanh": ("So sánh", "/so-sanh/"), "gia-dien": ("Bảng giá xe điện", "/bang-gia-xe-dien/"),
-          "gia-50cc": ("Bảng giá xe 50cc", "/bang-gia-xe-50cc/")}
-MUC_COMVN = {"cam-nang": ("Cẩm nang", "/cam-nang/"), "hoi-dap": ("Hỏi đáp", "/hoi-dap/")}
+          "gia-50cc": ("Bảng giá xe 50cc", "/bang-gia-xe-50cc/"), "tra-gop": ("Trả góp", "/tra-gop/")}
+MUC_COMVN = {"cam-nang": ("Cẩm nang", "/cam-nang/"), "hoi-dap": ("Hỏi đáp", "/hoi-dap/"), "tra-gop": ("Trả góp", "/tra-gop/")}
 PHEU = {"TOFU": "Đầu phễu", "MOFU": "Giữa phễu", "BOFU": "Cuối phễu"}
 EMOJI = {"TOFU": "📘", "MOFU": "⚖️", "BOFU": "🏷️"}
 

@@ -759,6 +759,7 @@ def build(site):
     for a in [a for a in bai_muse if a.get("san_pham")]:
         sanpham.MUSE[d][a["san_pham"].strip().lower()] = a
     bai_muse = [a for a in bai_muse if not a.get("san_pham")]
+    mxh.BAI = {a["url"] for a in bai_muse}
     site["articles"][:0] = bai_muse  # sửa tại chỗ để trang chủ, chuyên mục (đọc BAI_VN/BAI_COMVN) thấy bài mới
     for a in bai_muse:
         write(site, a["url"], muse_page(site, a, muse.chep_anh(a, base)))

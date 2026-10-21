@@ -89,6 +89,15 @@ def _chips(nhom, ds, chon, duoi):
         '<button type="button" class="tgp-chip" data-v="%s" aria-pressed="%s">%s%s</button>' % (v, "true" if v == chon else "false", v, duoi) for v in ds))
 
 
+def _bai_doc(site):
+    """Bài về trả góp (url /tra-gop/<slug>/): lãi suất, giấy tờ, từng công ty tài chính."""
+    ds = [a for a in site["articles"] if a.get("url", "").startswith(URL) and a["url"] != URL]
+    if not ds:
+        return ""
+    return ('<section class="tgp-doc"><h2>Đọc trước khi góp</h2><ul>%s</ul></section>'
+            % "".join('<li><a href="%s">%s</a></li>' % (a["url"], html.escape(a.get("h1") or a.get("title", ""))) for a in ds[:12]))
+
+
 def body(site):
     xe = _XE.get(site["domain"], [])
     dem = {k: sum(1 for x in xe if x["d"] == k) for k, _ in DONG}
@@ -122,7 +131,7 @@ def body(site):
 <p class="tgp-lead-kq" data-tgp-kq aria-live="polite"></p>
 <p class="tgp-lead-rieng">Thông tin chỉ dùng để nhân viên Smile Motor gọi tư vấn trả góp cho bạn, không chia sẻ cho bên khác.</p>
 </form>
-<div class="tgp-keu"><b>Muốn làm hồ sơ hoặc hỏi số chính xác?</b><p>Gọi hoặc nhắn Zalo {site["hot"]}, nhân viên Smile Motor tính đúng theo giấy tờ của bạn và báo xe còn màu nào.</p>
+{_bai_doc(site)}<div class="tgp-keu"><b>Muốn làm hồ sơ hoặc hỏi số chính xác?</b><p>Gọi hoặc nhắn Zalo {site["hot"]}, nhân viên Smile Motor tính đúng theo giấy tờ của bạn và báo xe còn màu nào.</p>
 <a class="btn btn-chinh" href="tel:{so}">Gọi {site["hot"]}</a> <a class="btn tgp-zalo" href="https://zalo.me/{so}" target="_blank" rel="noopener nofollow">Nhắn Zalo</a>
 <p class="tgp-giay">Mang giấy tờ ra cửa hàng, nhân viên làm hồ sơ ngay tại chỗ; hồ sơ duyệt xong là nhận xe.{cs}</p></div>
 </div>

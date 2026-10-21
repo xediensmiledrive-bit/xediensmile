@@ -971,3 +971,7 @@ footer .cua-hang h3{margin-bottom:12px}
 /* hiệu ứng chỉ chạy ở trang đầu tiên khách mở, các trang sau hiện logo đứng yên */
 .logo-anh.dong .ld-tinh,html.logo-xong .logo-anh.dong .ld-chay{display:none}
 html.logo-xong .logo-anh.dong .ld-tinh{display:block}
+.tg-logo a{display:block;border-radius:10px;transition:transform .15s}.tg-logo a:hover{transform:translateY(-2px)}
+.tg-logo a:focus-visible{outline:2px solid var(--c1);outline-offset:2px}
+footer .tg-logo a img{width:100%}
+.tgp-doc{margin:22px 0}.tgp-doc h2{font-size:20px;margin:0 0 10px}.tgp-doc ul{margin:0;padding-left:20px;display:grid;gap:8px}.tgp-doc a{font-weight:600}
