@@ -35,7 +35,7 @@ if not noidung.models_of("dap"):
     if _tg:
         noidung.CHIP_HANG["dap"] = ('<section><div class="tieude"><h2>Đủ 16 tuổi? Xem xe máy điện giá mềm</h2></div>'
                                     '<p class="meta">Từ đủ 16 tuổi được đi xe máy điện loại xe gắn máy, không cần bằng lái. Các mẫu giá dễ chịu:</p>'
-                                    '<div class="the bang hd-in">%s<div class="chu-thich">Giá tham khảo cập nhật %s.</div></div></section>'
+                                    '<div class="the bang hd-in">%s<div class="chu-thich">Giá cập nhật %s.</div></div></section>'
                                     % ("".join(hang.dong(m, "may") for m in _tg), noidung.NGAY_VN)) + noidung.CHIP_HANG.get("dap", "")
 for _p in _vn["pages"]:
     _f = _p.get("body")
@@ -127,26 +127,26 @@ tragop.gan(_comvn)  # 21/10 10:24 anh chốt: .com.vn cũng đổi nút Trang ch
 # Banner chốt kiểu A (luồng Banner Phố Xe Điện, 20/10): tệp ở build/banner/<domain>/, alt theo HUONG-DAN-GAN.md
 BANNER = {
     "phoxedien.vn": {
-        "hero": "Bảng giá xe máy điện tháng 10/2026, giá tham khảo từ 10,99 triệu, xe 50cc từ 14,79 triệu",
+        "hero": "Bảng giá xe máy điện tháng 10/2026, giá từ 10,99 triệu, xe 50cc từ 14,79 triệu",
         "dai": "Hỏi giá hôm nay: gọi hoặc Zalo 0889.277.112",
         "hero2": "Xe điện và xe 50cc đủ giá, đủ hãng: 121 mẫu xe máy điện, 31 mẫu xe 50cc, gọi hoặc Zalo 0889.277.112",
         # link từng banner trong slider (HUONG-DAN-GAN.md); trang chưa có thì banner gọi tel:
         "mac_dinh": "/so-sanh/",
         "link": ["/bang-gia-xe-dien/", "/bang-gia-xe-50cc/", "/so-sanh/", "/xe-cho-nu/chon-xe-dien-cho-nu/", "/xe-may-dien/"],
-        "loai": {"/xe-may-dien/": ("banner-xe-may-dien.webp", "Bảng giá xe máy điện: 121 mẫu, giá tham khảo từ 10.990.000đ"),
-                 "/bang-gia-xe-dien/": ("banner-xe-may-dien.webp", "Bảng giá xe máy điện: 121 mẫu, giá tham khảo từ 10.990.000đ"),
-                 "/xe-ga-50cc/": ("banner-xe-ga-50cc.webp", "Bảng giá xe ga 50cc: 16 mẫu, giá tham khảo từ 14.990.000đ"),
-                 "/xe-so-50cc/": ("banner-xe-so-50cc.webp", "Bảng giá xe số 50cc: 10 mẫu, giá tham khảo từ 14.790.000đ"),
-                 "/bang-gia-xe-50cc/": ("banner-xe-cub-50cc.webp", "Bảng giá xe cub 50cc: 5 mẫu, giá tham khảo từ 16.990.000đ")}},
+        "loai": {"/xe-may-dien/": ("banner-xe-may-dien.webp", "Bảng giá xe máy điện: 121 mẫu, giá từ 10.990.000đ"),
+                 "/bang-gia-xe-dien/": ("banner-xe-may-dien.webp", "Bảng giá xe máy điện: 121 mẫu, giá từ 10.990.000đ"),
+                 "/xe-ga-50cc/": ("banner-xe-ga-50cc.webp", "Bảng giá xe ga 50cc: 16 mẫu, giá từ 14.990.000đ"),
+                 "/xe-so-50cc/": ("banner-xe-so-50cc.webp", "Bảng giá xe số 50cc: 10 mẫu, giá từ 14.790.000đ"),
+                 "/bang-gia-xe-50cc/": ("banner-xe-cub-50cc.webp", "Bảng giá xe cub 50cc: 5 mẫu, giá từ 16.990.000đ")}},
     "phoxedien.com.vn": {
         "hero": "Con vào lớp 10 nên đi xe gì? Cẩm nang chọn xe 50cc và xe điện cho phụ huynh",
         "dai": "Chưa chắc chọn xe nào? Gọi hoặc Zalo 0833.666.916",
         "hero2": "Đủ 16 tuổi được đi xe 50cc: cần giấy tờ gì, xe nào hợp với con",
         "mac_dinh": "/cam-nang/",
         "link": ["/hoc-sinh/chon-xe-cho-con-hoc-cap-3/", "/giay-to/16-tuoi-di-xe-50cc-can-giay-to-gi/", "/cam-nang/?muc=hoc-sinh", "/cam-nang/", "/sua-xe/xe-dien-khong-len-nguon/"],
-        "loai": {"/xe-ga-50cc-cho-hoc-sinh/": ("banner-xe-ga-50cc.webp", "Xe ga 50cc cho học sinh, giá tham khảo từ 14.990.000đ"),
-                 "/xe-so-50cc-cho-hoc-sinh/": ("banner-xe-so-50cc.webp", "Xe số 50cc cho học sinh, giá tham khảo từ 14.790.000đ"),
-                 "/xe-may-dien-cho-hoc-sinh/": ("banner-xe-may-dien.webp", "Xe máy điện cho học sinh, giá tham khảo từ 10.990.000đ")}},
+        "loai": {"/xe-ga-50cc-cho-hoc-sinh/": ("banner-xe-ga-50cc.webp", "Xe ga 50cc cho học sinh, giá từ 14.990.000đ"),
+                 "/xe-so-50cc-cho-hoc-sinh/": ("banner-xe-so-50cc.webp", "Xe số 50cc cho học sinh, giá từ 14.790.000đ"),
+                 "/xe-may-dien-cho-hoc-sinh/": ("banner-xe-may-dien.webp", "Xe máy điện cho học sinh, giá từ 10.990.000đ")}},
 }
 _MOC_KEU = '<section class="hd-in"><div class="keu">'
 # Hero trang chủ (luồng banner 20/10 21:55, anh chốt): mỗi web banner riêng, banner hãng tối đa 2 slide, còn lại là banner mùa.
@@ -155,20 +155,20 @@ _MOC_KEU = '<section class="hd-in"><div class="keu">'
 HERO = {
     "phoxedien.vn": [
         # luồng banner 20/10 23:56: mỗi slide một mẫu xe, bấm vào là trang xe đó, chưa có trang xe thì về trang hãng
-        {"ten": "hang-1", "xe_chinh": ("Velia E", "Detech"), "alt": "Espero: Velia E giá tham khảo 23.500.000đ"},
+        {"ten": "hang-1", "xe_chinh": ("Velia E", "Detech"), "alt": "Espero: Velia E giá 23.500.000đ"},
         {"ten": "20-10", "mua": ("10-13", "10-21"), "xe_chinh": ("Takashi Vibera", "DV Motor"), "alt": "Ngày Phụ nữ Việt Nam 20/10: DVMotor Takashi Vibera"},
         {"ten": "halloween", "mua": ("10-13", "10-31"), "xe_chinh": ("Takashi Pro 2026 (Bản AQ)", "DV Motor"), "alt": "Halloween: DVMotor Takashi Pro"},
         {"ten": "hang-2", "xe_chinh": ("Type 3", "Detech"), "alt": "Espero: Type 3"},
-        {"ten": "11-11", "mua": ("10-13", "11-11"), "xe_chinh": ("Billy", "Detech"), "alt": "11/11: Detech Billy giá tham khảo 19.000.000đ"},
-        {"ten": "20-11", "mua": ("10-13", "11-20"), "xe_chinh": ("Type 3 Pro", "Detech"), "alt": "Ngày Nhà giáo 20/11: Espero Type 3 Pro giá tham khảo 16.590.000đ"},
+        {"ten": "11-11", "mua": ("10-13", "11-11"), "xe_chinh": ("Billy", "Detech"), "alt": "11/11: Detech Billy giá 19.000.000đ"},
+        {"ten": "20-11", "mua": ("10-13", "11-20"), "xe_chinh": ("Type 3 Pro", "Detech"), "alt": "Ngày Nhà giáo 20/11: Espero Type 3 Pro giá 16.590.000đ"},
     ],
     "phoxedien.com.vn": [
         # luồng banner 21/10 10:47 (anh duyệt "Anh duyệt 2 bộ hero mới"): 5 tấm, mỗi tấm một xe, bấm mở trang xe
-        {"ten": "hang-1", "xe_chinh": ("Cup 83", "Detech"), "alt": "Espero Cup 83 Retro X, xe số 50cc, giá tham khảo 18.500.000đ"},
-        {"ten": "halloween", "mua": ("10-13", "10-31"), "xe_chinh": ("50C3He", "Detech"), "alt": "Halloween: Espero 50C3He giá tham khảo 14.790.000đ"},
-        {"ten": "hang-2", "xe_chinh": ("50VS Diamond Plus", "Detech"), "alt": "50VS Diamond Plus, xe ga 50cc, giá tham khảo 22.190.000đ"},
+        {"ten": "hang-1", "xe_chinh": ("Cup 83", "Detech"), "alt": "Espero Cup 83 Retro X, xe số 50cc, giá 18.500.000đ"},
+        {"ten": "halloween", "mua": ("10-13", "10-31"), "xe_chinh": ("50C3He", "Detech"), "alt": "Halloween: Espero 50C3He giá 14.790.000đ"},
+        {"ten": "hang-2", "xe_chinh": ("50VS Diamond Plus", "Detech"), "alt": "50VS Diamond Plus, xe ga 50cc, giá 22.190.000đ"},
         {"ten": "11-11", "mua": ("10-13", "11-11"), "xe_chinh": ("Weezee Plus 3", "Detech"), "alt": "11/11: Espero Weezee Plus 3, xe máy điện"},
-        {"ten": "20-11", "mua": ("10-13", "11-20"), "xe_chinh": ("50C2a-2", "Detech"), "alt": "Ngày Nhà giáo 20/11: Espero 50C2a-2 giá tham khảo 15.000.000đ"},
+        {"ten": "20-11", "mua": ("10-13", "11-20"), "xe_chinh": ("50C2a-2", "Detech"), "alt": "Ngày Nhà giáo 20/11: Espero 50C2a-2 giá 15.000.000đ"},
     ],
 }
 

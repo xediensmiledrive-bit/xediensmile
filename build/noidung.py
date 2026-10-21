@@ -64,9 +64,9 @@ def models_of(k):
 
 
 NGUNG_BAN = {"dap", "ba"}
-# Smile không bán xe đạp điện, 3 bánh; anh cho dùng giá tham khảo thị trường để kéo traffic (20/10). Không ghi là giá Smile.
+# Smile không bán xe đạp điện, 3 bánh; anh cho dùng giá thị trường để kéo traffic (20/10). Không ghi là giá Smile.
 THI_TRUONG = {}
-# Mẫu Smile chưa có giá: anh cho lấy giá phoxedien.com làm giá tham khảo thị trường (20/10 11:50). Dòng loai="khop", mau = đúng "name" trong gia-smile.json.
+# Mẫu Smile chưa có giá: anh cho lấy giá phoxedien.com làm giá thị trường (20/10 11:50). Dòng loai="khop", mau = đúng "name" trong gia-smile.json.
 # Chỉ để hiển thị, ghi rõ "giá thị trường"; không đưa vào Offer (người bán Smile) hay khoảng giá Smile.
 GIA_TT = {}
 _ftt = os.path.join(HERE, "gia-thi-truong.csv")
@@ -78,7 +78,7 @@ if os.path.exists(_ftt):
             THI_TRUONG.setdefault(_k, []).append({"name": _r["mau"], "brand": "" if _r["hang"].strip().lower() in ("không thương hiệu", "khong thuong hieu") else _r["hang"], "price": int(_r["gia_tham_khao_vnd"]), "thi_truong": True})
         elif _r.get("loai") == "khop" and (_r.get("gia_tham_khao_vnd") or "").strip().isdigit():
             GIA_TT[_r["mau"].strip().lower()] = int(_r["gia_tham_khao_vnd"])
-CHU_TT = "Giá tham khảo thị trường cập nhật %s, tổng hợp từ giá hãng công bố và giá đại lý, có thể khác tuỳ nơi bán." % THANG
+CHU_TT = "Giá thị trường tháng %s, có thể khác tuỳ nơi bán." % THANG
 
 
 def rows(k, limit=None):
@@ -127,12 +127,12 @@ def bang(keys, bid, limit=None, loc=True):
     if loc and len(keys) > 1:
         chips = '<div class="chips" style="padding:0 0 12px" data-loc="%s"><span class="chip on" data-k="all">Tất cả</span>%s</div>' % (
             bid, "".join('<span class="chip" data-k="%s">%s</span>' % (k, NHOM[k][0]) for k in keys))
-    body = "".join('<div class="dong dau" data-n="%s"><span>%s</span><span>Giá tham khảo</span></div>%s' % (k, NHOM[k][0], rows(k, limit)) for k in keys)
+    body = "".join('<div class="dong dau" data-n="%s"><span>%s</span><span>Giá</span></div>%s' % (k, NHOM[k][0], rows(k, limit)) for k in keys)
     tt = any(k in NGUNG_BAN and not models_of(k) and THI_TRUONG.get(k) for k in keys)
     them = (' <b>Xe đạp điện, xe 3 bánh:</b> ' + CHU_TT) if tt else ""
     if tt and all(k in NGUNG_BAN and not models_of(k) for k in keys):
         return chips + '<div class="the bang hd-in" id="%s">%s<div class="chu-thich">%s</div></div>' % (bid, body, CHU_TT)
-    return chips + '<div class="the bang hd-in" id="%s">%s<div class="chu-thich">Giá tham khảo cập nhật %s, chưa gồm lệ phí trước bạ, biển số và bảo hiểm.%s</div></div>' % (bid, body, NGAY_VN, them)
+    return chips + '<div class="the bang hd-in" id="%s">%s<div class="chu-thich">Giá cập nhật %s, chưa gồm lệ phí trước bạ, biển số và bảo hiểm.%s</div></div>' % (bid, body, NGAY_VN, them)
 
 
 def tom_gia(keys):
@@ -245,13 +245,13 @@ def vn_home(s):
     so_sanh = BAI_VN[:8]
     return f'''<div class="hero"><span class="cau a"></span><span class="cau b"></span>
 <div><span class="nhan">Cập nhật tháng {THANG}</span><h1>Bảng giá xe điện <em>tháng {THANG}</em></h1>
-<p>Giá tham khảo mới nhất của xe máy điện, xe đạp điện và xe 50cc, kèm so sánh để chọn đúng xe cho đi học, đi làm.</p></div>
+<p>Giá mới nhất của xe máy điện, xe đạp điện và xe 50cc, kèm so sánh để chọn đúng xe cho đi học, đi làm.</p></div>
 <div class="hinh-hero">{xe_svg()}<span class="sticker">Nói thật!</span></div>
 <div class="hang-nut"><a class="btn btn-chinh nhip" href="/bang-gia-xe-dien/">Xem bảng giá</a><button class="btn btn-phu" data-chat>Chọn xe giúp tôi</button></div></div>
 <nav class="chips" aria-label="Danh mục"><a class="chip on" href="/bang-gia-xe-dien/">Bảng giá</a><a class="chip" href="/xe-may-dien/">Xe máy điện</a><a class="chip" href="/xe-dap-dien/">Xe đạp điện</a><a class="chip" href="/bang-gia-xe-50cc/">Xe 50cc</a><a class="chip" href="/xe-dien-3-banh/">Xe 3 bánh</a><a class="chip" href="/so-sanh/">So sánh</a></nav>
 <div class="wrap">
-<section><div class="tieude"><h2>Bảng giá tham khảo</h2><a href="/bang-gia-xe-dien/">Xem đủ ›</a></div>
-<div class="the bang hd-in"><div class="dong dau"><span>Nhóm xe</span><span>Giá tham khảo</span></div>{tom_gia(["may", "dap", "ba", "ga", "so"])}</div></section>
+<section><div class="tieude"><h2>Bảng giá</h2><a href="/bang-gia-xe-dien/">Xem đủ ›</a></div>
+<div class="the bang hd-in"><div class="dong dau"><span>Nhóm xe</span><span>Giá</span></div>{tom_gia(["may", "dap", "ba", "ga", "so"])}</div></section>
 <section><div class="tieude"><h2>Xem theo loại xe</h2></div>{the_xe([
         ("Xe máy điện", "Đi học, đi làm trong phố", gia_tu("may"), "/xe-may-dien/", xe_svg("#3aa52a", "#f26b1d")),
         ("Xe đạp điện", "Nhẹ, rẻ, hợp học sinh", gia_tu("dap"), "/xe-dap-dien/", dap_svg("#3aa52a", "#f26b1d")),
@@ -269,7 +269,7 @@ def vn_home(s):
 
 
 FAQ_VN_HOME = [
-    ("Giá trên Phố Xe Điện có phải giá bán thật không?", "Đây là giá tham khảo theo bảng giá Smile Motor, cập nhật hằng tháng. Giá có thể đổi theo chương trình khuyến mãi, nên trước khi mua bạn bấm Chat hoặc gọi 0888.266.233 để biết giá hôm nay."),
+    ("Giá trên Phố Xe Điện có phải giá bán thật không?", "Đây là giá bán tại Smile Motor, cập nhật hằng tháng. Giá có thể đổi theo chương trình khuyến mãi, nên trước khi mua bạn bấm Chat hoặc gọi 0888.266.233 để biết giá hôm nay."),
     ("Giá lăn bánh khác giá niêm yết thế nào?", 'Giá lăn bánh là giá xe cộng lệ phí trước bạ, lệ phí đăng ký biển số và bảo hiểm trách nhiệm dân sự bắt buộc. Xem cách tính trong bài <a href="/bang-gia/gia-lan-banh-xe-may-dien-xe-50cc/">giá lăn bánh</a>.'),
     ("Mua xe ở đâu sau khi xem giá?", "Smile Motor có 6 cửa hàng ở TP.HCM, Đồng Tháp và Phan Thiết, mở cửa 8h–21h. Gọi hoặc nhắn Zalo 0888.266.233 để hỏi mẫu còn hàng và đặt xe."),
 ]
@@ -349,7 +349,7 @@ def vn_cat(slug, h1, desc_p, keys, svg, faqs, extra=""):
 
 
 CHIP_HANG = {}  # khoá loại xe -> khối "Xem theo hãng", build.py điền sau khi dựng trang hãng
-VN_MAY = vn_cat("may", "Xe máy điện: giá tham khảo và cách chọn tháng " + THANG,
+VN_MAY = vn_cat("may", "Xe máy điện: giá và cách chọn tháng " + THANG,
                 '''<p>Xe máy điện chia làm hai nhóm theo luật: <b>xe gắn máy điện</b> (công suất đến 4 kW, tốc độ thiết kế đến 50 km/h) cho người từ đủ 16 tuổi, không cần bằng lái; và <b>xe mô tô điện</b> mạnh hơn, cần bằng A1 và người lái từ đủ 18 tuổi. Trước khi so giá, hãy chắc mẫu bạn chọn thuộc nhóm nào.</p>
 <h2>Ba thứ quyết định giá</h2><ul><li><b>Pin:</b> lithium nhẹ, bền hơn nhưng đắt hơn ắc quy chì. Xem <a href="/so-sanh/pin-lithium-hay-ac-quy-chi/">so sánh hai loại pin</a>.</li>
 <li><b>Quãng đường mỗi lần sạc:</b> con số hãng công bố đo ở điều kiện chuẩn; đi thực tế với người nặng, đường đông thường thấp hơn.</li>
@@ -357,9 +357,9 @@ VN_MAY = vn_cat("may", "Xe máy điện: giá tham khảo và cách chọn thán
                 ["may"], xe_svg(), [
                     ("Xe máy điện nào không cần bằng lái?", "Xe gắn máy điện, tức công suất động cơ đến 4 kW và tốc độ thiết kế đến 50 km/h. Mẫu mạnh hơn được xếp là xe mô tô và cần bằng A1."),
                     ("Xe máy điện đi được bao nhiêu km một lần sạc?", "Tuỳ dung lượng pin và cách đi. Hãng thường công bố quãng đường ở điều kiện thử nghiệm; khi đi thực tế, chở nặng, chạy nhanh hoặc trời lạnh thì quãng đường giảm. Hỏi Smile để biết số đo thực tế của từng mẫu."),
-                    ("VinFast, Yadea có bán ở Smile không?", "Phố Xe Điện có thông tin giá tham khảo cả các hãng Smile không bán. Nếu hãng bạn hỏi không có tại Smile, nhân viên sẽ gợi ý mẫu tương đương về giá và thông số."),
+                    ("VinFast, Yadea có bán ở Smile không?", "Phố Xe Điện có giá cả các hãng Smile không bán. Nếu hãng bạn hỏi không có tại Smile, nhân viên sẽ gợi ý mẫu tương đương về giá và thông số."),
                 ])
-VN_DAP = vn_cat("dap", "Xe đạp điện: giá tham khảo và cách chọn tháng " + THANG,
+VN_DAP = vn_cat("dap", "Xe đạp điện: giá và cách chọn tháng " + THANG,
                 '''<p>Xe đạp điện có bàn đạp, tốc độ thấp và không phải đăng ký biển số, nên là lựa chọn quen thuộc cho học sinh dưới 16 tuổi. Theo Luật Trật tự, an toàn giao thông đường bộ 2024, xe đạp điện vẫn là xe thô sơ có động cơ điện trợ lực, người đi phải đội mũ bảo hiểm.</p>
 <h2>Chọn xe đạp điện cho học sinh</h2><ul><li>Chiều cao yên: ngồi lên, hai mũi chân chạm đất là vừa.</li><li>Cân nặng xe: con tự dắt, tự dựng chân chống được.</li><li>Phanh: bóp thử, xe phải dừng chắc, không kêu rít.</li><li>Pin: hỏi rõ pin lithium hay ắc quy chì, bảo hành bao lâu.</li></ul>''',
                 ["dap"], dap_svg(), [
@@ -367,7 +367,7 @@ VN_DAP = vn_cat("dap", "Xe đạp điện: giá tham khảo và cách chọn th�
                     ("Học sinh lớp mấy đi được xe đạp điện?", "Luật không đặt tuổi tối thiểu riêng cho xe đạp điện như xe gắn máy. Phụ huynh nên cho con đi khi con đã đi xe đạp vững và hiểu luật đường phố."),
                     ("Xe đạp điện hay xe máy điện cho con lớp 9?", "Con dưới 16 tuổi thì chọn xe đạp điện, vì xe máy điện loại xe gắn máy chỉ dành cho người từ đủ 16 tuổi."),
                 ])
-VN_BA = vn_cat("ba", "Xe điện 3 bánh: giá tham khảo tháng " + THANG + " cho người lớn tuổi",
+VN_BA = vn_cat("ba", "Xe điện 3 bánh: giá tháng " + THANG + " cho người lớn tuổi",
                '''<p>Xe điện 3 bánh đứng vững khi dừng, không cần chống chân, nên hợp với ông bà, người đi chợ gần nhà hoặc người khó giữ thăng bằng. Có hai nhóm chính: xe ba bánh điện (ngồi như xe máy, có giỏ, có cốp) và xe lăn điện.</p>
 <h2>Khi chọn xe 3 bánh</h2><ul><li>Cua chậm: xe 3 bánh dễ lật hơn khi cua gấp ở tốc độ cao.</li><li>Có số lùi và phanh tay giữ xe thì dễ dắt, đỗ hơn.</li><li>Đo bề ngang xe so với cửa nhà, hẻm.</li></ul>''',
                ["ba"], xe_svg(), [
@@ -390,7 +390,7 @@ def gioi_thieu(site, extra):
         return f'''<div class="wrap"><div class="duong"><a href="/">Trang chủ</a> › <b>Giới thiệu</b></div>
 <div class="dau-trang"><h1>Giới thiệu Phố Xe Điện</h1></div><div class="noi-dung">
 <p>{extra}</p>
-<p>Giá trên trang là giá tham khảo theo bảng giá Smile Motor, cập nhật hằng tháng. Mua xe tại 6 cửa hàng Smile Motor, gọi hoặc Zalo 0888.266.233.</p>
+<p>Giá trên trang là giá bán tại Smile Motor, cập nhật hằng tháng. Mua xe tại 6 cửa hàng Smile Motor, gọi hoặc Zalo 0888.266.233.</p>
 <h2>Cách chúng tôi viết</h2><ul><li>Giá có ghi ngày cập nhật, mẫu chưa có giá ghi "Liên hệ".</li><li>Luật và quy định trích từ văn bản đang có hiệu lực, có ghi số hiệu.</li><li>Mỗi bài có tên người viết.</li></ul>
 <h2>Người viết</h2><ul>{"".join('<li><a href="/tac-gia/%s/">%s</a>: %s</li>' % (k, v["name"], v["bio"]) for k, v in site["authors"].items())}</ul></div></div>'''
     return f
@@ -402,17 +402,17 @@ def notfound(s):
 
 
 VN["pages"] = [
-    {"url": "/", "title": "Phố Xe Điện: bảng giá xe điện, xe 50cc tháng %s" % THANG, "desc": "Bảng giá tham khảo xe máy điện, xe đạp điện, xe 50cc cập nhật tháng %s, kèm so sánh để chọn đúng xe. Hỏi giá qua chat hoặc 0888.266.233." % THANG, "body": vn_home},
-    {"url": "/bang-gia-xe-dien/", "title": "Bảng giá xe điện tháng %s: xe máy điện, xe đạp điện" % THANG, "desc": "Giá tham khảo xe máy điện, xe đạp điện, xe điện 3 bánh tháng %s, lọc theo loại xe, cập nhật ngày %s." % (THANG, NGAY_VN), "body": vn_bang_gia_dien, "crumbs": [("Trang chủ", "/"), ("Bảng giá xe điện", "/bang-gia-xe-dien/")]},
-    {"url": "/bang-gia-xe-50cc/", "title": "Bảng giá xe 50cc tháng %s: xe ga, xe số, wave, cub" % THANG, "desc": "Giá tham khảo xe ga 50cc, xe số 50cc, wave và cub 50cc tháng %s, kèm tuổi được đi và giấy tờ cần có." % THANG, "body": vn_bang_gia_50, "crumbs": [("Trang chủ", "/"), ("Bảng giá xe 50cc", "/bang-gia-xe-50cc/")]},
-    {"url": "/xe-may-dien/", "title": "Xe máy điện: giá tham khảo tháng %s và cách chọn" % THANG, "desc": "Giá xe máy điện các hãng tháng %s, cách phân biệt xe gắn máy điện và mô tô điện, chọn pin và quãng đường." % THANG, "body": VN_MAY, "crumbs": [("Trang chủ", "/"), ("Xe máy điện", "/xe-may-dien/")]},
-    {"url": "/xe-dap-dien/", "title": "Xe đạp điện: giá tham khảo tháng %s và cách chọn cho học sinh" % THANG, "desc": "Giá xe đạp điện các hãng tháng %s, cách chọn xe cho học sinh dưới 16 tuổi." % THANG, "body": VN_DAP, "crumbs": [("Trang chủ", "/"), ("Xe đạp điện", "/xe-dap-dien/")]},
-    {"url": "/xe-dien-3-banh/", "title": "Xe điện 3 bánh cho người lớn tuổi: giá tháng %s và cách chọn" % THANG, "desc": "Giá tham khảo xe ba bánh điện, xe lăn điện và những điều cần xem khi mua cho ông bà.", "body": VN_BA, "crumbs": [("Trang chủ", "/"), ("Xe điện 3 bánh", "/xe-dien-3-banh/")]},
+    {"url": "/", "title": "Phố Xe Điện: bảng giá xe điện, xe 50cc tháng %s" % THANG, "desc": "Bảng giá xe máy điện, xe đạp điện, xe 50cc cập nhật tháng %s, kèm so sánh để chọn đúng xe. Hỏi giá qua chat hoặc 0888.266.233." % THANG, "body": vn_home},
+    {"url": "/bang-gia-xe-dien/", "title": "Bảng giá xe điện tháng %s: xe máy điện, xe đạp điện" % THANG, "desc": "Giá xe máy điện, xe đạp điện, xe điện 3 bánh tháng %s, lọc theo loại xe, cập nhật ngày %s." % (THANG, NGAY_VN), "body": vn_bang_gia_dien, "crumbs": [("Trang chủ", "/"), ("Bảng giá xe điện", "/bang-gia-xe-dien/")]},
+    {"url": "/bang-gia-xe-50cc/", "title": "Bảng giá xe 50cc tháng %s: xe ga, xe số, wave, cub" % THANG, "desc": "Giá xe ga 50cc, xe số 50cc, wave và cub 50cc tháng %s, kèm tuổi được đi và giấy tờ cần có." % THANG, "body": vn_bang_gia_50, "crumbs": [("Trang chủ", "/"), ("Bảng giá xe 50cc", "/bang-gia-xe-50cc/")]},
+    {"url": "/xe-may-dien/", "title": "Xe máy điện: giá tháng %s và cách chọn" % THANG, "desc": "Giá xe máy điện các hãng tháng %s, cách phân biệt xe gắn máy điện và mô tô điện, chọn pin và quãng đường." % THANG, "body": VN_MAY, "crumbs": [("Trang chủ", "/"), ("Xe máy điện", "/xe-may-dien/")]},
+    {"url": "/xe-dap-dien/", "title": "Xe đạp điện: giá tháng %s và cách chọn cho học sinh" % THANG, "desc": "Giá xe đạp điện các hãng tháng %s, cách chọn xe cho học sinh dưới 16 tuổi." % THANG, "body": VN_DAP, "crumbs": [("Trang chủ", "/"), ("Xe đạp điện", "/xe-dap-dien/")]},
+    {"url": "/xe-dien-3-banh/", "title": "Xe điện 3 bánh cho người lớn tuổi: giá tháng %s và cách chọn" % THANG, "desc": "Giá xe ba bánh điện, xe lăn điện và những điều cần xem khi mua cho ông bà.", "body": VN_BA, "crumbs": [("Trang chủ", "/"), ("Xe điện 3 bánh", "/xe-dien-3-banh/")]},
     {"url": "/so-sanh/", "title": "So sánh và đánh giá xe điện, xe 50cc | Phố Xe Điện", "desc": "So sánh pin, loại xe, chi phí và giá lăn bánh xe điện, xe 50cc.", "body": vn_so_sanh, "crumbs": [("Trang chủ", "/"), ("So sánh", "/so-sanh/")]},
     {"url": "/gioi-thieu/", "title": "Giới thiệu Phố Xe Điện (phoxedien.vn)", "desc": "Phố Xe Điện là trang bảng giá và so sánh xe điện, xe 50cc do Smile Motor biên soạn.", "body": None},
     {"url": "/404.html", "title": "Không tìm thấy trang | Phố Xe Điện", "desc": "Trang không tồn tại.", "body": notfound, "robots": "noindex,follow"},
 ]
-VN["pages"][7]["body"] = gioi_thieu(VN, "Phố Xe Điện (phoxedien.vn) là trang bảng giá và so sánh xe điện, xe 50cc. Mỗi tháng chúng tôi cập nhật giá tham khảo, đặt các mẫu xe cạnh nhau theo thông số và chi phí, để bạn chọn nhanh và đúng túi tiền.")
+VN["pages"][7]["body"] = gioi_thieu(VN, "Phố Xe Điện (phoxedien.vn) là trang bảng giá và so sánh xe điện, xe 50cc. Mỗi tháng chúng tôi cập nhật giá, đặt các mẫu xe cạnh nhau theo thông số và chi phí, để bạn chọn nhanh và đúng túi tiền.")
 faq_vn_home_html = faq_html_local(FAQ_VN_HOME)
 VN["pages"][0]["schemas"] = []
 
@@ -465,8 +465,8 @@ def comvn_home(s):
 <div class="hang-nut"><a class="btn btn-chinh nhip" href="/cam-nang/">Đọc cẩm nang</a><button class="btn btn-phu" data-chat>Hỏi nhanh</button></div></div>
 <nav class="chips" aria-label="Danh mục"><a class="chip on" href="/cam-nang/?muc=hoc-sinh">Xe cho học sinh</a><a class="chip" href="/cam-nang/?muc=giay-to">Tuổi và bằng lái</a><a class="chip" href="/cam-nang/?muc=sua-xe">Pin, sạc, sửa xe</a><a class="chip" href="/gia-xe-50cc/">Giá xe 50cc</a><a class="chip" href="/hoi-dap/">Hỏi đáp</a></nav>
 <div class="wrap">
-<section><div class="tieude"><h2>Giá tham khảo</h2><a href="/gia-xe-50cc/">Xem đủ ›</a></div>
-<div class="the bang hd-in"><div class="dong dau"><span>Nhóm xe</span><span>Giá tham khảo</span></div>{tom_gia(["ga", "so", "may", "dap"])}</div></section>
+<section><div class="tieude"><h2>Giá</h2><a href="/gia-xe-50cc/">Xem đủ ›</a></div>
+<div class="the bang hd-in"><div class="dong dau"><span>Nhóm xe</span><span>Giá</span></div>{tom_gia(["ga", "so", "may", "dap"])}</div></section>
 <section>{chon([
         ("Con 14–15 tuổi", 'Chưa đủ 16 tuổi thì chỉ nên đi xe đạp hoặc <b>xe đạp điện</b>. Đọc <a href="/hoc-sinh/chon-xe-cho-con-hoc-cap-3/">cách chọn xe cho con</a>.'),
         ("Con đủ 16", 'Đi được xe gắn máy: xe dưới 50cc hoặc xe máy điện đến 4 kW, không cần bằng lái. Xem <a href="/giay-to/16-tuoi-di-xe-50cc-can-giay-to-gi/">giấy tờ cần có</a>.'),
@@ -506,10 +506,10 @@ def comvn_gia(s):
 
 
 COMVN["pages"] = [
-    {"url": "/", "title": "Phố Xe Điện: cẩm nang xe 50cc, xe điện cho học sinh", "desc": "Hỏi đáp xe 50cc và xe điện: tuổi được đi, bằng lái, biển số, chọn xe cho học sinh, pin sạc, bảo dưỡng. Giá tham khảo cập nhật tháng %s." % THANG, "body": comvn_home},
+    {"url": "/", "title": "Phố Xe Điện: cẩm nang xe 50cc, xe điện cho học sinh", "desc": "Hỏi đáp xe 50cc và xe điện: tuổi được đi, bằng lái, biển số, chọn xe cho học sinh, pin sạc, bảo dưỡng. Giá cập nhật tháng %s." % THANG, "body": comvn_home},
     {"url": "/cam-nang/", "title": "Cẩm nang xe 50cc, xe điện | Phố Xe Điện", "desc": "Cẩm nang chọn xe cho học sinh, luật và giấy tờ, pin sạc và sửa xe.", "body": comvn_camnang, "crumbs": [("Trang chủ", "/"), ("Cẩm nang", "/cam-nang/")]},
     {"url": "/hoi-dap/", "title": "Hỏi đáp xe 50cc và xe điện cho học sinh | Phố Xe Điện", "desc": "Trả lời ngắn các câu hỏi về tuổi đi xe 50cc, bằng lái, biển số, xe điện không lên nguồn.", "body": comvn_hoidap, "schemas": [faq_ld_local(FAQ_COMVN)] if False else [], "crumbs": [("Trang chủ", "/"), ("Hỏi đáp", "/hoi-dap/")]},
-    {"url": "/gia-xe-50cc/", "title": "Giá xe 50cc cho học sinh tháng %s: xe ga, xe số, xe điện" % THANG, "desc": "Giá tham khảo xe 50cc và xe điện cho học sinh tháng %s, kèm những điều mẹ nên xem ngoài giá." % THANG, "body": comvn_gia, "crumbs": [("Trang chủ", "/"), ("Giá xe 50cc", "/gia-xe-50cc/")]},
+    {"url": "/gia-xe-50cc/", "title": "Giá xe 50cc cho học sinh tháng %s: xe ga, xe số, xe điện" % THANG, "desc": "Giá xe 50cc và xe điện cho học sinh tháng %s, kèm những điều mẹ nên xem ngoài giá." % THANG, "body": comvn_gia, "crumbs": [("Trang chủ", "/"), ("Giá xe 50cc", "/gia-xe-50cc/")]},
     {"url": "/gioi-thieu/", "title": "Giới thiệu Phố Xe Điện (phoxedien.com.vn)", "desc": "Phố Xe Điện là trang cẩm nang và hỏi đáp xe 50cc, xe điện do Smile Motor biên soạn.", "body": gioi_thieu(COMVN, "Phố Xe Điện (phoxedien.com.vn) là cẩm nang và hỏi đáp về xe 50cc, xe điện cho học sinh và gia đình: tuổi được đi, giấy tờ, chọn xe an toàn, pin sạc và bảo dưỡng."), "crumbs": [("Trang chủ", "/"), ("Giới thiệu", "/gioi-thieu/")]},
     {"url": "/404.html", "title": "Không tìm thấy trang | Phố Xe Điện", "desc": "Trang không tồn tại.", "body": notfound, "robots": "noindex,follow"},
 ]

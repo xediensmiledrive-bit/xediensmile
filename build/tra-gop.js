@@ -91,7 +91,7 @@
     }
     if (!kq.ok && kq.ly_do) ct.appendChild(e('span', 'tgp-ghi', kq.ly_do));
     if (dt.ghi_chu && (kq.ok || !kq.ly_do)) ct.appendChild(e('span', 'tgp-ghi', dt.ghi_chu));
-    if (dt.cho_anh_chot) ct.appendChild(e('span', 'tgp-cho', 'Số tham khảo, chờ xác nhận'));
+    if (dt.cho_anh_chot) ct.appendChild(e('span', 'tgp-cho', 'Số góp dự kiến'));
     // 21/10 9:45 anh chốt: mỗi công ty chỉ hiện logo + số góp mỗi tháng; chi tiết ẩn, bấm "Chi tiết" mới mở
     ct.hidden = true;
     if (ct.childNodes.length) {

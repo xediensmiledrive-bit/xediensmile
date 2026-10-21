@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Mục "Khách hàng nói gì" trên trang chủ .vn, ngay trên bảng giá tham khảo (anh chốt 20/10 20:37).
+"""Mục "Khách hàng nói gì" trên trang chủ .vn, ngay trên bảng giá (anh chốt 20/10 20:37).
 Chỉ dùng đánh giá thật máy nhà tải từ Google Maps các chi nhánh Xe Điện Smile, không tự viết:
 PXD_KHO/review-smile.json {"cap_nhat", "chi_nhanh": [{ten, dia_chi, map, sao_tb, so_danh_gia}],
                            "reviews": [{chi_nhanh, ten, sao, ngay, noi_dung, link_map}]}

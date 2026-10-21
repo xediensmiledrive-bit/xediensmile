@@ -35,7 +35,7 @@ def _loai(m):
     return "dap" if "đạp" in t else "may"
 
 
-# Form để lại thông tin sau bảng tham khảo (anh chốt 21/10 9:35): gửi về /api/lien-he.php kèm xe, trả trước, kỳ hạn;
+# Form để lại thông tin sau bảng tính (anh chốt 21/10 9:35): gửi về /api/lien-he.php kèm xe, trả trước, kỳ hạn;
 # máy chủ ghi lại và chuyển tiếp cho chatbot2 để chia cho sale.
 LEAD_JS = r"""(function(){var f=document.querySelector('[data-tgp-lead]');if(!f)return;
 var $=function(s){return document.querySelector(s)},chon=function(n){var c=document.querySelector('[data-nhom="'+n+'"] .tgp-chip[aria-pressed="true"]');return c?c.dataset.v:''};
@@ -101,7 +101,7 @@ def body(site):
     cs = (' <a href="/chinh-sach/tra-gop/">Xem chính sách trả góp ›</a>'
           if any(u == "/chinh-sach/tra-gop/" for _, u in chinhsach.link_chan()) else "")
     return f'''<div class="wrap rong tgp"><div class="duong"><a href="/">Trang chủ</a> › <b>Trả góp</b></div>
-<div class="mo-dau"><h1>Tính trả góp xe điện, xe 50cc</h1><p>Chọn mẫu xe, mức trả trước và số tháng góp: bảng dưới hiện số góp mỗi tháng của từng công ty tài chính. Giá xe là giá tham khảo tại Smile Motor, chưa gồm lệ phí trước bạ, biển số.</p></div>
+<div class="mo-dau"><h1>Tính trả góp xe điện, xe 50cc</h1><p>Chọn mẫu xe, mức trả trước và số tháng góp: bảng dưới hiện số góp mỗi tháng của từng công ty tài chính. Giá xe là giá tại Smile Motor, chưa gồm lệ phí trước bạ, biển số.</p></div>
 <form class="tgp-form" data-tgp onsubmit="return false">
 <div class="tgp-o"><span class="tgp-nhan">1. Dòng xe</span><div class="tgp-chips" role="group" data-nhom="dong">{"".join('<button type="button" class="tgp-chip" data-v="%s" aria-pressed="%s">%s <small>%d</small></button>' % (k, "true" if k == dong_md else "false", t, dem[k]) for k, t in DONG if dem[k])}</div></div>
 <div class="tgp-o"><label class="tgp-nhan" for="tgp-xe">2. Mẫu xe</label><select id="tgp-xe" data-tgp-xe></select>
@@ -109,7 +109,7 @@ def body(site):
 <div class="tgp-o"><span class="tgp-nhan">3. Trả trước</span>{_chips("tra-truoc", [10, 20, 30, 40, 50], 30, "%")}<p class="tgp-tt" data-tgp-tt></p></div>
 <div class="tgp-o"><span class="tgp-nhan">4. Góp trong</span>{_chips("ky-han", [6, 9, 12, 18, 24], 12, " tháng")}</div>
 <div class="tgp-bang" data-tgp-bang aria-live="polite"></div>
-<p class="tgp-chan">Số tham khảo, số thật theo hồ sơ được duyệt của từng công ty tài chính. Mức lãi %/tháng hoặc %/năm ghi trên thẻ được tính trên số tiền vay ban đầu (lãi phẳng), nên lãi thực mỗi năm cao hơn con số ghi. Riêng Shinhan tính trên dư nợ giảm dần.</p>
+<p class="tgp-chan">Số góp dự kiến, số chính xác theo hồ sơ được duyệt của từng công ty tài chính. Mức lãi %/tháng hoặc %/năm ghi trên thẻ được tính trên số tiền vay ban đầu (lãi phẳng), nên lãi thực mỗi năm cao hơn con số ghi. Riêng Shinhan tính trên dư nợ giảm dần.</p>
 <script type="application/json" data-tgp-dl>{data}</script>
 </form>
 <form class="tgp-lead" data-tgp-lead novalidate>

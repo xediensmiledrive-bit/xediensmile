@@ -152,7 +152,7 @@ BAI_COMVN = [
 """ + h(3, "Sáu điều mẹ nên thử") + """
 <ol><li><b>Con chống được hai chân</b> khi ngồi trên xe.</li><li><b>Con tự dắt và dựng chân chống</b> được.</li><li><b>Phanh:</b> bóp thử, xe dừng chắc; ưu tiên phanh đĩa trước.</li><li><b>Đèn, còi, xi nhan</b> sáng rõ.</li><li><b>Gương</b> đủ hai bên.</li><li><b>Mũ bảo hiểm</b> có tem hợp quy theo QCVN 2:2021/BKHCN, vừa đầu con, cài quai chắc.</li></ol>
 """ + h(4, "Chi phí nuôi xe") + """
-<p>Ngoài giá xe và lệ phí khi đăng ký, mẹ tính thêm: tiền xăng hoặc tiền điện mỗi tháng, gửi xe ở trường, bảo hiểm bắt buộc mỗi năm, bảo dưỡng định kỳ. Với xe điện, nhớ để dành một khoản cho lần thay pin. Giá xe tham khảo tháng này ở trang <a href="/gia-xe-50cc/">giá xe 50cc và xe điện cho học sinh</a>.</p>
+<p>Ngoài giá xe và lệ phí khi đăng ký, mẹ tính thêm: tiền xăng hoặc tiền điện mỗi tháng, gửi xe ở trường, bảo hiểm bắt buộc mỗi năm, bảo dưỡng định kỳ. Với xe điện, nhớ để dành một khoản cho lần thay pin. Giá xe tháng này ở trang <a href="/gia-xe-50cc/">giá xe 50cc và xe điện cho học sinh</a>.</p>
 """ + h(5, "Dặn con trước khi đi") + """
 <ul><li>Không chở quá một người, không đi hàng ba.</li><li>Không dùng điện thoại khi đang chạy.</li><li>Gửi xe đúng chỗ, khoá cổ và khoá đĩa.</li></ul>
 """,

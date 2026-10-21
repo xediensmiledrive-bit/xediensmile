@@ -162,9 +162,9 @@ def trang_chu(site, h1, mo_ta, bang_gia, tom, chips, faqs):
                '<nav class="chips tab-xe" style="padding:0 0 12px"><button type="button" class="chip on" data-tab="">Tất cả</button>%s</nav>'
                '<div class="luoi-xe ban-xe" data-hien="%d">%s</div>'
                '<button type="button" class="btn xem-them">Xem thêm xe</button>'
-               '<p class="chu-anh">Giá tham khảo cập nhật %s. Màu xe thực tế có thể khác ảnh.</p></section>'
+               '<p class="chu-anh">Giá cập nhật %s. Màu xe thực tế có thể khác ảnh.</p></section>'
                % (bang_gia, _hang(xe), tab, HIEN, the, noidung.NGAY_VN))
-    # 21/10 9:35: bỏ bảng "Giá tham khảo tháng" ở trang chủ (anh chốt), giá đủ ở trang Bảng giá
+    # 21/10 9:35: bỏ bảng "Giá tháng" ở trang chủ (anh chốt), giá đủ ở trang Bảng giá
     # 20/10 23:59: ngay dưới banner là bằng chứng khách hàng thay cho hàng ô loại xe (loại xe đã có trên menu)
     return f'''<div class="wrap rong">
 {danhgia.html_muc(site) or _loai_xe(site)}
@@ -183,12 +183,12 @@ def gan(vn, comvn):
     from noidung import FAQ_VN_HOME, FAQ_COMVN
     cau_hinh = {
         "phoxedien.vn": dict(h1="Bảng giá xe điện, xe 50cc tháng " + THANG,
-                             mo_ta="Đủ hãng, ảnh thật, giá tham khảo cập nhật hằng tháng. Đặt xe nhanh qua điện thoại hoặc Zalo.",
+                             mo_ta="Đủ hãng, ảnh thật, giá cập nhật hằng tháng. Đặt xe nhanh qua điện thoại hoặc Zalo.",
                              bang_gia="/bang-gia-xe-dien/", tom=["may", "ga", "so", "dap", "ba"],
                              chips=[("So sánh và đánh giá", "/so-sanh/"), ("Bảng giá xe điện", "/bang-gia-xe-dien/"), ("Bảng giá xe 50cc", "/bang-gia-xe-50cc/")],
                              faqs=FAQ_VN_HOME),
         "phoxedien.com.vn": dict(h1="Xe ga, xe số 50cc và xe máy điện",
-                                 mo_ta="Xe hợp tuổi từ 16, không cần bằng lái. Ảnh thật, giá tham khảo cập nhật hằng tháng.",
+                                 mo_ta="Xe hợp tuổi từ 16, không cần bằng lái. Ảnh thật, giá cập nhật hằng tháng.",
                                  bang_gia="/gia-xe-50cc/", tom=["ga", "so", "may", "dap"],
                                  chips=[("Cẩm nang", "/cam-nang/"), ("Xe cho học sinh", "/cam-nang/?muc=hoc-sinh"), ("Tuổi và bằng lái", "/cam-nang/?muc=giay-to"),
                                         ("Pin, sạc, sửa xe", "/cam-nang/?muc=sua-xe"), ("Hỏi đáp", "/hoi-dap/")],

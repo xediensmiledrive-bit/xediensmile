@@ -56,6 +56,8 @@ def _sach(s, site):
     s = re.sub(r"tel:\+?[\d.\s]+", "tel:" + so, s)
     s = re.sub(r"https?://zalo\.me/\+?\d+", "https://zalo.me/" + so, s)
     s = re.sub(r'href="#chatbot"', 'href="#chat" data-chat', s)
+    # cấm chữ "tham khảo" trên web (anh chốt 21/10 13:32): bỏ ở các cụm giá hay gặp, còn sót thì giong_noi_bo báo
+    s = re.sub(r"([Gg]iá)( xe)? tham khảo", r"\1\2", s)
     s = re.sub(r'<article class="bai"', '<article class="bai bai-muse"', s, count=1)
     return s
 
@@ -64,7 +66,7 @@ def _sach(s, site):
 # Bài nào dính thì in cảnh báo khi dựng để sửa lại trước khi đẩy.
 NOI_BO = {"nguồn": r"(?<!lên )(?<!mất )\bnguồn\b(?! (điện|sạc|pin|cấp))", "trang ghi": r"trang (khác |còn lại |này )?ghi",
           "trang còn lại": r"trang còn lại", "hai mức giá": r"hai mức giá", "không ghi ở trang": r"không ghi ở trang",
-          "bài này không bàn": r"bài này không bàn", "chưa xác minh": r"chưa xác minh", "theo dữ liệu": r"theo dữ liệu", "giá gạch": r"giá gạch"}
+          "bài này không bàn": r"bài này không bàn", "chưa xác minh": r"chưa xác minh", "theo dữ liệu": r"theo dữ liệu", "giá gạch": r"giá gạch", "tham khảo": r"tham khảo"}
 
 
 def giong_noi_bo(*chu):

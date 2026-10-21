@@ -142,7 +142,7 @@ FAQ_COMVN = {
 def _trang_loai(site, k, url, ten, gioi, faqs, tac, av, khung_tim):
     ms = sap(models_of(k))
     tt = sap(THI_TRUONG.get(k, [])) if (k in NGUNG_BAN and not ms) else []
-    dong_gia = ("Giá thị trường tham khảo (theo giá hãng và đại lý), có thể khác tuỳ nơi bán." if tt
+    dong_gia = ("Giá thị trường, có thể khác tuỳ nơi bán." if tt
                 else "Giá chưa gồm lệ phí trước bạ, biển số và bảo hiểm.")
     svg = dap_svg() if k == "dap" else xe_svg()
     h1 = "%s: bảng giá tháng %s và cách chọn" % (ten, THANG) if site is VN else "%s: chọn sao cho đúng, giá tháng %s" % (ten, THANG)
@@ -150,7 +150,7 @@ def _trang_loai(site, k, url, ten, gioi, faqs, tac, av, khung_tim):
     def body(s):
         return f'''<div class="wrap"><div class="duong"><a href="/">Trang chủ</a> › <b>{ten}</b></div>
 <div class="dau-trang"><h1>{h1}</h1><div class="tac"><span class="av">{av}</span><span><a href="/tac-gia/{tac[0]}/">{tac[1]}</a> · cập nhật {NGAY_VN}</span></div></div>
-<div class="nhanh hd-in"><b>Tóm tắt nhanh</b><ul><li>{len(ms or tt) or "Các"} mẫu {NHOM[k][0].lower()} có giá tham khảo, {khoang(ms or tt)}.</li><li>{dong_gia}</li></ul></div>
+<div class="nhanh hd-in"><b>Tóm tắt nhanh</b><ul><li>{len(ms or tt) or "Các"} mẫu {NHOM[k][0].lower()} có giá, {khoang(ms or tt)}.</li><li>{dong_gia}</li></ul></div>
 
 {"".join(bannerhang.html(site["domain"], b, an=True) for b in hang_cua(k)) if site is not VN else ""}
 {chot.loai(k) if site is VN else ""}
@@ -162,7 +162,7 @@ def _trang_loai(site, k, url, ten, gioi, faqs, tac, av, khung_tim):
 {keu(site["cta_title"], site["cta_text"])}</div>'''
 
     sch = [faq_ld_local(faqs)] + ([itemlist_ld(site["domain"], url, ms[:50])] if ms else [])
-    title = ("%s: giá tham khảo tháng %s, so sánh các hãng" if site is VN else "%s: chọn xe và giá tháng %s") % (ten, THANG)
+    title = ("%s: giá tháng %s, so sánh các hãng" if site is VN else "%s: chọn xe và giá tháng %s") % (ten, THANG)
     desc = "%s tháng %s: %s. Cách chọn, hỏi đáp về tuổi, bằng lái, biển số." % (ten, THANG, khoang(ms or tt))
     p = {"url": url, "title": title, "desc": desc, "body": body, "schemas": sch, "crumbs": [("Trang chủ", "/"), (ten, url)]}
     if not ms and not tt:
@@ -178,15 +178,15 @@ def trang_hang(k, b, ms):
     re_nhat = co_gia[0] if co_gia else None
     kg = khoang(ms)
     h1 = "%s %s: bảng giá tháng %s" % (ten_loai, b, THANG)
-    tom = ['%d mẫu %s %s đang có giá tham khảo tại Smile Motor.' % (len(ms), ten_loai.lower(), b), "Khoảng giá: %s." % kg]
+    tom = ['%d mẫu %s %s đang có giá tại Smile Motor.' % (len(ms), ten_loai.lower(), b), "Khoảng giá: %s." % kg]
     if re_nhat:
         tom.append("Mẫu giá thấp nhất: %s (%s)." % (re_nhat["name"], vnd(re_nhat["price"])))
     dien = k in ("may", "dap")
     faqs = [
         ("%s %s giá bao nhiêu?" % (ten_loai, b),
-         "Theo bảng giá tham khảo cập nhật %s, %s %s có giá %s. Giá chưa gồm lệ phí trước bạ, biển số và bảo hiểm; giá trong tháng có thể đổi theo khuyến mãi." % (NGAY_VN, ten_loai.lower(), b, kg)),
+         "Theo bảng giá cập nhật %s, %s %s có giá %s. Giá chưa gồm lệ phí trước bạ, biển số và bảo hiểm; giá trong tháng có thể đổi theo khuyến mãi." % (NGAY_VN, ten_loai.lower(), b, kg)),
         ("Mẫu %s %s nào rẻ nhất?" % (ten_loai.lower(), b),
-         ("%s, giá tham khảo %s." % (re_nhat["name"], vnd(re_nhat["price"]))) if re_nhat else "Các mẫu đang cập nhật giá, bạn chat hoặc gọi để có giá hôm nay."),
+         ("%s, giá %s." % (re_nhat["name"], vnd(re_nhat["price"]))) if re_nhat else "Các mẫu đang cập nhật giá, bạn chat hoặc gọi để có giá hôm nay."),
         ("Mua %s %s ở đâu?" % (ten_loai.lower(), b),
          "Smile Motor có 6 cửa hàng (TP.HCM, Đồng Tháp, Phan Thiết), mở cửa 8h–21h. Bạn chat trên trang hoặc gọi, nhắn Zalo 0888.266.233 để hỏi mẫu còn hàng và quà tặng."),
     ]
@@ -202,8 +202,8 @@ def trang_hang(k, b, ms):
 {bannerhang.html("phoxedien.vn", b)}
 {chot.hang(b, ten_loai, slug(b))}
 <div class="nhanh hd-in"><b>Tóm tắt nhanh</b><ul>{"".join("<li>%s</li>" % t for t in tom)}</ul></div>
-<section style="margin-top:20px"><div class="the bang hd-in"><div class="dong dau"><span>Mẫu {ten_loai.lower()} {b}</span><span>Giá tham khảo</span></div>{"".join(dong(m, k) for m in ms)}
-<div class="chu-thich">Giá tham khảo cập nhật {NGAY_VN}, giá bán tại Smile Motor, chưa gồm lệ phí trước bạ, biển số và bảo hiểm.</div></div></section>
+<section style="margin-top:20px"><div class="the bang hd-in"><div class="dong dau"><span>Mẫu {ten_loai.lower()} {b}</span><span>Giá</span></div>{"".join(dong(m, k) for m in ms)}
+<div class="chu-thich">Giá cập nhật {NGAY_VN}, giá bán tại Smile Motor, chưa gồm lệ phí trước bạ, biển số và bảo hiểm.</div></div></section>
 {anhxe.luoi(ms, "Ảnh %s %s" % (ten_loai.lower(), b), 12, vnd)}
 <section class="noi-dung hd-in"><h2>Chọn {ten_loai.lower()} {b} sao cho đúng</h2>
 <p>Các mẫu {b} trong bảng xếp từ giá thấp đến cao. {so_sanh}</p>
@@ -212,7 +212,7 @@ def trang_hang(k, b, ms):
 <section class="hd-in"><div class="tieude"><h2>Hỏi đáp {ten_loai.lower()} {b}</h2></div>{faq_html_local(faqs)}</section>
 {keu(VN["cta_title"], VN["cta_text"])}</div>'''
 
-    return {"url": url, "title": "%s %s: giá tham khảo tháng %s (%d mẫu)" % (ten_loai, b, THANG, len(ms)),
+    return {"url": url, "title": "%s %s: giá tháng %s (%d mẫu)" % (ten_loai, b, THANG, len(ms)),
             "desc": "Bảng giá %s %s tháng %s: %d mẫu, %s. Có cách chọn và hỏi đáp." % (ten_loai.lower(), b, THANG, len(ms), kg),
             "body": body, "schemas": [faq_ld_local(faqs), itemlist_ld("phoxedien.vn", url, ms)],
             "crumbs": [("Trang chủ", "/"), (ten_loai, goc), (b, url)],

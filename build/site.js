@@ -48,7 +48,7 @@
     khong_sac:{t:['Không có chỗ sạc thì xe 50cc tiện hơn ạ, đổ xăng vài phút là đi. Bé thích xe ga hay xe số?'],c:[['Xe ga','tam_tien'],['Xe số, wave, cub','tam_tien'],['Chưa biết, so giúp em','so_sanh']]},
     di_lam:{t:['Dạ, mỗi ngày mình đi khoảng bao nhiêu km, và có chỗ sạc ở nhà hoặc chỗ làm không ạ?'],c:[['Dưới 30 km, có chỗ sạc','co_sac'],['Đi xa hoặc không có chỗ sạc','khong_sac']]},
     tam_tien:{t:['Em ghi nhận rồi ạ. Giá từng mẫu có trong bảng giá trên trang, còn giá hôm nay kèm quà tặng và màu còn hàng thì bạn bên em báo chính xác hơn.'],ask:1},
-    gia:{t:['Giá trên trang là giá tham khảo tháng này ạ, chưa gồm trước bạ, biển số và bảo hiểm. Bạn đang xem mẫu nào, hoặc tầm tiền bao nhiêu để em báo giá lăn bánh?'],c:[['Dưới 15 triệu','tam_tien'],['15 đến 25 triệu','tam_tien'],['Trên 25 triệu','tam_tien'],['Có trả góp không?','gop']]},
+    gia:{t:['Giá trên trang là giá tháng này ạ, chưa gồm trước bạ, biển số và bảo hiểm. Bạn đang xem mẫu nào, hoặc tầm tiền bao nhiêu để em báo giá lăn bánh?'],c:[['Dưới 15 triệu','tam_tien'],['15 đến 25 triệu','tam_tien'],['Trên 25 triệu','tam_tien'],['Có trả góp không?','gop']]},
     gop:{t:['Nhiều mẫu mua trả góp được ạ. Số trả trước và giấy tờ tuỳ chương trình từng tháng, thường chỉ cần căn cước. Bạn để số, bên em tính đúng số tiền mỗi tháng theo mẫu bạn chọn nha.'],ask:1},
     bang_lai:{t:['Xe gắn máy (dưới 50cc hoặc xe điện đến 4 kW, tốc độ đến 50 km/h): đủ 16 tuổi là đi được, không cần bằng lái.','Khi đi đường mang đăng ký xe, bảo hiểm bắt buộc và căn cước; đã tích hợp VNeID thì xuất trình trên điện thoại được.'],c:[['Đăng ký biển số thế nào?','bien_so'],['Hỏi giá','gia']]},
     bien_so:{t:['Xe máy điện và xe 50cc đều phải đăng ký biển số ạ, làm ở công an xã, phường nơi mình cư trú. Mua ở Smile thì bên em hỗ trợ hướng dẫn hồ sơ. Xe đạp điện thì không cần biển số.'],c:[['Hỏi giá lăn bánh','gia']]},
@@ -254,7 +254,7 @@ document.addEventListener('click',function(e){var b=e.target.closest('.doc-tiep'
   function chay(dt){var T=window.PXDTraGop;if(!T)return;var gia=+o.dataset.gia,l=o.dataset.loai;
     var thu=[[30,12],[30,9],[40,12],[50,12]];
     for(var i=0;i<thu.length;i++){var tot=null;dt.forEach(function(x){var k=T.tinh(x,gia,l,thu[i][0],thu[i][1]);if(k.ok&&(!tot||k.thang<tot.thang))tot=k;});
-      if(tot){o.querySelector('[data-sp-tg-chu]').innerHTML='Trả góp từ <b>'+T.tien(tot.thang)+'</b>/tháng<small>Trả trước '+thu[i][0]+'%, góp '+thu[i][1]+' tháng, số tham khảo</small>';o.classList.add('co-so');return;}}}
+      if(tot){o.querySelector('[data-sp-tg-chu]').innerHTML='Trả góp từ <b>'+T.tien(tot.thang)+'</b>/tháng<small>Trả trước '+thu[i][0]+'%, góp '+thu[i][1]+' tháng, số dự kiến</small>';o.classList.add('co-so');return;}}}
   function cho(dt){if(window.PXDTraGop)chay(dt);else setTimeout(function(){cho(dt)},150);}
   fetch('/tra-gop-dt.json').then(function(r){return r.ok?r.json():null}).then(function(dt){if(dt)cho(dt)}).catch(function(){});
 })();

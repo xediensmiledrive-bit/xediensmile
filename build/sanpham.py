@@ -43,10 +43,10 @@ def ds_xe():
 
 def _gia(m):
     if m.get("price"):
-        return vnd(m["price"]), "Giá tham khảo tại Smile Motor, cập nhật %s, chưa gồm lệ phí trước bạ, biển số và bảo hiểm." % NGAY_VN, True
+        return vnd(m["price"]), "Giá tại Smile Motor, cập nhật %s, chưa gồm lệ phí trước bạ, biển số và bảo hiểm." % NGAY_VN, True
     tt = noidung.GIA_TT.get(m["name"].strip().lower())
     if tt:
-        return vnd(tt), "Giá thị trường tham khảo tháng %s, có thể khác tuỳ nơi bán." % THANG, True
+        return vnd(tt), "Giá thị trường tháng %s, có thể khác tuỳ nơi bán." % THANG, True
     return "Liên hệ", "Giá đang cập nhật. Gọi hoặc nhắn để có giá hôm nay.", False
 
 
@@ -65,13 +65,13 @@ def trang(site, k, m):
     gia, chu_gia, co_gia = _gia(m)
     vn = d == "phoxedien.vn"
     if vn:
-        h1, phu = ten, "Giá tham khảo tháng %s và thông số" % THANG
-        title = "%s giá bao nhiêu? Giá tham khảo tháng %s" % (ten, THANG)
-        desc = "%s giá tham khảo %s (cập nhật %s). Xem ảnh thật, thông số, mẫu cùng tầm giá và đặt xe tại Smile Motor." % (ten, gia, NGAY_VN)
+        h1, phu = ten, "Giá tháng %s và thông số" % THANG
+        title = "%s giá bao nhiêu? Giá tháng %s" % (ten, THANG)
+        desc = "%s giá %s (cập nhật %s). Xem ảnh thật, thông số, mẫu cùng tầm giá và đặt xe tại Smile Motor." % (ten, gia, NGAY_VN)
     else:
         h1, phu = ten, "Có hợp cho học sinh không? Giá và lưu ý"
         title = "%s cho học sinh: giá %s, có cần bằng lái?" % (ten, gia)
-        desc = "%s là %s của %s, giá tham khảo %s. Học sinh bao nhiêu tuổi đi được, cần giấy tờ gì, nuôi xe tốn bao nhiêu." % (ten, loai.lower(), hang or "hãng", gia)
+        desc = "%s là %s của %s, giá %s. Học sinh bao nhiêu tuổi đi được, cần giấy tờ gì, nuôi xe tốn bao nhiêu." % (ten, loai.lower(), hang or "hãng", gia)
     ts = [(nhan, m.get(key)) for key, nhan in THONG_SO if m.get(key)]
     th = TS_HANG.get(ten.strip().lower()) or {}
     co = {n for n, _ in ts}

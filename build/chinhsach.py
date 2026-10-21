@@ -2,7 +2,7 @@
 """Chính sách và thông tin công ty trên chân trang hai web (anh góp ý 20/10 23:32): đổi trả, bảo hành, bảo hành giá,
 bảo mật thông tin, cùng thông tin Công ty TNHH Xe Điện Smile. Nội dung máy nhà lấy từ xediensmile.com (web của Smile):
 PXD_KHO/chinh-sach/<slug>.md (dòng đầu "# Tiêu đề", sau đó đoạn văn, "## mục", "- ý") và PXD_KHO/chinh-sach/cong-ty.json
-{"ten", "dia_chi", "dien_thoai", "email", "giay_phep", "nguoi_dai_dien"}. Thiếu tệp nào thì phần đó không hiện."""
+{"ten", "ma_so_thue", "dia_chi", "dien_thoai", "email", "giay_phep", "nguoi_dai_dien"} (chân trang phải có tên công ty và mã số thuế, anh chốt 21/10). Thiếu tệp nào thì phần đó không hiện."""
 import html
 import json
 import os
@@ -71,7 +71,7 @@ def cong_ty_html():
     if not c.get("ten"):
         return ""
     o = ['<b class="ct-ten">%s</b>' % html.escape(c["ten"])]
-    for k, nhan in (("dia_chi", "Địa chỉ"), ("giay_phep", "Giấy phép"), ("nguoi_dai_dien", "Người đại diện"), ("dien_thoai", "Điện thoại"), ("email", "Email")):
+    for k, nhan in (("ma_so_thue", "Mã số thuế"), ("dia_chi", "Địa chỉ"), ("giay_phep", "Giấy phép"), ("nguoi_dai_dien", "Người đại diện"), ("dien_thoai", "Điện thoại"), ("email", "Email")):
         if c.get(k):
             v = html.escape(c[k])
             if k == "email":
