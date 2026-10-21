@@ -144,9 +144,9 @@ BANNER = {
         "hero2": "Đủ 16 tuổi được đi xe 50cc: cần giấy tờ gì, xe nào hợp với con",
         "mac_dinh": "/cam-nang/",
         "link": ["/hoc-sinh/chon-xe-cho-con-hoc-cap-3/", "/giay-to/16-tuoi-di-xe-50cc-can-giay-to-gi/", "/cam-nang/?muc=hoc-sinh", "/cam-nang/", "/sua-xe/xe-dien-khong-len-nguon/"],
-        "loai": {"/xe-ga-50cc-cho-hoc-sinh/": ("banner-xe-ga-50cc.webp", "Xe ga 50cc cho học sinh, giá từ 14.990.000đ"),
-                 "/xe-so-50cc-cho-hoc-sinh/": ("banner-xe-so-50cc.webp", "Xe số 50cc cho học sinh, giá từ 14.790.000đ"),
-                 "/xe-may-dien-cho-hoc-sinh/": ("banner-xe-may-dien.webp", "Xe máy điện cho học sinh, giá từ 10.990.000đ")}},
+        "loai": {"/xe-ga-50cc-cho-hoc-sinh/": ("banner-xe-ga-50cc.webp", "Xe ga 50cc cho tuổi 16, không cần bằng lái, giá từ 14.990.000đ"),
+                 "/xe-so-50cc-cho-hoc-sinh/": ("banner-xe-so-50cc.webp", "Xe số 50cc cho tuổi 16, không cần bằng lái, giá từ 14.790.000đ"),
+                 "/xe-may-dien-cho-hoc-sinh/": ("banner-xe-may-dien.webp", "Xe máy điện sạc tại nhà, giá từ 10.990.000đ")}},
 }
 _MOC_KEU = '<section class="hd-in"><div class="keu">'
 # Hero trang chủ (luồng banner 20/10 21:55, anh chốt): mỗi web banner riêng, banner hãng tối đa 2 slide, còn lại là banner mùa.
