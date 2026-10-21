@@ -876,3 +876,23 @@ footer .cua-hang h3{margin-bottom:12px}
 .tgp-keu .tgp-giay{font-size:13.5px;opacity:.95;margin:4px 0 0}
 .tgp-keu .tgp-giay a{color:#fff;font-weight:700}
 @media(min-width:760px){.tgp-form{padding:24px}.tgp-ds{grid-template-columns:1fr 1fr}}
+/* 21/10 9:35: ô trả góp trên trang xe, form để lại thông tin sau bảng trả góp */
+.sp-tg{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin:14px 0 4px;padding:12px 14px;border-radius:16px;background:var(--nen);border:1.5px dashed var(--c2)}
+.sp-tg-chu{font-size:14.5px;line-height:1.4}
+.sp-tg-chu b{font-size:20px;color:var(--c2d)}
+.sp-tg-chu small{display:block;font-size:12.5px;color:var(--phu)}
+.sp-tg-nut{min-height:42px;padding:0 16px}
+.tgp-lead{background:#fff;border:2px solid var(--c2);border-radius:20px;padding:18px 16px;margin:0 0 22px;display:grid;gap:12px;box-shadow:0 10px 26px rgba(242,107,29,.12)}
+.tgp-lead-dau{font-family:"Baloo 2",sans-serif;font-size:20px;color:var(--c1);line-height:1.25}
+.tgp-lead-tom{margin:0;font-size:14px;color:var(--phu)}
+.tgp-lead-tom:empty{display:none}
+.tgp-lead label{display:grid;gap:6px;font-weight:700;font-size:14.5px}
+.tgp-lead label small{font-weight:400;color:var(--phu)}
+.tgp-lead input,.tgp-lead textarea{font:inherit;font-size:16px;padding:12px 14px;border-radius:12px;border:1.5px solid var(--vien);background:var(--nen);color:var(--chu);width:100%}
+.tgp-lead input:focus,.tgp-lead textarea:focus{outline:none;border-color:var(--c2);background:#fff}
+.tgp-lead .btn{justify-self:start;min-height:48px;padding:0 26px}
+.tgp-lead-kq{margin:0;font-weight:700;font-size:14.5px}
+.tgp-lead-kq.ok{color:#2b8f1e}.tgp-lead-kq.loi{color:#c0392b}
+.tgp-lead-rieng{margin:0;font-size:12.5px;color:var(--phu)}
+.tgp-lead.xong label,.tgp-lead.xong .btn{display:none}
+@media(min-width:760px){.tgp-lead{padding:24px;grid-template-columns:1fr 1fr}.tgp-lead-dau,.tgp-lead-tom,.tgp-lead label:nth-of-type(3),.tgp-lead .btn,.tgp-lead-kq,.tgp-lead-rieng{grid-column:1/-1}}

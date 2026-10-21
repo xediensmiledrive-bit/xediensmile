@@ -707,6 +707,9 @@ def build(site):
     bannerhang.chep(d, base)
     if os.path.isdir(os.path.join(HERE, "banner", d)):
         shutil.copytree(os.path.join(HERE, "banner", d), os.path.join(base, "banner"))
+    if d == "phoxedien.vn":
+        import tragop
+        tragop.chep(base)
     os.makedirs(os.path.join(base, "api"))
     shutil.copy(os.path.join(HERE, "lien-he.php"), os.path.join(base, "api"))
     open(os.path.join(base, ".htaccess"), "w").write(HTACCESS)

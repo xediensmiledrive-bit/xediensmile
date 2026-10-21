@@ -248,3 +248,13 @@
   document.addEventListener('click',function(e){if(e.target.closest('.chip,.hx'))setTimeout(function(){ds.forEach(function(o){o.mo=0;lam(o);});},30);});
 })();
 document.addEventListener('click',function(e){var b=e.target.closest('.doc-tiep');if(b)b.closest('.chot').classList.add('mo');});
+
+/* Trang từng xe: ô "Trả góp từ ... /tháng" (anh chốt 21/10 9:35), cùng công thức trang Trả góp; tính không ra thì giữ chữ mời bấm */
+(function(){var o=document.querySelector('[data-sp-tg]');if(!o)return;
+  function chay(dt){var T=window.PXDTraGop;if(!T)return;var gia=+o.dataset.gia,l=o.dataset.loai;
+    var thu=[[30,12],[30,9],[40,12],[50,12]];
+    for(var i=0;i<thu.length;i++){var tot=null;dt.forEach(function(x){var k=T.tinh(x,gia,l,thu[i][0],thu[i][1]);if(k.ok&&(!tot||k.thang<tot.thang))tot=k;});
+      if(tot){o.querySelector('[data-sp-tg-chu]').innerHTML='Trả góp từ <b>'+T.tien(tot.thang)+'</b>/tháng<small>Trả trước '+thu[i][0]+'%, góp '+thu[i][1]+' tháng, số tham khảo</small>';o.classList.add('co-so');return;}}}
+  function cho(dt){if(window.PXDTraGop)chay(dt);else setTimeout(function(){cho(dt)},150);}
+  fetch('/tra-gop-dt.json').then(function(r){return r.ok?r.json():null}).then(function(dt){if(dt)cho(dt)}).catch(function(){});
+})();

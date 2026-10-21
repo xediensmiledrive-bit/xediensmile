@@ -7,6 +7,7 @@ bảng đối tác in trong form trang chủ, đo 21/10/2026): bảng số ở t
 import html
 import json
 import os
+import shutil
 
 import anhxe
 import mxh
@@ -32,6 +33,35 @@ def _loai(m):
     # như xds_loai_tra_gop() bên xediensmile.com: có chữ "đạp" là xe đạp điện, còn lại xe máy điện
     t = ((m.get("name") or "") + " " + (m.get("type") or "")).lower()
     return "dap" if "đạp" in t else "may"
+
+
+# Form để lại thông tin sau bảng tham khảo (anh chốt 21/10 9:35): gửi về /api/lien-he.php kèm xe, trả trước, kỳ hạn;
+# máy chủ ghi lại và chuyển tiếp cho chatbot2 để chia cho sale.
+LEAD_JS = r"""(function(){var f=document.querySelector('[data-tgp-lead]');if(!f)return;
+var $=function(s){return document.querySelector(s)},chon=function(n){var c=document.querySelector('[data-nhom="'+n+'"] .tgp-chip[aria-pressed="true"]');return c?c.dataset.v:''};
+function tom(){var t=($('[data-tgp-ten]')||{}).textContent||'',g=($('[data-tgp-gia]')||{}).textContent||'';
+ return {xe:t,gia:g,tra_truoc:chon('tra-truoc'),ky_han:chon('ky-han')}}
+function ve(){var x=tom();$('[data-tgp-tom]').textContent=x.xe?('Bạn đang xem: '+x.xe+' · '+x.gia+' · trả trước '+x.tra_truoc+'% · góp '+x.ky_han+' tháng'):''}
+document.addEventListener('click',function(e){if(e.target.closest('.tgp-chip'))setTimeout(ve,0)});
+var sel=$('[data-tgp-xe]');if(sel)sel.addEventListener('change',ve);setTimeout(ve,0);
+f.addEventListener('submit',function(e){e.preventDefault();var kq=$('[data-tgp-kq]'),b=f.querySelector('button');
+ var sdt=f.sdt.value.replace(/\D/g,'');if(!/^0[35789]\d{8}$/.test(sdt)){kq.className='tgp-lead-kq loi';kq.textContent='Bạn kiểm tra lại số điện thoại (10 số, bắt đầu bằng 0).';f.sdt.focus();return}
+ var x=tom();x.loai='tra-gop';x.ten=f.ten.value.trim();x.sdt=sdt;x.ghi_chu=f.ghi_chu.value.trim();x.web=(window.PXD||{}).web||location.hostname;x.trang=location.pathname+location.search;x.luc=new Date().toISOString();
+ b.disabled=true;kq.className='tgp-lead-kq';kq.textContent='Đang gửi...';
+ var hong=function(){b.disabled=false;kq.className='tgp-lead-kq loi';kq.textContent='Chưa gửi được. Bạn gọi hoặc nhắn Zalo __HOT__, nhân viên nghe máy ngay ạ.'};
+ fetch('/api/lien-he.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(x)}).then(function(r){if(!r.ok)return hong();
+  f.classList.add('xong');kq.className='tgp-lead-kq ok';kq.textContent='Đã nhận thông tin. Nhân viên Smile Motor sẽ gọi '+sdt.replace(/(\d{4})(\d{3})(\d{3})/,'$1.$2.$3')+' trong giờ làm việc 8h–21h.'}).catch(hong)});
+})();"""
+
+
+def du_lieu_dt():
+    """Bảng đối tác cho ô "Trả góp từ" trên trang từng xe (tải /tra-gop-dt.json)."""
+    return json.dumps(_doi_tac(), ensure_ascii=False)
+
+
+def chep(base):
+    shutil.copy(os.path.join(HERE, "tra-gop.js"), base)
+    open(os.path.join(base, "tra-gop-dt.json"), "w", encoding="utf-8").write(du_lieu_dt())
 
 
 def gan(vn):
@@ -80,8 +110,19 @@ def body(site):
 <p class="tgp-chan">Số tham khảo, số thật theo hồ sơ được duyệt của từng công ty tài chính. Mức lãi %/tháng hoặc %/năm ghi trên thẻ được tính trên số tiền vay ban đầu (lãi phẳng), nên lãi thực mỗi năm cao hơn con số ghi. Riêng Shinhan tính trên dư nợ giảm dần.</p>
 <script type="application/json" data-tgp-dl>{data}</script>
 </form>
+<form class="tgp-lead" data-tgp-lead novalidate>
+<b class="tgp-lead-dau">Để lại số, Smile Motor gọi tư vấn hồ sơ trả góp</b>
+<p class="tgp-lead-tom" data-tgp-tom></p>
+<label>Họ tên<input name="ten" autocomplete="name" maxlength="60" placeholder="Ví dụ: Nguyễn Văn An"></label>
+<label>Số điện thoại<input name="sdt" type="tel" inputmode="numeric" autocomplete="tel" maxlength="14" required placeholder="09xx xxx xxx"></label>
+<label>Cần hỏi thêm <small>(không bắt buộc)</small><textarea name="ghi_chu" maxlength="300" rows="2" placeholder="Màu xe, giấy tờ đang có, giờ tiện nghe máy..."></textarea></label>
+<button type="submit" class="btn btn-chinh">Gửi thông tin</button>
+<p class="tgp-lead-kq" data-tgp-kq aria-live="polite"></p>
+<p class="tgp-lead-rieng">Thông tin chỉ dùng để nhân viên Smile Motor gọi tư vấn trả góp cho bạn, không chia sẻ cho bên khác.</p>
+</form>
 <div class="tgp-keu"><b>Muốn làm hồ sơ hoặc hỏi số chính xác?</b><p>Gọi hoặc nhắn Zalo {site["hot"]}, nhân viên Smile Motor tính đúng theo giấy tờ của bạn và báo xe còn màu nào.</p>
 <a class="btn btn-chinh" href="tel:{so}">Gọi {site["hot"]}</a> <a class="btn tgp-zalo" href="https://zalo.me/{so}" target="_blank" rel="noopener nofollow">Nhắn Zalo</a>
 <p class="tgp-giay">Mang giấy tờ ra cửa hàng, nhân viên làm hồ sơ ngay tại chỗ; hồ sơ duyệt xong là nhận xe.{cs}</p></div>
 </div>
-<script>{js}</script>'''
+<script>{js}</script>
+<script>{LEAD_JS.replace("__HOT__", site["hot"])}</script>'''

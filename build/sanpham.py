@@ -109,6 +109,13 @@ def trang(site, k, m):
         sp["offers"] = {"@type": "Offer", "price": int(m["price"]), "priceCurrency": "VND", "availability": "https://schema.org/InStock",
                         "seller": {"@type": "Organization", "name": "Smile Motor"}}
 
+    tg = ""
+    if vn and m.get("price") and url:
+        import tragop
+        tg = ('<div class="sp-tg" data-sp-tg data-gia="%d" data-loai="%s"><span class="sp-tg-chu" data-sp-tg-chu>Xem số góp mỗi tháng theo 6 công ty tài chính</span>'
+              '<a class="btn btn-phu sp-tg-nut" href="/tra-gop/?xe=%s">Tính trả góp xe này ›</a></div>'
+              '<script src="/tra-gop.js" defer></script>' % (int(m["price"]), tragop._loai(m), url.strip("/").split("/")[-1]))
+
     def body(s):
         # ảnh chọn lúc dựng vì anhxe.WEB (khung theo từng web) chỉ đặt trong build(); schemas đọc sau body nên ảnh vẫn vào được
         muse = MUSE[d].get(ten.lower())  # bài Muse đọc trong build(), sau lúc dựng danh sách trang
@@ -123,6 +130,7 @@ def trang(site, k, m):
 <div class="sp-tt"><span class="hang-xe-nho">{html.escape(hang)}</span><h1>{html.escape(h1)}<span class="sp-phu">{phu}</span></h1>
 <div class="sp-gia{"" if co_gia else " lh"}">{gia}</div><p class="sp-chu">{chu_gia}</p>
 <div class="sp-nut">{nut}<a class="btn btn-phu" href="tel:{so}">Gọi {site["hot"]}</a><a class="btn btn-phu btn-zalo" href="https://zalo.me/{so}" target="_blank" rel="noopener nofollow">{mxh.icon("zalo")}Zalo</a></div>
+{tg}
 {mxh.tra_gop()}
 {('<table class="sp-ts">%s</table>' % bang_ts) if bang_ts else ""}</div></div>
 {chot.xe(ten) if vn else ""}
