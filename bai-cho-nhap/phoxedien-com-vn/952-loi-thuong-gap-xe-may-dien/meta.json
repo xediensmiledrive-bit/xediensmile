@@ -1,0 +1,31 @@
+{
+ "tieu_de": "7 lỗi thường gặp ở xe máy điện và cách tự kiểm tra tại nhà",
+ "tieu_de_seo": "Các lỗi thường gặp ở xe máy điện và cách tự kiểm | Phố Xe Điện",
+ "mo_ta_seo": "Xe máy điện không lên nguồn, vặn ga không chạy, sạc không vào, đi được ít, kêu lạ: 7 lỗi hay gặp, cách tự kiểm trong 5 phút và khi nào cần mang xe ra tiệm.",
+ "tra_loi_nhanh": "Lỗi hay gặp nhất ở xe máy điện là không lên nguồn, vặn ga không chạy, sạc không vào điện, quãng đường giảm, đèn báo lỗi, phanh kêu và xe kêu lạ khi chạy. Phần lớn có thể tự kiểm bằng cách xem cầu chì, giắc cắm pin, chân chống, công tắc phanh và bộ sạc trước khi mang xe ra tiệm.",
+ "tu_khoa_chinh": "các lỗi thường gặp ở xe máy điện",
+ "chuyen_muc": "cam-nang",
+ "slug": "loi-thuong-gap-xe-may-dien",
+ "tang": "MOFU",
+ "tac_gia": "Quốc Bảo",
+ "phut_doc": 7,
+ "ngay": "2026-10-21",
+ "faq": [
+  [
+   "Xe máy điện bật khóa không lên nguồn phải làm sao?",
+   "Kiểm tra pin đã cắm chặt giắc chưa, pin còn điện không, cầu chì có đứt không và khóa có bị kẹt không. Nếu vẫn không lên, đừng tự tháo bộ điều khiển mà nên mang xe ra tiệm."
+  ],
+  [
+   "Vì sao xe máy điện lên nguồn mà vặn ga không chạy?",
+   "Nguyên nhân thường gặp là chân chống bên chưa gạt lên, tay phanh còn bóp nhẹ hoặc công tắc phanh bị kẹt, xe đang ở chế độ đỗ (P). Kiểm tra lần lượt ba chỗ này là xử lý được phần lớn trường hợp."
+  ],
+  [
+   "Bao lâu nên mang xe máy điện đi bảo dưỡng?",
+   "Ngoài việc tự kiểm hằng tháng, nên mang xe đi bảo dưỡng định kỳ theo sổ bảo hành của hãng, thường vài tháng một lần, để kiểm tra phanh, lốp, giắc điện và pin."
+  ]
+ ],
+ "web": "phoxedien.com.vn",
+ "khung_bai": "A",
+ "so_chu": 1083,
+ "tu_khoa_phu": []
+}

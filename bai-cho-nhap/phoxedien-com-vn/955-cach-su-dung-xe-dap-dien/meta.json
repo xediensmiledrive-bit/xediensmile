@@ -1,0 +1,31 @@
+{
+ "tieu_de": "Cách sử dụng xe đạp điện cho người mới: từ bật khóa đến dừng xe",
+ "tieu_de_seo": "Cách sử dụng xe đạp điện cho người mới | Phố Xe Điện",
+ "mo_ta_seo": "Hướng dẫn dùng xe đạp điện cho học sinh mới tập: bật khóa, đọc đồng hồ pin, bật đèn, xi nhan, còi, vặn ga, phanh, đạp trợ lực và tắt xe đúng cách.",
+ "tra_loi_nhanh": "Để sử dụng xe đạp điện, bật khóa rồi xem mức pin trên đồng hồ, ngồi vững, vặn ga từ từ để xe chạy, bóp đều hai phanh khi muốn dừng. Đèn, xi nhan và còi nằm ở cụm nút trên tay lái. Khi dừng hẳn, tắt khóa và rút chìa.",
+ "tu_khoa_chinh": "cách sử dụng xe đạp điện",
+ "chuyen_muc": "cam-nang",
+ "slug": "cach-su-dung-xe-dap-dien",
+ "tang": "TOFU",
+ "tac_gia": "Quốc Bảo",
+ "phut_doc": 5,
+ "ngay": "2026-10-21",
+ "faq": [
+  [
+   "Cách bật đèn xe đạp điện như thế nào?",
+   "Bật khóa xe trước, sau đó gạt công tắc đèn ở cụm nút bên tay lái. Nhiều xe có hai nấc đèn cốt và đèn pha, buổi tối đi trong phố nên dùng đèn cốt."
+  ],
+  [
+   "Xe đạp điện vặn ga mà không chạy là do đâu?",
+   "Thường do tay phanh chưa thả hẳn (xe tự ngắt điện khi phanh), pin đã hết, hoặc chưa bật khóa. Thả hai tay phanh, kiểm tra pin rồi thử lại."
+  ],
+  [
+   "Có nên vừa đạp vừa vặn ga không?",
+   "Được. Đạp nhẹ khi khởi hành hoặc lên dốc giúp xe đỡ tốn điện, đi được xa hơn."
+  ]
+ ],
+ "web": "phoxedien.com.vn",
+ "khung_bai": "A",
+ "so_chu": 792,
+ "tu_khoa_phu": []
+}
