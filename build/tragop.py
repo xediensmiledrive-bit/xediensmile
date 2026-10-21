@@ -118,7 +118,7 @@ def body(site):
 <div class="tgp-o"><span class="tgp-nhan">3. Trả trước</span>{_chips("tra-truoc", [10, 20, 30, 40, 50], 30, "%")}<p class="tgp-tt" data-tgp-tt></p></div>
 <div class="tgp-o"><span class="tgp-nhan">4. Góp trong</span>{_chips("ky-han", [6, 9, 12, 18, 24], 12, " tháng")}</div>
 <div class="tgp-bang" data-tgp-bang aria-live="polite"></div>
-<p class="tgp-chan">Số góp dự kiến, số chính xác theo hồ sơ được duyệt của từng công ty tài chính. Mức lãi %/tháng hoặc %/năm ghi trên thẻ được tính trên số tiền vay ban đầu (lãi phẳng), nên lãi thực mỗi năm cao hơn con số ghi. Riêng Shinhan tính trên dư nợ giảm dần.</p>
+<p class="tgp-chan">Số góp dự kiến, số chính xác theo hồ sơ được duyệt của từng công ty tài chính. FE Credit, Shinhan và Home Credit tính lãi trên dư nợ giảm dần, nên tháng đầu góp nhiều nhất rồi giảm dần. HD Saison, AEON và Mirae tính lãi trên số tiền vay ban đầu (lãi phẳng), góp đều mỗi tháng, nên lãi thực mỗi năm cao hơn con số ghi.</p>
 <script type="application/json" data-tgp-dl>{data}</script>
 </form>
 <form class="tgp-lead" data-tgp-lead novalidate>
