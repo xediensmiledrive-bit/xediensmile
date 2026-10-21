@@ -1,0 +1,323 @@
+[
+ {
+  "ma": "fe-credit",
+  "ten": "FE Credit",
+  "kieu_tinh": "giam_dan_goc_deu",
+  "cho_anh_chot": false,
+  "ghi_chu": "",
+  "luat": [
+   {
+    "loai": [],
+    "gia_tu": 0,
+    "gia_den": 0,
+    "tra_truoc_min": 10,
+    "tra_truoc_max": 0,
+    "vay_min": 0,
+    "ky_han": [
+     6,
+     9,
+     12
+    ],
+    "lai": [
+     {
+      "ky_tu": 1,
+      "ky_den": 8,
+      "tt_tu": 0,
+      "tt_den": 101,
+      "lai": 0.99,
+      "don_vi": "thang",
+      "chu": "Lãi 0,99%/tháng"
+     },
+     {
+      "ky_tu": 9,
+      "ky_den": 12,
+      "tt_tu": 0,
+      "tt_den": 101,
+      "lai": 1.29,
+      "don_vi": "thang",
+      "chu": "Lãi 1,29%/tháng"
+     }
+    ],
+    "bao_hiem": {
+     "kieu": "phan_tram",
+     "muc": 6.7,
+     "tinh_lai": true,
+     "chu": "bắt buộc, cộng vào gốc"
+    }
+   }
+  ]
+ },
+ {
+  "ma": "shinhan",
+  "ten": "Shinhan",
+  "kieu_tinh": "giam_dan_goc_deu",
+  "cho_anh_chot": true,
+  "ghi_chu": "Tính trên dư nợ giảm dần",
+  "luat": [
+   {
+    "loai": [],
+    "gia_tu": 0,
+    "gia_den": 0,
+    "tra_truoc_min": 20,
+    "tra_truoc_max": 50,
+    "vay_min": 10000000,
+    "ky_han": [
+     12,
+     18
+    ],
+    "lai": [
+     {
+      "ky_tu": 12,
+      "ky_den": 18,
+      "tt_tu": 0,
+      "tt_den": 101,
+      "lai": 0.99,
+      "don_vi": "thang",
+      "chu": "Lãi 0,99%/tháng (21,3%/năm)"
+     }
+    ],
+    "bao_hiem": {
+     "kieu": "khong",
+     "muc": 0,
+     "tinh_lai": false,
+     "chu": ""
+    }
+   }
+  ]
+ },
+ {
+  "ma": "hd-saison",
+  "ten": "HD Saison",
+  "kieu_tinh": "phang",
+  "cho_anh_chot": true,
+  "ghi_chu": "Trả trước từ 10% tuỳ hồ sơ",
+  "luat": [
+   {
+    "loai": [],
+    "gia_tu": 0,
+    "gia_den": 0,
+    "tra_truoc_min": 10,
+    "tra_truoc_max": 0,
+    "vay_min": 0,
+    "ky_han": [
+     9,
+     12,
+     15,
+     18,
+     24
+    ],
+    "lai": [
+     {
+      "ky_tu": 9,
+      "ky_den": 24,
+      "tt_tu": 0,
+      "tt_den": 101,
+      "lai": 1.3,
+      "don_vi": "thang",
+      "chu": "Lãi 1,3%/tháng"
+     }
+    ],
+    "bao_hiem": {
+     "kieu": "phan_tram",
+     "muc": 1.8,
+     "tinh_lai": false,
+     "chu": "bắt buộc, thu riêng 1 lần"
+    }
+   }
+  ]
+ },
+ {
+  "ma": "aeon",
+  "ten": "AEON Finance",
+  "kieu_tinh": "phang",
+  "cho_anh_chot": false,
+  "ghi_chu": "",
+  "luat": [
+   {
+    "loai": [],
+    "gia_tu": 0,
+    "gia_den": 0,
+    "tra_truoc_min": 10,
+    "tra_truoc_max": 0,
+    "vay_min": 0,
+    "ky_han": [
+     6,
+     9,
+     12
+    ],
+    "lai": [
+     {
+      "ky_tu": 6,
+      "ky_den": 12,
+      "tt_tu": 0,
+      "tt_den": 101,
+      "lai": 1.83,
+      "don_vi": "thang",
+      "chu": "Lãi 1,83%/tháng"
+     }
+    ],
+    "bao_hiem": {
+     "kieu": "phan_tram",
+     "muc": 5.5,
+     "tinh_lai": true,
+     "chu": "bắt buộc, cộng vào gốc và tính lãi"
+    }
+   }
+  ]
+ },
+ {
+  "ma": "mirae-asset",
+  "ten": "Mirae Asset",
+  "kieu_tinh": "phang",
+  "cho_anh_chot": false,
+  "ghi_chu": "Dễ duyệt hồ sơ hơn",
+  "luat": [
+   {
+    "loai": [],
+    "gia_tu": 0,
+    "gia_den": 0,
+    "tra_truoc_min": 20,
+    "tra_truoc_max": 0,
+    "vay_min": 0,
+    "ky_han": [
+     6,
+     9,
+     12,
+     15,
+     18
+    ],
+    "lai": [
+     {
+      "ky_tu": 1,
+      "ky_den": 18,
+      "tt_tu": 0,
+      "tt_den": 40,
+      "lai": 49,
+      "don_vi": "nam",
+      "chu": "Lãi 49%/năm (≈4,08%/tháng)"
+     },
+     {
+      "ky_tu": 1,
+      "ky_den": 18,
+      "tt_tu": 40,
+      "tt_den": 101,
+      "lai": 42,
+      "don_vi": "nam",
+      "chu": "Lãi 42%/năm (≈3,5%/tháng)"
+     }
+    ],
+    "bao_hiem": {
+     "kieu": "phan_tram",
+     "muc": 6.6,
+     "tinh_lai": false,
+     "chu": "bắt buộc, thu riêng 1 lần"
+    }
+   }
+  ]
+ },
+ {
+  "ma": "home-credit",
+  "ten": "Home Credit",
+  "kieu_tinh": "giam_dan_goc_deu",
+  "cho_anh_chot": false,
+  "ghi_chu": "Bảo hiểm đổi theo kỳ hạn và khoản vay",
+  "luat": [
+   {
+    "loai": [],
+    "gia_tu": 0,
+    "gia_den": 0,
+    "vay_tu": 0,
+    "vay_den": 10000000,
+    "tra_truoc_min": 0,
+    "tra_truoc_max": 0,
+    "vay_min": 0,
+    "ky_han": [
+     4,
+     6,
+     9
+    ],
+    "lai": [
+     {
+      "ky_tu": 4,
+      "ky_den": 9,
+      "tt_tu": 0,
+      "tt_den": 101,
+      "lai": 1.09,
+      "don_vi": "thang",
+      "chu": "Lãi 1,09%/tháng"
+     }
+    ],
+    "bao_hiem": {
+     "kieu": "tien",
+     "muc": 700000,
+     "tinh_lai": false,
+     "chu": "bắt buộc, thu riêng, ước tính"
+    }
+   },
+   {
+    "loai": [],
+    "gia_tu": 0,
+    "gia_den": 0,
+    "vay_tu": 10000000,
+    "vay_den": 25000000,
+    "tra_truoc_min": 0,
+    "tra_truoc_max": 0,
+    "vay_min": 0,
+    "ky_han": [
+     4,
+     6,
+     9
+    ],
+    "lai": [
+     {
+      "ky_tu": 4,
+      "ky_den": 9,
+      "tt_tu": 0,
+      "tt_den": 101,
+      "lai": 0.79,
+      "don_vi": "thang",
+      "chu": "Lãi 0,79%/tháng"
+     }
+    ],
+    "bao_hiem": {
+     "kieu": "tien",
+     "muc": 1000000,
+     "tinh_lai": false,
+     "chu": "bắt buộc, thu riêng, ước tính"
+    }
+   },
+   {
+    "loai": [],
+    "gia_tu": 0,
+    "gia_den": 0,
+    "vay_tu": 25000000,
+    "vay_den": 0,
+    "tra_truoc_min": 10,
+    "tra_truoc_max": 0,
+    "vay_min": 0,
+    "ky_han": [
+     6,
+     9,
+     12
+    ],
+    "lai": [
+     {
+      "ky_tu": 6,
+      "ky_den": 12,
+      "tt_tu": 0,
+      "tt_den": 101,
+      "lai": 0.69,
+      "don_vi": "thang",
+      "chu": "Lãi 0,69%/tháng"
+     }
+    ],
+    "bao_hiem": {
+     "kieu": "tien",
+     "muc": 1500000,
+     "tinh_lai": false,
+     "chu": "bắt buộc, thu riêng, ước tính"
+    }
+   }
+  ]
+ }
+]

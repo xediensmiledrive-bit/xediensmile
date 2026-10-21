@@ -97,6 +97,8 @@ sanpham.gan(_vn, _comvn)   # trang riêng từng xe /xe/<slug>/
 trangchu.gan(_vn, _comvn)  # trang chủ kiểu web bán xe
 chinhsach.gan(_vn, _comvn)  # trang chính sách lấy từ xediensmile.com (PXD_KHO/chinh-sach)
 trangphu.gan(_vn, _comvn, lambda s: stores_html(s), lambda s: (s['hot'].replace('.', ''), s['hot']))  # Tin tức, Liên hệ
+import tragop  # noqa: E402
+tragop.gan(_vn)  # trang Trả góp /tra-gop/ chỉ phoxedien.vn (21/10), số như máy tính xediensmile.com
 
 # Banner chốt kiểu A (luồng Banner Phố Xe Điện, 20/10): tệp ở build/banner/<domain>/, alt theo HUONG-DAN-GAN.md
 BANNER = {

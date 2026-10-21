@@ -831,3 +831,48 @@ footer .cua-hang h3{margin-bottom:12px}
   .ch-luoi>ul,.ch-luoi>.xem-gon{grid-column:1}
   .ch-map{grid-column:2;grid-row:1/span 2}
 }
+
+/* Trang Trả góp phoxedien.vn (21/10/2026): màu theo biến web (c1 xanh lá, c2 cam), không dùng màu xediensmile */
+.tgp-form{background:#fff;border:1px solid var(--vien);border-radius:20px;padding:18px 16px;margin:6px 0 22px;box-shadow:0 10px 26px rgba(31,42,48,.06)}
+.tgp-o{margin:0 0 16px}
+.tgp-nhan{display:block;font-family:"Baloo 2",sans-serif;font-weight:800;font-size:17px;color:var(--c1);margin:0 0 8px}
+.tgp-chips{display:flex;flex-wrap:wrap;gap:8px}
+.tgp-chip{min-height:44px;padding:0 14px;border-radius:12px;border:1.5px solid var(--vien);background:var(--nen);color:var(--chu);font:inherit;font-weight:700;font-size:15px;cursor:pointer}
+.tgp-chip small{font-weight:600;color:var(--phu);font-size:12px}
+.tgp-chip[aria-pressed="true"]{background:var(--btn);border-color:var(--btn);color:#fff;box-shadow:0 6px 14px var(--bong)}
+.tgp-chip[aria-pressed="true"] small{color:#ffe3d1}
+#tgp-xe{width:100%;min-height:48px;padding:0 12px;border-radius:12px;border:1.5px solid var(--vien);background:#fff;font:inherit;font-size:15px;color:var(--chu)}
+.tgp-xe{display:flex;gap:12px;align-items:center;margin-top:10px;padding:10px;border-radius:14px;background:var(--nen2)}
+.tgp-anh{flex:none;width:72px;height:72px;border-radius:12px;background:#fff;overflow:hidden;display:grid;place-items:center}
+.tgp-anh:empty{display:none}
+.tgp-anh img{width:100%;height:100%;object-fit:contain}
+.tgp-xe-nd{display:flex;flex-direction:column;gap:2px;min-width:0}
+.tgp-xe-nd b{font-size:15px;line-height:1.35}
+.tgp-gia{font-family:"Baloo 2",sans-serif;font-weight:800;font-size:20px;color:var(--gia)}
+.tgp-xe-nd a{font-size:14px;font-weight:700;color:var(--c2d)}
+.tgp-tt{margin:8px 0 0;font-size:14px;color:var(--phu)}
+.tgp-ds{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.tgp-dong{border:1.5px solid var(--vien);border-radius:16px;padding:12px 14px;background:#fff}
+.tgp-dong:first-child{border-color:var(--c1);box-shadow:0 6px 16px rgba(58,165,42,.12)}
+.tgp-dong.mo{opacity:.55;border-style:dashed;box-shadow:none}
+.tgp-dau{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.tgp-logo{display:flex;align-items:center;height:32px;max-width:130px}
+.tgp-logo img{max-height:32px;max-width:130px;width:auto;object-fit:contain}
+.tgp-logo.chu{font-weight:800;color:var(--chu)}
+.tgp-gop{text-align:right;white-space:nowrap}
+.tgp-gop b{font-family:"Baloo 2",sans-serif;font-size:22px;font-weight:800;color:var(--c2d)}
+.tgp-gop small{display:block;font-size:12px;color:var(--phu);margin-top:-4px}
+.tgp-ly-do{font-size:13px;font-weight:700;color:var(--phu)}
+.tgp-ct{display:flex;flex-direction:column;gap:2px;margin-top:8px;font-size:13.5px;color:var(--phu);line-height:1.45}
+.tgp-ghi{color:var(--chu)}
+.tgp-cho{color:var(--c2d);font-weight:600}
+.tgp-chan{margin:14px 0 0;font-size:12.5px;color:var(--phu);line-height:1.5}
+.tgp-keu{border-radius:20px;padding:20px 18px;margin:0 0 26px;color:#fff;background:var(--keu)}
+.tgp-keu b{font-family:"Baloo 2",sans-serif;font-size:20px}
+.tgp-keu p{margin:6px 0 12px}
+.tgp-keu .btn{margin:0 6px 8px 0}
+.tgp-keu .btn-chinh{background:#fff;color:var(--c2d);box-shadow:none}
+.tgp-zalo{background:#0068ff;color:#fff}
+.tgp-keu .tgp-giay{font-size:13.5px;opacity:.95;margin:4px 0 0}
+.tgp-keu .tgp-giay a{color:#fff;font-weight:700}
+@media(min-width:760px){.tgp-form{padding:24px}.tgp-ds{grid-template-columns:1fr 1fr}}

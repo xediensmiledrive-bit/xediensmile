@@ -219,10 +219,10 @@ VN = {
              "nen": "#f5fdee", "nen2": "#fff6ef", "hero": "linear-gradient(140deg,#3aa52a 0%,#2b8f1e 55%,#2f3a40 100%)",
              "nhan-hero": "#ffb27d", "btn": "#f26b1d", "bong": "rgba(242,107,29,.35)",
              "keu": "linear-gradient(135deg,#f26b1d,#c94d0b)", "chan": "#2f3a40", "gia": "#d4401a"},
-    # thanh menu đầu trang (anh chốt 20/10 23:33): Trang chủ, các loại xe, Tin tức, Liên hệ
-    "nav": [("Trang chủ", "/"), ("Xe đạp điện", "/xe-dap-dien/"), ("Xe máy điện", "/xe-may-dien/"), ("Xe ga 50cc", "/xe-ga-50cc/"),
+    # thanh menu đầu trang (anh chốt 20/10 23:33): Trang chủ, các loại xe, Tin tức, Liên hệ · 21/10 sáng: nút Trả góp thay Trang chủ (logo vẫn về trang chủ)
+    "nav": [("Trả góp", "/tra-gop/"), ("Xe đạp điện", "/xe-dap-dien/"), ("Xe máy điện", "/xe-may-dien/"), ("Xe ga 50cc", "/xe-ga-50cc/"),
             ("Xe số 50cc", "/xe-so-50cc/"), ("Tin tức", "/tin-tuc/"), ("Liên hệ", "/lien-he/")],
-    "menu": [("Trang chủ", "/"), ("Xe đạp điện", "/xe-dap-dien/"), ("Xe máy điện", "/xe-may-dien/"), ("Xe ga 50cc", "/xe-ga-50cc/"),
+    "menu": [("Trả góp", "/tra-gop/"), ("Xe đạp điện", "/xe-dap-dien/"), ("Xe máy điện", "/xe-may-dien/"), ("Xe ga 50cc", "/xe-ga-50cc/"),
              ("Xe số 50cc", "/xe-so-50cc/"), ("Xe wave 50cc", "/xe-wave-50cc/"), ("Xe điện 3 bánh", "/xe-dien-3-banh/"),
              ("Bảng giá xe điện", "/bang-gia-xe-dien/"), ("Bảng giá xe 50cc", "/bang-gia-xe-50cc/"), ("Tin tức", "/tin-tuc/"),
              ("So sánh và đánh giá", "/so-sanh/"), ("Liên hệ", "/lien-he/"), ("Giới thiệu", "/gioi-thieu/")],
