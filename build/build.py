@@ -140,15 +140,12 @@ HERO = {
         {"ten": "20-11", "mua": ("10-13", "11-20"), "xe_chinh": ("Type 3 Pro", "Detech"), "alt": "Ngày Nhà giáo 20/11: Espero Type 3 Pro giá tham khảo 16.590.000đ"},
     ],
     "phoxedien.com.vn": [
-        # luồng banner 21/10 0:56: slide một xe, cả xe hiện đủ trên điện thoại
-        {"ten": "hang-1", "xe_chinh": ("Weezee M3", "Detech"), "alt": "Espero Weezee M3"},
-        {"mt": "banner-hero-may-tinh-4.webp", "dt": "banner-hero-dien-thoai-4.webp", "mua": ("10-13", "10-21"),
-         "link": "/cam-nang/", "alt": "Mừng ngày Phụ nữ Việt Nam 20/10: cảm ơn mẹ, cảm ơn cô"},
-        {"ten": "halloween", "mua": ("10-13", "10-31"), "link": "/hoc-sinh/", "alt": "Halloween: đi chơi tối, về nhà an toàn"},
-        {"ten": "hang-2", "xe_chinh": ("Momo", "Osakar"), "alt": "Osakar Momo"},
-        {"ten": "11-11", "mua": ("10-13", "11-11"), "link": "/hoc-sinh/chon-xe-cho-con-hoc-cap-3/",
-         "alt": "Con tự đi học, bố mẹ yên tâm: chọn xe 50cc hay xe điện cho học sinh"},
-        {"ten": "20-11", "mua": ("10-13", "11-20"), "link": "/hoc-sinh/", "alt": "Cảm ơn thầy cô đã dạy con"},
+        # luồng banner 21/10 10:47 (anh duyệt "Anh duyệt 2 bộ hero mới"): 5 tấm, mỗi tấm một xe, bấm mở trang xe
+        {"ten": "hang-1", "xe_chinh": ("Cup 83", "Detech"), "alt": "Espero Cup 83 Retro X, xe số 50cc, giá tham khảo 18.500.000đ"},
+        {"ten": "halloween", "mua": ("10-13", "10-31"), "xe_chinh": ("50C3He", "Detech"), "alt": "Halloween: Espero 50C3He giá tham khảo 14.790.000đ"},
+        {"ten": "hang-2", "xe_chinh": ("Diamond Plus", "Detech"), "alt": "50VS Diamond Plus, xe ga 50cc, giá tham khảo 22.190.000đ"},
+        {"ten": "11-11", "mua": ("10-13", "11-11"), "xe_chinh": ("Weezee Plus 3", "Detech"), "alt": "11/11: Espero Weezee Plus 3, xe máy điện"},
+        {"ten": "20-11", "mua": ("10-13", "11-20"), "xe_chinh": ("50C2a-2", "Detech"), "alt": "Ngày Nhà giáo 20/11: Espero 50C2a-2 giá tham khảo 15.000.000đ"},
     ],
 }
 
