@@ -896,3 +896,16 @@ footer .cua-hang h3{margin-bottom:12px}
 .tgp-lead-rieng{margin:0;font-size:12.5px;color:var(--phu)}
 .tgp-lead.xong label,.tgp-lead.xong .btn{display:none}
 @media(min-width:760px){.tgp-lead{padding:24px;grid-template-columns:1fr 1fr}.tgp-lead-dau,.tgp-lead-tom,.tgp-lead label:nth-of-type(3),.tgp-lead .btn,.tgp-lead-kq,.tgp-lead-rieng{grid-column:1/-1}}
+
+/* 21/10 9:45: bảng trả góp gọn: logo | số góp/tháng | Chi tiết */
+.tgp-ds{gap:8px}
+.tgp-dong{padding:10px 12px;border-radius:14px}
+.tgp-dau{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:10px}
+.tgp-logo{height:28px}.tgp-logo img{max-height:28px;max-width:110px}
+.tgp-gop b{font-size:20px}
+.tgp-gop small{font-size:11.5px}
+.tgp-mo-ct{font:inherit;font-size:12.5px;font-weight:700;color:var(--c2d);background:var(--nen);border:1px solid var(--vien);border-radius:999px;padding:6px 10px;cursor:pointer;white-space:nowrap}
+.tgp-mo-ct[aria-expanded="true"]{background:#fff;border-color:var(--c2)}
+.tgp-ct{margin-top:8px;padding-top:8px;border-top:1px dashed var(--vien)}
+.tgp-ct[hidden]{display:none}
+.tgp-dong.mo .tgp-gop{grid-column:auto}

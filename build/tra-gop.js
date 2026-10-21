@@ -92,6 +92,14 @@
     if (!kq.ok && kq.ly_do) ct.appendChild(e('span', 'tgp-ghi', kq.ly_do));
     if (dt.ghi_chu && (kq.ok || !kq.ly_do)) ct.appendChild(e('span', 'tgp-ghi', dt.ghi_chu));
     if (dt.cho_anh_chot) ct.appendChild(e('span', 'tgp-cho', 'Số tham khảo, chờ xác nhận'));
+    // 21/10 9:45 anh chốt: mỗi công ty chỉ hiện logo + số góp mỗi tháng; chi tiết ẩn, bấm "Chi tiết" mới mở
+    ct.hidden = true;
+    if (ct.childNodes.length) {
+      var nut = e('button', 'tgp-mo-ct', 'Chi tiết');
+      nut.type = 'button'; nut.setAttribute('aria-expanded', 'false');
+      nut.addEventListener('click', function () { var mo = ct.hidden; ct.hidden = !mo; nut.setAttribute('aria-expanded', mo ? 'true' : 'false'); nut.textContent = mo ? 'Thu gọn' : 'Chi tiết'; });
+      dau.appendChild(nut);
+    }
     li.appendChild(ct);
     return li;
   }
