@@ -20,6 +20,7 @@ import sanpham  # noqa: E402
 import trangchu
 import danhgia
 import tiktok
+import logo_dong
 import mxh
 import chinhsach
 import trangphu
@@ -466,6 +467,11 @@ def logo_html(site, ten, dau):
     if not co_logo(site):
         return ('<a class="logo" href="/" aria-label="%s - trang chủ">%s<span><b>%s</b><small>%s</small></span></a>' % (site["sitename"], site["icon"], ten, site["tagline"])
                 if dau else '<a class="logo" href="/">%s<span><b>%s</b><small>%s</small></span></a>' % (site["icon"], ten, site["tagline"]))
+    if dau and site["domain"] in ("phoxedien.com.vn", "phoxedien.vn"):  # đầu trang: logo có hiệu ứng sạc đầy pin, chạy 1 lần
+        toi = site["domain"] == "phoxedien.com.vn"
+        return ('<a class="logo logo-anh dong%s" href="/"><img class="ld-chay" src="/logo-dong.svg" alt="%s" height="52">'
+                '<img class="ld-tinh" src="/%s" alt="" height="52"></a>') % (
+            " toi" if toi else "", html.escape(site["sitename"]), "logo-nen-toi.svg" if toi else "logo.svg")
     if os.path.isfile(os.path.join(HERE, "logo", site["domain"], "logo-nen-toi.svg")):  # đầu trang, chân trang nền tối (M5 .com.vn)
         return '<a class="logo logo-anh toi" href="/"><img src="/logo-nen-toi.svg" alt="%s" height="52"></a>' % html.escape(site["sitename"])
     return '<a class="logo logo-anh%s" href="/"><img src="/logo.svg" alt="%s" height="52"></a>' % ("" if dau else " chan", html.escape(site["sitename"]))
@@ -595,6 +601,7 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>try{{if(sessionStorage.pxdLogo)document.documentElement.classList.add("logo-xong");sessionStorage.pxdLogo=1}}catch(e){{}}</script>
 <title>{html.escape(title)}</title>
 <meta name="description" content="{html.escape(desc)}">
 <meta name="robots" content="{robots}">
@@ -739,6 +746,7 @@ def build(site):
     if co_logo(site):
         for fn in os.listdir(os.path.join(HERE, "logo", d)):
             shutil.copy(os.path.join(HERE, "logo", d, fn), base)
+        logo_dong.ghi(base, d)
         open(os.path.join(base, "manifest.webmanifest"), "w", encoding="utf-8").write(json.dumps({
             "name": site["sitename"], "short_name": "Phố Xe Điện", "start_url": "/", "display": "browser", "theme_color": site["theme"],
             "background_color": "#ffffff", "icons": [{"src": "/icon-192.png", "sizes": "192x192", "type": "image/png"},

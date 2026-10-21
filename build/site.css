@@ -966,3 +966,8 @@ footer .cua-hang h3{margin-bottom:12px}
 .tv-lead{margin:14px 0 22px}
 /* Nút ba gạch ở góc TRÁI trên điện thoại, logo đứng ngay cạnh (anh chốt 21/10 13:41) */
 @media(max-width:1099px){.top .wrap>.nut-menu{flex:none;margin-right:10px}.top .wrap>.nut-menu+*{margin-right:auto}}
+/* logo đầu trang tự chạy hiệu ứng sạc đầy pin, bỏ nhịp và vệt sáng lặp */
+.logo-anh.dong img{animation:none}.logo-anh.dong:after{display:none}
+/* hiệu ứng chỉ chạy ở trang đầu tiên khách mở, các trang sau hiện logo đứng yên */
+.logo-anh.dong .ld-tinh,html.logo-xong .logo-anh.dong .ld-chay{display:none}
+html.logo-xong .logo-anh.dong .ld-tinh{display:block}
