@@ -59,7 +59,20 @@ _LUOI = {"/bang-gia-xe-dien/": (["may", "dap", "ba"], "Ảnh xe điện thật")
          "/xe-ga-50cc-cho-hoc-sinh/": (["ga"], "Mẫu xe ga 50cc, ảnh thật"), "/xe-so-50cc-cho-hoc-sinh/": (["so"], "Mẫu xe số 50cc, ảnh thật"),
          "/xe-may-dien-cho-hoc-sinh/": (["may"], "Mẫu xe máy điện, ảnh thật"),
          "/xe-dap-dien/": (["dap"], "Mẫu xe đạp điện, ảnh thật"), "/xe-wave-50cc/": (["wave"], "Mẫu xe wave 50cc, ảnh thật"),
-         "/xe-dien-3-banh/": (["ba"], "Mẫu xe điện 3 bánh, ảnh thật")}
+         "/xe-dien-3-banh/": (["ba"], "Mẫu xe điện 3 bánh, ảnh thật"), "/xe-dap-dien-cho-hoc-sinh/": (["dap"], "Mẫu xe đạp điện, ảnh thật")}
+
+
+def _hop_so(keys):
+    """Ô để lại số ngay dưới lưới xe: mục tiêu trang là khách để lại tên, số cho sale gọi (anh nhắc 21/10 11:08)."""
+    ten = noidung.NHOM[keys[0]][0].lower()
+    return ('<form class="tgp-lead tv-lead" data-tv-lead data-xe="%s" novalidate>'
+            '<b class="tgp-lead-dau">Chưa chọn được mẫu %s ưng ý? Để lại số, Smile gọi tư vấn</b>'
+            '<p class="tgp-lead-tom">Nhân viên gợi ý 2, 3 mẫu hợp chiều cao, quãng đường và tầm tiền của nhà mình, báo giá hôm nay và cách trả góp.</p>'
+            '<label>Họ tên<input name="ten" autocomplete="name" maxlength="60" placeholder="Ví dụ: Nguyễn Văn An"></label>'
+            '<label>Số điện thoại<input name="sdt" type="tel" inputmode="numeric" autocomplete="tel" maxlength="14" required placeholder="09xx xxx xxx"></label>'
+            '<button class="btn btn-chinh" type="submit">Nhờ Smile gọi tư vấn</button>'
+            '<p class="tgp-lead-kq" data-tv-kq aria-live="polite"></p>'
+            '<p class="tgp-lead-rieng">Thông tin chỉ dùng để nhân viên Smile Motor gọi tư vấn cho bạn, không chia sẻ cho bên khác.</p></form>') % (html.escape(noidung.NHOM[keys[0]][0], quote=True), ten)
 
 
 def _co_luoi(f, keys, tde):
@@ -84,6 +97,7 @@ def _co_luoi(f, keys, tde):
         l = anhxe.luoi(xen, tde, 12, noidung.vnd, lop="dau")
         if not l:
             return b
+        l += _hop_so(keys)
         m_chot = re.search(r'<section class="chot hd-in">.*?</section>', b, re.S)
         if m_chot:
             return b[:m_chot.end()] + l + b[m_chot.end():]

@@ -35,7 +35,7 @@ $khoa = '/home/smilemot/social-noi-web.php';  // định nghĩa SOCIAL_KHOA_WEB,
 if (is_readable($khoa)) { require_once $khoa; }
 if (defined('SOCIAL_KHOA_WEB') && SOCIAL_KHOA_WEB !== '' && function_exists('curl_init')) {
     $ten_web = ['phoxedien.vn' => 'Phố Xe Điện (phoxedien.vn)', 'phoxedien.com.vn' => 'Phố Xe Điện (phoxedien.com.vn)'][$web] ?? ($web ?: 'web');
-    $ghi = ['Khách để lại số trên ' . $ten_web . ($loai === 'tra-gop' ? ', form trả góp' : ', khung chat')];
+    $ghi = ['Khách để lại số trên ' . $ten_web . ($loai === 'tra-gop' ? ', form trả góp' : ($loai === 'tu-van' ? ', form nhờ gọi tư vấn' : ', khung chat'))];
     if ($k['xe'] !== '') { $ghi[] = 'Xe: ' . $k['xe'] . ($k['gia'] !== '' ? ' · ' . $k['gia'] : ''); }
     if ($k['tra_truoc'] !== '' || $k['ky_han'] !== '') { $ghi[] = 'Trả trước ' . $k['tra_truoc'] . '% · góp ' . $k['ky_han'] . ' tháng'; }
     if ($k['ghi_chu'] !== '') { $ghi[] = 'Khách ghi: ' . $k['ghi_chu']; }

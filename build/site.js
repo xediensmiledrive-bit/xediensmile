@@ -267,3 +267,13 @@ document.addEventListener('click',function(e){var b=e.target.closest('.doc-tiep'
   cap.slice(1).forEach(function(c){var b=document.createElement('button');b.type='button';b.textContent=c.querySelector('.hc-hoi').textContent;
     b.onclick=function(){b.remove();k.appendChild(c);hien(c,true);setTimeout(function(){c.scrollIntoView({behavior:'smooth',block:'nearest'})},50)};nut.appendChild(b)});
 })();
+/* Ô để lại số dưới lưới xe trang loại xe (21/10): gửi về /api/lien-he.php, máy chủ chuyển sang app social chia cho sale */
+(function(){document.querySelectorAll('[data-tv-lead]').forEach(function(f){
+ var kq=f.querySelector('[data-tv-kq]'),b=f.querySelector('button'),P=window.PXD||{};
+ f.addEventListener('submit',function(e){e.preventDefault();
+  var sdt=f.sdt.value.replace(/\D/g,'');if(!/^0[35789]\d{8}$/.test(sdt)){kq.className='tgp-lead-kq loi';kq.textContent='Bạn kiểm tra lại số điện thoại (10 số, bắt đầu bằng 0).';f.sdt.focus();return}
+  b.disabled=true;kq.className='tgp-lead-kq';kq.textContent='Đang gửi...';
+  var hong=function(){b.disabled=false;kq.className='tgp-lead-kq loi';kq.textContent='Chưa gửi được. Bạn gọi hoặc nhắn Zalo '+(P.hot||'')+', nhân viên nghe máy ngay ạ.'};
+  fetch('/api/lien-he.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sdt:sdt,ten:f.ten.value,xe:'Quan tâm '+(f.getAttribute('data-xe')||''),loai:'tu-van',web:P.web,trang:location.pathname,luc:new Date().toISOString()})})
+  .then(function(r){if(!r.ok)throw 0;f.classList.add('xong');kq.className='tgp-lead-kq ok';kq.textContent='Đã nhận thông tin. Nhân viên Smile Motor sẽ gọi '+sdt.replace(/(\d{4})(\d{3})(\d{3})/,'$1.$2.$3')+' trong giờ làm việc 8h–21h.'}).catch(hong)});
+});})();
