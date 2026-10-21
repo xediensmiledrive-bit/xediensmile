@@ -51,7 +51,7 @@ def html_muc(site):
     for v in d["video"]:
         mo = html.escape((v.get("mo_ta") or "").strip()[:90], quote=True)
         a = _anh(v)
-        bia = ('<img src="/tiktok/%s" alt="%s" width="270" height="480" loading="lazy">' % (a, mo or "Clip review xe trên TikTok")) if a else LOGO
+        bia = ('<img src="/tiktok/%s" alt="%s" width="270" height="480" loading="lazy">' % (a, mo or "Phim ngắn Xe Điện Smile trên TikTok")) if a else LOGO
         o.append('<a class="tt-o" href="https://www.tiktok.com/%s/video/%s" target="_blank" rel="noopener nofollow" data-tt="%s" aria-label="Xem clip trên TikTok">%s'
                  '<span class="tt-chu">%s</span></a>' % (html.escape(d.get("tai_khoan") or "@", quote=True), v["id"], v["id"], bia, mo))
     kenh = _https(d.get("link"))
@@ -59,7 +59,7 @@ def html_muc(site):
     nut = "".join([
         ('<a class="tt-nut" href="%s" target="_blank" rel="noopener nofollow">%s Kênh TikTok %s</a>' % (html.escape(kenh, quote=True), LOGO, html.escape(d.get("tai_khoan") or ""))) if kenh else "",
         ('<a class="tt-nut tt-web" href="%s" target="_blank" rel="noopener">Web %s ›</a>' % (html.escape(web, quote=True), html.escape(d.get("web_ten") or "Smile Motor"))) if web else ""])
-    return ('<section class="tiktok"><div class="tieude"><h2>Clip review thật trên TikTok</h2></div>'
+    return ('<section class="tiktok"><div class="tieude"><h2>Phim ngắn Xe Điện Smile trên TikTok</h2></div>'
             '<div class="tt-dai"><div class="tt-chay">%s<div class="tt-lap" aria-hidden="true">%s</div></div></div><div class="tt-nuts">%s</div></section>'
             % ("".join(o), "".join(o).replace('data-tt=', 'tabindex="-1" data-tt='), nut))
 
