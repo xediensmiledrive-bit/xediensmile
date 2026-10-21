@@ -84,6 +84,18 @@ def _slug_tac(site, ten):
     return next(iter(site["authors"]))
 
 
+def _chua_toi(hen):
+    """hen_dang dạng "YYYY-MM-DD HH:MM" giờ Việt Nam; sai dạng thì coi như không hẹn."""
+    if not hen:
+        return False
+    from datetime import datetime, timedelta, timezone
+    try:
+        luc = datetime.strptime(str(hen).strip()[:16], "%Y-%m-%d %H:%M").replace(tzinfo=timezone(timedelta(hours=7)))
+    except ValueError:
+        return False
+    return datetime.now(timezone.utc) < luc
+
+
 def doc_bai(site):
     """Trả về danh sách bài Muse ĐẠT của web, mới nhất trước."""
     g = goc()
@@ -103,6 +115,8 @@ def doc_bai(site):
             bai = open(fb, encoding="utf-8").read()
         except Exception as e:  # bài hỏng thì bỏ qua, không chặn cả web
             print("  bỏ qua", ten, e)
+            continue
+        if _chua_toi(m.get("hen_dang")):  # bài hẹn giờ (vd bảng giá tháng 11 lên 0h 1/11): chưa tới giờ thì chưa dựng
             continue
         slug = re.sub(r"[^a-z0-9-]", "", (m.get("slug") or ten.split("-", 1)[-1]).lower()) or ten
         cat_name, cat_url = _muc(site, m)
