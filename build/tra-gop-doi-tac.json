@@ -90,13 +90,13 @@
   "ten": "HD Saison",
   "kieu_tinh": "phang",
   "cho_anh_chot": true,
-  "ghi_chu": "Trả trước từ 10% tuỳ hồ sơ",
+  "ghi_chu": "Trả trước từ 20%",
   "luat": [
    {
     "loai": [],
     "gia_tu": 0,
     "gia_den": 0,
-    "tra_truoc_min": 10,
+    "tra_truoc_min": 20,
     "tra_truoc_max": 0,
     "vay_min": 0,
     "ky_han": [
@@ -134,7 +134,41 @@
   "ghi_chu": "",
   "luat": [
    {
-    "loai": [],
+    "loai": [
+     "may"
+    ],
+    "gia_tu": 0,
+    "gia_den": 0,
+    "tra_truoc_min": 20,
+    "tra_truoc_max": 0,
+    "vay_min": 0,
+    "ky_han": [
+     6,
+     9,
+     12
+    ],
+    "lai": [
+     {
+      "ky_tu": 6,
+      "ky_den": 12,
+      "tt_tu": 0,
+      "tt_den": 101,
+      "lai": 1.89,
+      "don_vi": "thang",
+      "chu": "Lãi 1,89%/tháng"
+     }
+    ],
+    "bao_hiem": {
+     "kieu": "phan_tram",
+     "muc": 5.5,
+     "tinh_lai": true,
+     "chu": "bắt buộc, cộng vào gốc và tính lãi"
+    }
+   },
+   {
+    "loai": [
+     "dap"
+    ],
     "gia_tu": 0,
     "gia_den": 0,
     "tra_truoc_min": 10,
@@ -177,7 +211,7 @@
     "gia_tu": 0,
     "gia_den": 0,
     "tra_truoc_min": 20,
-    "tra_truoc_max": 0,
+    "tra_truoc_max": 30,
     "vay_min": 0,
     "ky_han": [
      6,
@@ -191,26 +225,17 @@
       "ky_tu": 1,
       "ky_den": 18,
       "tt_tu": 0,
-      "tt_den": 40,
+      "tt_den": 101,
       "lai": 49,
       "don_vi": "nam",
       "chu": "Lãi 49%/năm (≈4,08%/tháng)"
-     },
-     {
-      "ky_tu": 1,
-      "ky_den": 18,
-      "tt_tu": 40,
-      "tt_den": 101,
-      "lai": 42,
-      "don_vi": "nam",
-      "chu": "Lãi 42%/năm (≈3,5%/tháng)"
      }
     ],
     "bao_hiem": {
      "kieu": "phan_tram",
      "muc": 6.6,
-     "tinh_lai": false,
-     "chu": "bắt buộc, thu riêng 1 lần"
+     "tinh_lai": true,
+     "chu": "bắt buộc, cộng vào tiền góp"
     }
    }
   ]
@@ -223,7 +248,9 @@
   "ghi_chu": "Bảo hiểm đổi theo kỳ hạn và khoản vay",
   "luat": [
    {
-    "loai": [],
+    "loai": [
+     "dap"
+    ],
     "gia_tu": 0,
     "gia_den": 0,
     "vay_tu": 0,
@@ -255,7 +282,9 @@
     }
    },
    {
-    "loai": [],
+    "loai": [
+     "dap"
+    ],
     "gia_tu": 0,
     "gia_den": 0,
     "vay_tu": 10000000,
@@ -287,7 +316,9 @@
     }
    },
    {
-    "loai": [],
+    "loai": [
+     "dap"
+    ],
     "gia_tu": 0,
     "gia_den": 0,
     "vay_tu": 25000000,
@@ -318,6 +349,7 @@
      "chu": "bắt buộc, thu riêng, ước tính"
     }
    }
-  ]
+  ],
+  "ly_do_loai": "Home Credit chỉ góp xe đạp điện"
  }
 ]
