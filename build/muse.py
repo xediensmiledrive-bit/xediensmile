@@ -4,6 +4,7 @@
 Gốc kho lấy từ biến môi trường PXD_KHO (vd Y:\\CLAUDE\\SEO-web). Không có thì bỏ qua.
 Mỗi thư mục bài: bai.html (đoạn <article class="bai"> Khung A), meta.json, có thể có <slug>.webp.
 """
+import html
 import json, os, re, shutil
 
 THU_MUC = {"phoxedien.vn": "phoxedien-vn", "phoxedien.com.vn": "phoxedien-com-vn"}
@@ -129,6 +130,7 @@ def doc_bai(site):
         if os.path.isfile(os.path.join(tm, tep)) and tep.lower().endswith(".webp"):
             anh = os.path.join(tm, tep)
         h1 = m.get("tieu_de") or slug
+        bai, them = _anh_trong_bai(m, tm, slug, bai)
         loi = giong_noi_bo(h1, m.get("tieu_de_seo"), m.get("mo_ta_seo"), m.get("tra_loi_nhanh"), bai)
         if loi:
             print("  ⚠ giọng nội bộ", site["domain"], ten, ", ".join(loi))
@@ -139,9 +141,44 @@ def doc_bai(site):
             "title": m.get("tieu_de_seo") or h1, "desc": m.get("mo_ta_seo") or m.get("tra_loi_nhanh", "")[:155],
             "ngay": m.get("ngay"), "faq": [tuple(x[:2]) for x in m.get("faq") or [] if len(x) >= 2],
             "html": _sach(bai, site), "anh": anh, "san_pham": m.get("san_pham"), "anh_alt": (m.get("anh_bia") or {}).get("alt") or h1,
+            "anh_them": them,
         })
     ra.sort(key=lambda a: a["ngay"] or "", reverse=True)
     return ra
+
+
+def _anh_trong_bai(m, tm, slug, bai):
+    """meta "anh_trong_bai": [{"tep", "alt"}] (ảnh đã đóng khung trong thư mục bài) → /anh/<slug>-<n>.webp.
+    bai.html có src trỏ tên tệp thì thay đường dẫn; chưa có thì chèn ảnh trước mục <h2> thứ n+1 (hoặc cuối bài)."""
+    them = []
+    for n, x in enumerate(m.get("anh_trong_bai") or [], 2):
+        tep = os.path.basename(str((x or {}).get("tep") or ""))
+        goc = os.path.join(tm, tep)
+        if not (tep.lower().endswith(".webp") and os.path.isfile(goc)):
+            continue
+        web = "/anh/%s-%d.webp" % (slug, n)
+        them.append((goc, web))
+        alt = html.escape(str(x.get("alt") or ""), quote=True)
+        mau = r'src=(["\'])(?:\./)?%s\1' % re.escape(tep)
+        if re.search(mau, bai):
+            bai = re.sub(mau, 'src="%s"' % web, bai)
+            continue
+        hinh = '<figure class="anh-bai"><img src="%s" alt="%s" width="1000" height="1000" loading="lazy"></figure>' % (web, alt)
+        vt = [h.start() for h in re.finditer(r"(?i)<h2\b", bai)]
+        if len(vt) >= n:
+            bai = bai[:vt[n - 1]] + hinh + bai[vt[n - 1]:]
+        else:
+            i = bai.lower().rfind("</article>")
+            bai = (bai[:i] + hinh + bai[i:]) if i >= 0 else bai + hinh
+    return bai, them
+
+
+def chep_anh_them(a, base):
+    """Chép ảnh trong thân bài (anh_trong_bai) lên /anh/."""
+    if a.get("anh_them"):
+        os.makedirs(os.path.join(base, "anh"), exist_ok=True)
+    for goc, web in a.get("anh_them") or []:
+        shutil.copy(goc, os.path.join(base, web.lstrip("/")))
 
 
 def chep_anh(a, base):

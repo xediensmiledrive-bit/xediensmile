@@ -975,3 +975,4 @@ html.logo-xong .logo-anh.dong .ld-tinh{display:block}
 .tg-logo a:focus-visible{outline:2px solid var(--c1);outline-offset:2px}
 footer .tg-logo a img{width:100%}
 .tgp-doc{margin:22px 0}.tgp-doc h2{font-size:20px;margin:0 0 10px}.tgp-doc ul{margin:0;padding-left:20px;display:grid;gap:8px}.tgp-doc a{font-weight:600}
+.anh-bai{margin:18px 0}.anh-bai img{display:block;width:100%;max-width:640px;height:auto;border-radius:12px;margin:0 auto}

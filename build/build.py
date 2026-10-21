@@ -755,6 +755,8 @@ def build(site):
     anhxe.chep(base)
     urls, lastmod = [], {}
     bai_muse = muse.doc_bai(site)
+    for a in bai_muse:
+        muse.chep_anh_them(a, base)
     # bài Muse viết cho một mẫu xe (meta "san_pham") ghép vào trang /xe/<slug>/, không thành bài riêng
     for a in [a for a in bai_muse if a.get("san_pham")]:
         sanpham.MUSE[d][a["san_pham"].strip().lower()] = a
