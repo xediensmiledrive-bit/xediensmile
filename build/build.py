@@ -94,10 +94,8 @@ def _co_luoi(f, keys, tde):
                 if v:
                     xen.append(v.pop(0))
         # 2 hàng x 6 xe ngay dưới phần giới thiệu, khách nhìn mẫu trước khi đọc bảng giá dài (anh góp ý 21/10 11:00)
-        l = anhxe.luoi(xen, tde, 12, noidung.vnd, lop="dau")
-        if not l:
-            return b
-        l += _hop_so(keys)
+        # chưa có ảnh xe thì vẫn để ô để lại số dưới phần giới thiệu
+        l = anhxe.luoi(xen, tde, 12, noidung.vnd, lop="dau") + _hop_so(keys)
         m_chot = re.search(r'<section class="chot hd-in">.*?</section>', b, re.S)
         if m_chot:
             return b[:m_chot.end()] + l + b[m_chot.end():]
