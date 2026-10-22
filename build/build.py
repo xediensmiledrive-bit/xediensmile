@@ -31,13 +31,21 @@ _vn, _comvn = noidung.VN, noidung.COMVN
 for _k in ("may", "dap"):
     noidung.CHIP_HANG[_k] = hang.chip_hang(_k, hang.LOAI_VN[_k][0])
 # Smile ngừng bán xe đạp điện từ 25/9/2026: trang giữ dạng thông tin + mẫu tương đương đang bán (luật: không bịa giá)
-if not noidung.models_of("dap"):
+_CHIP_DAP = noidung.CHIP_HANG.get("dap", "")
+
+
+def _chip_dap():
+    """Khối "Đủ 16 tuổi" trang xe đạp điện: dựng lại cho từng web sau khi anhxe.WEB đã đặt, để ảnh đầu dòng lấy đúng khung của web đó
+    (trước đây dựng lúc nạp module, WEB còn rỗng nên mọi dòng hiện ô ảnh trống)."""
+    noidung.CHIP_HANG["dap"] = _CHIP_DAP
+    if noidung.models_of("dap"):
+        return
     _tg = [m for m in hang.sap(noidung.models_of("may")) if m.get("price") and (m.get("brand") or "") in ("DV Motor", "Dibao", "Detech", "Yaka")][:6]
     if _tg:
         noidung.CHIP_HANG["dap"] = ('<section><div class="tieude"><h2>Đủ 16 tuổi? Xem xe máy điện giá mềm</h2></div>'
                                     '<p class="meta">Từ đủ 16 tuổi được đi xe máy điện loại xe gắn máy, không cần bằng lái. Các mẫu giá dễ chịu:</p>'
                                     '<div class="the bang hd-in">%s<div class="chu-thich">Giá cập nhật %s.</div></div></section>'
-                                    % ("".join(hang.dong(m, "may") for m in _tg), noidung.NGAY_VN)) + noidung.CHIP_HANG.get("dap", "")
+                                    % ("".join(hang.dong(m, "may") for m in _tg), noidung.NGAY_VN)) + _CHIP_DAP
 for _p in _vn["pages"]:
     _f = _p.get("body")
     if getattr(_f, "faqs", None):
@@ -798,6 +806,8 @@ def build(site):
             "name": site["sitename"], "short_name": "Phố Xe Điện", "start_url": "/", "display": "browser", "theme_color": site["theme"],
             "background_color": "#ffffff", "icons": [{"src": "/icon-192.png", "sizes": "192x192", "type": "image/png"},
                                                     {"src": "/icon-512.png", "sizes": "512x512", "type": "image/png"}]}, ensure_ascii=False))
+    anhxe.WEB = d if d == "phoxedien.vn" else ""  # sửa ô ảnh trống chỉ áp phoxedien.vn (anh chốt 22/10, luật 1.12)
+    _chip_dap()
     anhxe.WEB = d
     anhxe.chep(base)
     urls, lastmod = [], {}

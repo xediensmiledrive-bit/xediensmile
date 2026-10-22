@@ -48,8 +48,13 @@ _nap()
 def _khung(ten):
     if not (GOC and WEB and ten):
         return None
-    f = os.path.join(GOC, "khung", WEB, _slug(ten) + ".webp")
-    return f if os.path.isfile(f) else None
+    s = _slug(ten)
+    # luồng ảnh đặt tên khung theo trang xe (vd xe-may-dien-vinfast-ludo), dòng giá thị trường chỉ có tên mẫu (vinfast-ludo)
+    for t in ((s, "xe-may-dien-" + s, "xe-dien-" + s, "xe-dap-dien-" + s) if WEB == "phoxedien.vn" else (s,)):
+        f = os.path.join(GOC, "khung", WEB, t + ".webp")
+        if os.path.isfile(f):
+            return f
+    return None
 
 
 _CO_KHUNG = {}
@@ -72,7 +77,7 @@ def anh(ten):
         if k not in _V:
             import hashlib
             _V[k] = hashlib.md5(open(k, "rb").read()).hexdigest()[:8]
-        return "/anh-xe/khung/%s.webp?v=%s" % (_slug(ten), _V[k])
+        return "/anh-xe/khung/%s?v=%s" % (os.path.basename(k), _V[k])
     if co_khung():
         return None
     ds = ANH.get((ten or "").strip().lower())
@@ -170,6 +175,8 @@ def tn(m):
     if a and "/anh-xe/khung/" in a and _co_pil():
         a = a.replace("/anh-xe/khung/", "/anh-xe/nho/")
     # ô trống cùng cỡ khi chưa có ảnh để tên xe các dòng thẳng hàng
+    if not a and WEB == "phoxedien.vn":  # anh chốt 22/10: phoxedien.vn chưa có ảnh thì không để ô trống
+        return ""
     return '<img class="tn-xe" src="%s" alt="%s" width="56" height="42" loading="lazy">' % (a, html.escape(m["name"])) if a else '<span class="tn-xe trong" aria-hidden="true"></span>'
 
 
