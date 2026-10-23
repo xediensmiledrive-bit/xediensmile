@@ -577,7 +577,7 @@ def _nav_nho(site, path):
 
 # Màn hình chờ và logo động gắn ngay sau <body> (23/10, đã chạy trên web): giữ trong mẫu để lần dựng sau không mất.
 # Tệp js nằm ở logo/<domain>/ nên được chép ra gốc web như logo.
-CHO = {"phoxedien.vn": '<script src="/pxd-cho.js?v=20261023"></script>'}
+CHO = {"phoxedien.vn": '<script src="/pxd-cho.js?v=20261023b"></script>'}
 
 
 def _cho(d):
