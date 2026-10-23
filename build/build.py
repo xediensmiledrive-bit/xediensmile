@@ -575,6 +575,17 @@ def _nav_nho(site, path):
     return '<nav class="nav-nho" aria-label="Danh mục">%s</nav>' % "".join(o)
 
 
+# Màn hình chờ và logo động gắn ngay sau <body> (23/10, đã chạy trên web): giữ trong mẫu để lần dựng sau không mất.
+# Tệp js nằm ở logo/<domain>/ nên được chép ra gốc web như logo.
+CHO = {"phoxedien.vn": '<script src="/pxd-cho.js?v=20261023"></script>'}
+
+
+def _cho(d):
+    t = CHO.get(d, "")
+    m = re.search(r'src="/([^"?]+)', t)
+    return t if m and os.path.isfile(os.path.join(HERE, "logo", d, m.group(1))) else ""
+
+
 def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,follow", og_img=None):
     d = site["domain"]
     if len(title) > 70 and " | " in title:  # tiêu đề quá 70 ký tự bị Google cắt: bỏ đuôi tên web trước
@@ -630,7 +641,7 @@ def page(site, path, title, desc, body, schemas=(), crumbs=None, robots="index,f
 <style>:root{{{css_vars}}}</style>
 {sch}
 </head>
-<body{' class="skin-%s"' % skin if skin else ""}>
+<body{' class="skin-%s"' % skin if skin else ""}>{_cho(d)}
 <header class="top"><div class="wrap wide">
 <button class="nut-menu" aria-label="Mở menu" aria-expanded="false"><span></span></button>
 {logo_html(site, ten, True)}
